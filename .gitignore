@@ -1,6 +1,6 @@
 # Dependencies
 /node_modules
-
+/test
 # Logs
 logs
 *.log
@@ -20,3 +20,5 @@ lerna-debug.log*
 # Operating System files
 .DS_Store
 Thumbs.db
+
+/test
