@@ -1,0 +1,44 @@
+name: Validate PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write 
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Validation Script
+        env:
+          # Use the bot's token so it can post comments
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: node scripts/validate-pr.js
+
+      - name: Add Label on Success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          # Pass the bot's token to this action as well
+          github-token: ${{ secrets.BOT_TOKEN }}
+          script: |
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['validation:passed']
+            })

@@ -1,0 +1,9 @@
+{
+  "name": "is-a-software",
+  "version": "1.0.0",
+  "description": "Scripts for managing is-a.software subdomains via GitHub Actions",
+  "private": true,
+  "dependencies": {
+    "@actions/github": "^6.0.0"
+  }
+}
