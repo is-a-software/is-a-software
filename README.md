@@ -3,7 +3,7 @@
 <p align="center">
   Free and automated DNS subdomains for developers.
   <br />
-  <a href="#how-to-register-a-subdomain"><strong>Register a Subdomain »</strong></a>
+  <a href="#-how-to-register-a-subdomain"><strong>Register a Subdomain »</strong></a>
 </p>
 
 ---
