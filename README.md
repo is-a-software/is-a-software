@@ -1,5 +1,4 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/is-a-software/is-a-software/main/.github/logo.png" alt="is-a.software Logo" width="200">
   <h1>is-a.software</h1>
   <p><b>Free, automated, and professional subdomains for developers.</b></p>
   <p>
