@@ -1,19 +1,63 @@
+
 <div align="center">
   <h1>is-a.software</h1>
-  <p><b>Free, automated, and professional subdomains for developers.</b></p>
+  <p><b>Free subdomains for developers.</b></p>
   <p>
-    <a href="https://github.com/is-a-software/is-a-software/stargazers"><img src="https://img.shields.io/github/stars/is-a-software/is-a-software?style=for-the-badge&logo=github" alt="GitHub Stars"></a>
-    <a href="https://github.com/is-a-software/is-a-software/pulls"><img src="https://img.shields.io/github/issues-pr/is-a-software/is-a-software?style=for-the-badge&logo=github" alt="Pull Requests"></a>
-    <a href="https://github.com/is-a-software/is-a-software/actions/workflows/validate-pr.yml"><img src="https://img.shields.io/github/actions/workflow/status/is-a-software/is-a-software/validate-pr.yml?branch=main&label=PR%20Validation&style=for-the-badge&logo=githubactions" alt="PR Validation Status"></a>
-    <a href="https://discord.com/invite/AeAjegXn6D"><img src="https://img.shields.io/discord/1082553397455499334?color=5865F2&logo=discord&logoColor=white&style=for-the-badge" alt="Discord Server"></a>
+    <a href="#"><img src="https://img.shields.io/github/stars/is-a-software/is-a-software?style=for-the-badge" alt="GitHub Stars"></a>
+    <a href="#"><img src="https://img.shields.io/github/directory-file-count/is-a-software/is-a-software/domains?style=for-the-badge&label=domains" alt="Domains"></a>
+    <a href="https://discord.com/invite/AeAjegXn6D"><img src="https://img.shields.io/discord/855711432581316639?color=5865F2&logo=discord&logoColor=white&style=for-the-badge" alt="Discord Server"></a>
   </p>
 </div>
 
 ---
 
+## 🚀 How to Register Your Subdomain
+
+Follow these simple steps to get your free subdomain.
+
+### 1. 🍴  Fork the Repository
+First, [fork this repository](https://github.com/is-a-software/is-a-software/fork) to your own GitHub account.
+
+### 2. 📝 Create Your Record File
+Navigate to the `domains/` folder and create a new JSON file. The name of this file will be your subdomain.
+
+> **For example:** To register `example.is-a-software`, you must create a file named `example.json`.
+
+### 3. ⚙️ Add Your DNS Records
+Open your new JSON file and add the required information. You must include an `owner` section and a `record` section.
+
+* **`owner`**: Your GitHub username.
+* **`record`**: The DNS records you want. We support `A`, `AAAA`, and `CNAME`.
+* **`proxy`** (Optional): Set to `true` to enable Cloudflare's proxy (orange cloud) or `false` to disable it (DNS only). Defaults to `false`.
+
+#### **JSON File Examples**
+
+**Using a CNAME record (for services like GitHub Pages, Vercel, etc.):**
+```json
+{
+  "owner": {
+    "github": "your-username"
+  },
+  "record": {
+    "CNAME": "your-username.github.io"
+  },
+  "proxy": false
+}
+```
+
+### 4. 🚀 Create a Pull Request
+Once you've created and saved your file, create a Pull Request from your fork back to this main repository.  all checks pass,then it will be automatically merged.
+
+Your subdomain should be live within a few minutes!
+
+> [!NOTE]
+> **Make sure to add a good commit message and a good PR title**<br>
+> example: `Register: example.is-a.software`<br>
+
+---
+
 ## ✨ Features
 
--   ✅ **Absolutely Free:** No hidden costs. Get a professional subdomain at no charge.
 -   ✅ **Fully Automated:** Just create a Pull Request, and our GitHub Actions handle the rest.
 -   ✅ **Fast & Reliable:** Your subdomain is powered by Cloudflare's robust DNS infrastructure.
 -   ✅ **Developer-Friendly:** Supports `A`, `AAAA`, and `CNAME` records to point to any service.
@@ -34,65 +78,6 @@ graph TD
     E --> F[Cloudflare: Create/Update DNS Record];
     F --> G[Your Subdomain is Live! ✨];
 ```
-
----
-
-## 🚀 How to Register Your Subdomain
-
-Follow these simple steps to get your free subdomain.
-
-### 1️⃣ Fork & Create
--   [**Fork this repository**](https://github.com/is-a-software/is-a-software/fork) to your own GitHub account.
--   Navigate to the `domains/` folder and create a new file named `your-subdomain.json`.
-
-### 2️⃣ Configure Your Record
--   Open the new JSON file and add your record details. See the examples below.
-
-<details>
-<summary>📄 Click to see JSON configuration examples</summary>
-
-**CNAME Record (for GitHub Pages, Vercel, etc.):**
-```json
-{
-  "owner": {
-    "github": "your-username"
-  },
-  "record": {
-    "CNAME": "your-username.github.io"
-  },
-  "proxy": false
-}
-```
-
-**A/AAAA Records (for a custom server):**
-```json
-{
-  "owner": {
-    "github": "your-username"
-  },
-  "record": {
-    "A": "192.0.2.1",
-    "AAAA": "2001:db8::1"
-  },
-  "proxy": true
-}
-```
-</details>
-
-### 3️⃣ Submit Your Pull Request
--   Create a Pull Request from your fork to the `is-a-software/is-a-software` main repository.
--   Use a clear title like `Register: your-subdomain.is-a.software`.
--   Our bots will check your submission. If it passes, it will be merged automatically.
-
----
-
-## 📜 Rules & Limitations
-
--   🚫 **One subdomain per GitHub account.**
--   🚫 **No `NS` or `MX` records.**
--   🚫 **The `owner.github` field must match the GitHub username of the person creating the PR.**
--   🚫 **No reserved names** (e.g., `api`, `blog`, `shop`). Check the [full list](config/reserved.json).
--   Violations of these rules will cause the validation to fail.
 
 ---
 
