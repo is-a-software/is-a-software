@@ -5,5 +5,5 @@
   "record": {
     "CNAME": "codewithevilxd.github.io"
   },
-  "proxy": false
+  "proxy": true
 }
