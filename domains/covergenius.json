@@ -1,0 +1,9 @@
+{
+  "owner": {
+    "github": "theprinceraj"
+  },
+  "record": {
+    "CNAME": "covergenius.vercel.app"
+  },
+  "proxy": false
+}
