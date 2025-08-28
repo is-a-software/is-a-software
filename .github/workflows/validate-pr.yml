@@ -15,12 +15,12 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
     steps:
-      - name: Checkout PR head (from contributor fork)
+      - name: Checkout main repository (for validation scripts)
         uses: actions/checkout@v4
         with:
-          # Fetch from the PR head repository (works for forks)
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
+          # Always use the main repository for validation scripts
+          repository: is-a-software/is-a-software
+          ref: main
           token: ${{ secrets.BOT_TOKEN }}
           fetch-depth: 0
           persist-credentials: false
