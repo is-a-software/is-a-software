@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const github = require('@actions/github');
+const vercelValidation = require('./_vercel');
 
 async function run() {
 	const token = process.env.GITHUB_TOKEN;
@@ -87,49 +88,134 @@ async function run() {
 		}
 
 		const subdomain = path.basename(file.filename, '.json').toLowerCase();
-		if (reservedKeywords.includes(subdomain)) {
-			await fail(`The subdomain **'${subdomain}'** is a reserved keyword and cannot be registered.`);
+		console.log(`🏷️  Subdomain: ${subdomain}`);
+		
+		// Check if this is a _vercel subdomain using the validation module
+		const isVercelSubdomain = vercelValidation.isVercelSubdomain(file.filename);
+		
+		if (isVercelSubdomain) {
+			// Validate _vercel subdomain ownership and TXT record content
+			const result = await vercelValidation.validateVercelAddition(
+				octokit, context, file.filename, prAuthor, prBaseSha, prHeadSha
+			);
+			
+			if (!result.isValid) {
+				await fail(result.message);
+			}
+		} else {
+			// For regular subdomains, check reserved keywords
+			if (reservedKeywords.includes(subdomain)) {
+				await fail(`The subdomain **'${subdomain}'** is a reserved keyword and cannot be registered.`);
+			}
+			console.log('✅ Subdomain is not reserved');
 		}
 
 		// Fetch the changed file content from the PR head commit safely
 		switch (file.status) {
 			case "removed":
-				const removedOwner = await getOwner(file.filename, prBaseSha);
-				if (!removedOwner) {
-					await fail(`Unable to find the original owner of the file being deleted.`);
-				}
-				if (removedOwner !== prAuthor.toLowerCase()) {
-					await fail(`You are not allowed to delete this file. The file belongs to '${removedOwner}'.`);
+				console.log('🗑️  Validating file removal...');
+				
+				if (isVercelSubdomain) {
+					// Use the validation module for _vercel subdomain deletion
+					const result = await vercelValidation.validateVercelDeletion(
+						octokit, context, file.filename, prAuthor, prBaseSha
+					);
+					
+					if (!result.isValid) {
+						await fail(result.message);
+					}
+				} else {
+					// For regular domains, check file ownership
+					const removedOwner = await getOwner(file.filename, prBaseSha);
+					if (!removedOwner) {
+						await fail(`Unable to find the original owner of the file being deleted.`);
+					}
+					if (removedOwner !== prAuthor.toLowerCase()) {
+						await fail(`You are not allowed to delete this file. The file belongs to '${removedOwner}'.`);
+					}
+					console.log('✅ File removal authorized');
 				}
 				break;
 		    case "added":
-				const newOwner = await getOwner(file.filename, prHeadSha);
-				if (!newOwner) {
-					await fail(`Unable to retrieve owner information from the new file.`);
-				}
-				if (newOwner !== prAuthor.toLowerCase()) {
-					await fail(`Owner username '${newOwner}' does not match PR author '${prAuthor}'.`);
+				console.log('➕ Validating file addition...');
+				
+				// For _vercel subdomains, we already validated ownership above
+				if (isVercelSubdomain) {
+					console.log('✅ Vercel subdomain addition authorized (ownership already verified)');
+				} else {
+					// For regular domains, validate the file owner matches PR author
+					const newOwner = await getOwner(file.filename, prHeadSha);
+					if (!newOwner) {
+						await fail(`Unable to retrieve owner information from the new file.`);
+					}
+					console.log(`👤 File owner: ${newOwner}, PR author: ${prAuthor}`);
+					if (newOwner !== prAuthor.toLowerCase()) {
+						await fail(`Owner username '${newOwner}' does not match PR author '${prAuthor}'.`);
+					}
+					console.log('✅ File addition authorized');
 				}
 				break;
 		    case "modified":
-				const oldOwner = await getOwner(file.filename, prBaseSha);
-				const modifiedNewOwner = await getOwner(file.filename, prHeadSha);
-				if (!modifiedNewOwner) {
-					await fail(`Unable to retrieve owner information from the modified file.`);
-				}
-				if (oldOwner && oldOwner !== prAuthor.toLowerCase()) {
-					await fail(`You are not allowed to modify this file. The file belongs to '${oldOwner}'.`);
+				console.log('📝 Validating file modification...');
+				
+				if (isVercelSubdomain) {
+					// Use the validation module for _vercel subdomain modification
+					const result = await vercelValidation.validateVercelModification(
+						octokit, context, file.filename, prAuthor, prBaseSha, prHeadSha
+					);
+					
+					if (!result.isValid) {
+						await fail(result.message);
+					}
+				} else {
+					// For regular domains, check file ownership
+					const oldOwner = await getOwner(file.filename, prBaseSha);
+					const modifiedNewOwner = await getOwner(file.filename, prHeadSha);
+					if (!modifiedNewOwner) {
+						await fail(`Unable to retrieve owner information from the modified file.`);
+					}
+					if (oldOwner && oldOwner !== prAuthor.toLowerCase()) {
+						await fail(`You are not allowed to modify this file. The file belongs to '${oldOwner}'.`);
+					}
+					console.log('✅ File modification authorized');
 				}
 				break;
 			case "renamed":
-				const renamedOldOwner = await getOwner(file.previous_filename, prBaseSha);
-				const renamedNewOwner = await getOwner(file.filename, prHeadSha);
-				if (!renamedOldOwner || !renamedNewOwner) {
-					await fail(`Unable to retrieve owner information for renamed file.`);
+				console.log('✏️ Validating file rename...');
+				
+				// Check if old or new file is a vercel subdomain
+				const oldIsVercelSubdomain = vercelValidation.isVercelSubdomain(file.previous_filename);
+				const newIsVercelSubdomain = vercelValidation.isVercelSubdomain(file.filename);
+				
+				// If either file involves _vercel subdomains, use the validation module
+				if (oldIsVercelSubdomain || newIsVercelSubdomain) {
+					const result = await vercelValidation.validateVercelRename(
+						octokit, context, file.previous_filename, file.filename, prAuthor, prBaseSha
+					);
+					
+					if (!result.isValid) {
+						await fail(result.message);
+					}
+				} else {
+					// For regular files, check ownership of both old and new files
+					const renamedOldOwner = await getOwner(file.previous_filename, prBaseSha);
+					if (!renamedOldOwner) {
+						await fail(`Unable to retrieve owner information for the old renamed file.`);
+					}
+					if (renamedOldOwner !== prAuthor.toLowerCase()) {
+						await fail(`You are not allowed to rename this file. The old file belongs to '${renamedOldOwner}'.`);
+					}
+					
+					const renamedNewOwner = await getOwner(file.filename, prHeadSha);
+					if (!renamedNewOwner) {
+						await fail(`Unable to retrieve owner information for the new renamed file.`);
+					}
+					if (renamedNewOwner !== prAuthor.toLowerCase()) {
+						await fail(`You are not allowed to create this file. The new file belongs to '${renamedNewOwner}'.`);
+					}
 				}
-				if (renamedOldOwner !== prAuthor.toLowerCase() || renamedNewOwner !== prAuthor.toLowerCase()) {
-					await fail(`You are not allowed to rename this file. The file belongs to '${renamedOldOwner}', but PR author is '${prAuthor}'.`);
-				}
+				
+				console.log('✅ File rename authorized');
 				break;
 			default:
 				break;
