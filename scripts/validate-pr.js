@@ -84,28 +84,31 @@ async function run() {
 		}
 
 		// Fetch the changed file content from the PR head commit safely
-		const oldOwner = await getOwner(file.filename, prBaseSha);
-		const newOwner = await getOwner(file.filename, prHeadSha);
 		switch (file.status) {
 			case "removed":
-				if (oldOwner !== prAuthor.toLowerCase()) {
-					await fail(`You are not allowed to delete this file. The file belongs to '${oldOwner}'.`);
+				const removedOwner = await getOwner(file.filename, prBaseSha);
+				if (removedOwner !== prAuthor.toLowerCase()) {
+					await fail(`You are not allowed to delete this file. The file belongs to '${removedOwner}'.`);
 				}
 				break;
 		    case "added":
+				const newOwner = await getOwner(file.filename, prHeadSha);
 				if (newOwner !== prAuthor.toLowerCase()) {
 					await fail(`Owner username '${newOwner}' does not match PR author '${prAuthor}'.`);
 				}
 				break;
 		    case "modified":
+				const oldOwner = await getOwner(file.filename, prBaseSha);
+				const modifiedNewOwner = await getOwner(file.filename, prHeadSha);
 				if (oldOwner && oldOwner !== prAuthor.toLowerCase()) {
 					await fail(`You are not allowed to modify this file. The file belongs to '${oldOwner}'.`);
 				}
 				break;
 			case "renamed":
 				const renamedOldOwner = await getOwner(file.previous_filename, prBaseSha);
-				if (renamedOldOwner !== prAuthor.toLowerCase() || newOwner !== prAuthor.toLowerCase()) {
-					await fail(`You are not allowed to rename this file. The file belongs to '${oldOwner}', but PR author is '${prAuthor}'.`);
+				const renamedNewOwner = await getOwner(file.filename, prHeadSha);
+				if (renamedOldOwner !== prAuthor.toLowerCase() || renamedNewOwner !== prAuthor.toLowerCase()) {
+					await fail(`You are not allowed to rename this file. The file belongs to '${renamedOldOwner}', but PR author is '${prAuthor}'.`);
 				}
 				break;
 			default:
