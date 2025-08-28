@@ -4,6 +4,7 @@
   "description": "Scripts for managing is-a.software subdomains via GitHub Actions",
   "private": true,
   "dependencies": {
-    "@actions/github": "^6.0.0"
+    "@actions/github": "^6.0.0",
+    "dotenv": "^17.2.1"
   }
 }
