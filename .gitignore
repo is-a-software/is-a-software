@@ -12,6 +12,7 @@ lerna-debug.log*
 
 # Local environment variables
 .env
+/test
 .env.local
 .env.development.local
 .env.test.local
@@ -20,5 +21,3 @@ lerna-debug.log*
 # Operating System files
 .DS_Store
 Thumbs.db
-
-/test

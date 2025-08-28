@@ -23,37 +23,45 @@ async function run() {
 	}
 
 	async function getOwner(path, ref){
-		const { data: file } = await octokit.rest.repos.getContent({
-			owner: context.repo.owner,
-			repo: context.repo.repo,
-			path,
-			ref,
-		});
-
-
-        if (!file || Array.isArray(file) || !file.content) {
-			await fail("Unable to retrieve file content from the pull request.");
-		}
-		const content = Buffer.from(
-			file.content,
-			file.encoding || "base64"
-		).toString("utf8");
-
-		let data;
 		try {
-			data = JSON.parse(content);
-		} catch (e) {
-			await fail(`Invalid JSON: ${e.message}`);
-		}
+			const { data: file } = await octokit.rest.repos.getContent({
+				owner: context.repo.owner,
+				repo: context.repo.repo,
+				path,
+				ref,
+			});
 
-		if (!data.owner || !data.owner.github) {
-			await fail("Missing 'owner.github' field in JSON.");
-		}
-		if (!data.record || (Object.keys(data.record).includes('NS') || Object.keys(data.record).includes('MX'))) {
-			await fail("NS and MX records are not allowed.");
-		}
+			if (!file || Array.isArray(file) || !file.content) {
+				await fail("Unable to retrieve file content from the pull request.");
+			}
+			const content = Buffer.from(
+				file.content,
+				file.encoding || "base64"
+			).toString("utf8");
 
-		return data?.owner?.github?.toLowerCase();
+			let data;
+			try {
+				data = JSON.parse(content);
+			} catch (e) {
+				await fail(`Invalid JSON: ${e.message}`);
+			}
+
+			if (!data.owner || !data.owner.github) {
+				await fail("Missing 'owner.github' field in JSON.");
+			}
+			if (!data.record || (Object.keys(data.record).includes('NS') || Object.keys(data.record).includes('MX'))) {
+				await fail("NS and MX records are not allowed.");
+			}
+
+			return data?.owner?.github?.toLowerCase();
+		} catch (error) {
+			// If file doesn't exist (404), return null instead of failing
+			if (error.status === 404) {
+				return null;
+			}
+			// For other errors, re-throw
+			throw error;
+		}
 	}
 
 	try {
@@ -84,28 +92,43 @@ async function run() {
 		}
 
 		// Fetch the changed file content from the PR head commit safely
-		const oldOwner = await getOwner(file.filename, prBaseSha);
-		const newOwner = await getOwner(file.filename, prHeadSha);
 		switch (file.status) {
 			case "removed":
-				if (oldOwner !== prAuthor.toLowerCase()) {
-					await fail(`You are not allowed to delete this file. The file belongs to '${oldOwner}'.`);
+				const removedOwner = await getOwner(file.filename, prBaseSha);
+				if (!removedOwner) {
+					await fail(`Unable to find the original owner of the file being deleted.`);
+				}
+				if (removedOwner !== prAuthor.toLowerCase()) {
+					await fail(`You are not allowed to delete this file. The file belongs to '${removedOwner}'.`);
 				}
 				break;
 		    case "added":
+				const newOwner = await getOwner(file.filename, prHeadSha);
+				if (!newOwner) {
+					await fail(`Unable to retrieve owner information from the new file.`);
+				}
 				if (newOwner !== prAuthor.toLowerCase()) {
 					await fail(`Owner username '${newOwner}' does not match PR author '${prAuthor}'.`);
 				}
 				break;
 		    case "modified":
+				const oldOwner = await getOwner(file.filename, prBaseSha);
+				const modifiedNewOwner = await getOwner(file.filename, prHeadSha);
+				if (!modifiedNewOwner) {
+					await fail(`Unable to retrieve owner information from the modified file.`);
+				}
 				if (oldOwner && oldOwner !== prAuthor.toLowerCase()) {
 					await fail(`You are not allowed to modify this file. The file belongs to '${oldOwner}'.`);
 				}
 				break;
 			case "renamed":
 				const renamedOldOwner = await getOwner(file.previous_filename, prBaseSha);
-				if (renamedOldOwner !== prAuthor.toLowerCase() || newOwner !== prAuthor.toLowerCase()) {
-					await fail(`You are not allowed to rename this file. The file belongs to '${oldOwner}', but PR author is '${prAuthor}'.`);
+				const renamedNewOwner = await getOwner(file.filename, prHeadSha);
+				if (!renamedOldOwner || !renamedNewOwner) {
+					await fail(`Unable to retrieve owner information for renamed file.`);
+				}
+				if (renamedOldOwner !== prAuthor.toLowerCase() || renamedNewOwner !== prAuthor.toLowerCase()) {
+					await fail(`You are not allowed to rename this file. The file belongs to '${renamedOldOwner}', but PR author is '${prAuthor}'.`);
 				}
 				break;
 			default:
