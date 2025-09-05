@@ -1,0 +1,9 @@
+{
+  "owner": {
+    "github": "valentinvera"
+  },
+  "record": {
+    "CNAME": "motiq.vercel.app"
+  },
+  "proxy": false
+}
