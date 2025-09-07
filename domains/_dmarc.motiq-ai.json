@@ -1,0 +1,9 @@
+{
+  "owner": {
+    "github": "valentinvera"
+  },
+  "record": {
+    "TXT": "v=DMARC1; p=none;"
+  },
+  "proxy": false
+}
