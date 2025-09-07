@@ -3,7 +3,7 @@
     "github": "rahulkumarpahwa"
   },
   "record": {
-    "CNAME": "cname.vercel-dns.com"
+    "CNAME": "ns1.vercel-dns.com"
   },
   "proxy": false
 }
