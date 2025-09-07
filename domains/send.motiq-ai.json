@@ -1,0 +1,9 @@
+{
+  "owner": {
+    "github": "valentinvera"
+  },
+  "record": {
+    "MX": "feedback-smtp.sa-east-1.amazonses.com 10"
+  },
+  "proxy": false
+}
