@@ -1,0 +1,9 @@
+{
+  "owner": {
+    "github": "valentinvera"
+  },
+  "record": {
+    "TXT": "v=spf1 include:amazonses.com ~all"
+  },
+  "proxy": false
+}
