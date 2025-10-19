@@ -3,7 +3,9 @@ name: Deploy DNS to Cloudflare
 on:
   push:
     branches:
-      - main 
+      - main
+    paths:
+      - 'domains/**'
   workflow_dispatch:
 
 jobs:
