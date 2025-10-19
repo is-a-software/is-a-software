@@ -1,0 +1,9 @@
+{
+  "owner": {
+    "github": "oyepriyansh"
+  },
+  "record": {
+    "CNAME": "raw-api.pages.dev"
+  },
+  "proxy": true
+}

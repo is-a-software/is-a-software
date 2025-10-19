@@ -1,0 +1,9 @@
+{
+  "owner": {
+    "github": "oyepriyansh"
+  },
+  "record": {
+    "CNAME": "mail-mail-is--a-software.dkim2._domainkey.firebasemail.com"
+  },
+  "proxy": false
+}
