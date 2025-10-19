@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/app/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Badge } from '@/app/components/ui/badge';
@@ -77,9 +77,8 @@ export default function DashboardPage() {
     return () => { aborted = true; };
   }, [user, githubLogin]);
 
-  const refreshDomainStatuses = async () => {
+  const refreshDomainStatuses = useCallback(async () => {
     if (!domains || domains.length === 0) return;
-    
     setRefreshing(true);
     try {
       const entries = await Promise.all(domains.map(async (d) => {
@@ -92,7 +91,6 @@ export default function DashboardPage() {
           return [d.domain, false] as const;
         }
       }));
-      
       const map: Record<string, boolean> = {};
       for (const [k, v] of entries) map[k] = v;
       setActiveMap(map);
@@ -102,7 +100,7 @@ export default function DashboardPage() {
     } finally {
       setRefreshing(false);
     }
-  };
+  }, [domains]);
 
   useEffect(() => {
     if (!domains || domains.length === 0) return;
@@ -181,16 +179,13 @@ export default function DashboardPage() {
   // Auto-refresh every 30 seconds for pending domains
   useEffect(() => {
     if (!domains || domains.length === 0) return;
-    
     const hasPendingDomains = Object.values(activeMap).some(status => !status);
     if (!hasPendingDomains) return;
-
     const interval = setInterval(() => {
       refreshDomainStatuses();
     }, 30000); // 30 seconds
-
     return () => clearInterval(interval);
-  }, [domains, activeMap]);
+  }, [domains, activeMap, refreshDomainStatuses]);
 
   const openEdit = (d: { domain: string; record: Record<string, string>; proxy?: boolean }) => {
     const t = Object.keys(d.record || {})[0] || 'CNAME';
