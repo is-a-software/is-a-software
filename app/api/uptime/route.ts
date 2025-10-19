@@ -1,3 +1,4 @@
+export const dynamic = "force-static";
 
 
 // Simple uptime tracking endpoint

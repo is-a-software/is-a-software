@@ -1,3 +1,4 @@
+export const dynamic = "force-static";
 import { NextRequest } from 'next/server';
 
 const GITHUB_API = 'https://api.github.com';

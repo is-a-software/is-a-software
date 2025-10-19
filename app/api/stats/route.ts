@@ -1,3 +1,4 @@
+export const dynamic = "force-static";
 import { NextRequest } from 'next/server';
 
 const RAW_DB_URL = 'https://raw.is-a.software/domains.json';

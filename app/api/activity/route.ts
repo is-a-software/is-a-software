@@ -1,8 +1,9 @@
+export const dynamic = "force-static";
 import { NextRequest } from 'next/server';
 
 const GITHUB_API = 'https://api.github.com';
-const OWNER = process.env.GITHUB_REPO_OWNER || 'is-a-software';
-const REPO = process.env.GITHUB_REPO_NAME || 'is-a-software';
+const OWNER = 'is-a-software';
+const REPO = 'is-a-software';
 
 async function gh(path: string) {
   const res = await fetch(`${GITHUB_API}${path}`, {
