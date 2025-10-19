@@ -1,0 +1,45 @@
+name: Sync Raw API
+on:
+  push:
+    paths:
+      - 'domains/**'
+  workflow_dispatch:
+
+jobs:
+  sync-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repo
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Generate API data
+        run: node scripts/generate-raw-api.js
+        
+      - name: Commit to raw-api repo
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: |
+          git config --global user.name "priyanshbot"
+          git config --global user.email "129733067+priyanshbot@users.noreply.github.com"
+          
+          # Clone raw-api repository
+          git clone https://$BOT_TOKEN@github.com/is-a-software/raw-api.git raw-api-repo
+          cd raw-api-repo
+          
+          # Copy generated domains.json
+          cp ../domains.json .
+          
+          # Commit if there are changes
+          if ! git diff --quiet domains.json; then
+            git add domains.json
+            git commit -m "Update domains.json - $(date '+%Y-%m-%d %H:%M:%S')"
+            git push
+            echo "✅ API updated successfully"
+          else
+            echo "ℹ️  No changes detected"
+          fi
