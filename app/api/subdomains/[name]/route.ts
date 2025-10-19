@@ -1,4 +1,5 @@
-export const dynamic = "force-static";
+export const runtime = "edge";
+export const dynamic = "force-dynamic";
 import { NextRequest } from 'next/server';
 
 const GITHUB_API = 'https://api.github.com';
