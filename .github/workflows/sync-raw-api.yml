@@ -18,7 +18,7 @@ jobs:
           node-version: '20'
           
       - name: Generate API data
-        run: node scripts/generate-raw-api.js
+        run: node scripts/sync-raw-api.js
         
       - name: Commit to raw-api repo
         env:
