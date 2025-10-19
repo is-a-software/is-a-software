@@ -16,8 +16,8 @@ export async function GET(req: NextRequest) {
       return new Response('Failed to fetch domain data', { status: 502 });
     }
 
-    const domains = await res.json();
-    const domainExists = domains.find((d: any) => 
+    const domains: Array<{ domain?: string }> = await res.json();
+    const domainExists = domains.find((d) => 
       d?.domain?.toLowerCase() === subdomain
     );
 
@@ -41,13 +41,22 @@ export async function GET(req: NextRequest) {
       lastChecked: new Date().toISOString()
     });
 
-  } catch (error) {
-    console.error('Domain status API error:', error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Domain status API error:', error.message);
+    } else {
+      console.error('Domain status API error:', error);
+    }
     return new Response('Failed to check domain status', { status: 500 });
   }
 }
 
-async function checkDNSStatus(hostname: string) {
+async function checkDNSStatus(hostname: string): Promise<{
+  active: boolean;
+  answers: unknown[];
+  checkedAt: string;
+  error?: string;
+}> {
   const endpoints = [
     `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(hostname)}&type=A`,
     `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(hostname)}&type=CNAME`,
@@ -66,7 +75,7 @@ async function checkDNSStatus(hostname: string) {
     );
 
     const answers = results
-      .flatMap((r: any) => (r && r.Answer ? r.Answer : []))
+      .flatMap((r) => (r && Array.isArray((r as { Answer?: unknown[] }).Answer) ? (r as { Answer: unknown[] }).Answer : []))
       .filter(Boolean);
 
     return {
@@ -74,7 +83,7 @@ async function checkDNSStatus(hostname: string) {
       answers: answers,
       checkedAt: new Date().toISOString()
     };
-  } catch (error) {
+  } catch {
     return {
       active: false,
       answers: [],

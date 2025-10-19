@@ -83,7 +83,6 @@ export default function DashboardPage() {
     setRefreshing(true);
     try {
       const entries = await Promise.all(domains.map(async (d) => {
-        const hostname = `${d.domain}.is-a.software`;
         try {
           const r = await fetch(`/api/domain-status?subdomain=${encodeURIComponent(d.domain)}`, { cache: 'no-store' });
           if (!r.ok) throw new Error();
@@ -110,7 +109,6 @@ export default function DashboardPage() {
     let aborted = false;
     async function checkAll() {
       const entries = await Promise.all(domains.map(async (d) => {
-        const hostname = `${d.domain}.is-a.software`;
         try {
           const r = await fetch(`/api/domain-status?subdomain=${encodeURIComponent(d.domain)}`, { cache: 'no-store' });
           if (!r.ok) throw new Error();
@@ -129,7 +127,7 @@ export default function DashboardPage() {
     }
     checkAll();
     return () => { aborted = true; };
-  }, [domains]);
+  }, [domains, refreshDomainStatuses]);
 
   useEffect(() => {
     if (!githubLogin) return;

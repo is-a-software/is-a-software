@@ -162,7 +162,7 @@ export default function NewSubdomainPage() {
                   </div>
                   <p className="text-xs text-green-300">
                     Your subdomain is being processed and will be active within 10-30 seconds. 
-                    You'll be redirected to the dashboard where you can monitor its status.
+                    You&apos;ll be redirected to the dashboard where you can monitor its status.
                   </p>
                 </div>
               )}
