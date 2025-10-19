@@ -1,5 +1,4 @@
 export const runtime = "edge";
-export const dynamic = "force-static";
 import { NextRequest } from 'next/server';
 
 // Uses Cloudflare DNS-over-HTTPS JSON API to check resolution
