@@ -1,10 +1,30 @@
 {
   "name": "is-a-software",
   "version": "1.0.0",
-  "description": "Scripts for managing is-a.software subdomains via GitHub Actions",
+  "description": "Free is-a.software for developers",
   "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "eslint"
+  },
   "dependencies": {
     "@actions/github": "^6.0.0",
-    "dotenv": "^17.2.1"
+    "dotenv": "^17.2.1",
+    "next": "15.5.5",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.5",
+    "@eslint/eslintrc": "^3"
   }
 }
