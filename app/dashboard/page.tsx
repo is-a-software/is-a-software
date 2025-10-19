@@ -65,7 +65,9 @@ export default function DashboardPage() {
         const res = await fetch(`/api/subdomains?owner=${encodeURIComponent(login)}`, { cache: 'no-store' });
         if (!res.ok) throw new Error(await res.text());
         const items: Array<{ domain: string; owner: { github: string }; record: Record<string, string>; proxy?: boolean }> = await res.json();
-        if (!aborted) setDomains(items.map((i) => ({ domain: i.domain, owner: i.owner, record: i.record, proxy: i.proxy })));
+        // Filter domains to only those owned by the logged-in user
+        const filtered = items.filter((i) => i.owner?.github?.toLowerCase() === login?.toLowerCase());
+        if (!aborted) setDomains(filtered.map((i) => ({ domain: i.domain, owner: i.owner, record: i.record, proxy: i.proxy })));
       } catch (e) {
         const message = e instanceof Error ? e.message : 'Failed to load domains';
         if (!aborted) setDomainsError(message);
@@ -262,9 +264,9 @@ export default function DashboardPage() {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
                 {user.photoURL && (
-                  <Image 
-                    src={user.photoURL} 
-                    alt="Profile" 
+                  <Image
+                    src={user.photoURL}
+                    alt="Profile"
                     width={32}
                     height={32}
                     className="rounded-full border border-gray-600"
