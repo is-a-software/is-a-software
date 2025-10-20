@@ -1,4 +1,5 @@
-import { Terminal, Github, Twitter, Mail } from "lucide-react";
+import { Terminal, Github, Twitter, Mail, Linkedin } from "lucide-react";
+import { FaDiscord } from "react-icons/fa";
 import Link from "next/link";
 
 export function Footer() {
@@ -15,11 +16,17 @@ export function Footer() {
               Free subdomain service for developers. Share your projects with the world using a memorable domain.
             </p>
             <div className="flex gap-4">
-              <Link href="https://github.com/is-a-software" target="_blank" rel="noopener noreferrer" className="text-gray-400 transition-colors hover:text-purple-400">
+              <Link href="https://github.com/is-a-software/is-a-software" target="_blank" rel="noopener noreferrer" className="text-gray-400 transition-colors hover:text-purple-400">
                 <Github className="h-5 w-5" />
               </Link>
-              <Link href="https://twitter.com/is_a_software" target="_blank" rel="noopener noreferrer" className="text-gray-400 transition-colors hover:text-purple-400">
+              <Link href="https://x.com/oyepriyansh" target="_blank" rel="noopener noreferrer" className="text-gray-400 transition-colors hover:text-purple-400">
                 <Twitter className="h-5 w-5" />
+              </Link>
+              <Link href="https://linkedin.com/u/priyanshprajapat" target="_blank" rel="noopener noreferrer" className="text-gray-400 transition-colors hover:text-purple-400">
+                <Linkedin className="h-5 w-5" />
+              </Link>
+              <Link href="https://discord.com/invite/AeAjegXn6D" target="_blank" rel="noopener noreferrer" className="text-gray-400 transition-colors hover:text-purple-400">
+                <FaDiscord className="h-5 w-5" />
               </Link>
               <Link href="mailto:admin@is-a.software" className="text-gray-400 transition-colors hover:text-purple-400">
                 <Mail className="h-5 w-5" />
@@ -40,16 +47,6 @@ export function Footer() {
                   Documentation
                 </Link>
               </li>
-              <li>
-                <Link href="/api" className="text-gray-300 transition-colors hover:text-purple-400">
-                  API
-                </Link>
-              </li>
-              <li>
-                <Link href="/status" className="text-gray-300 transition-colors hover:text-purple-400">
-                  Status
-                </Link>
-              </li>
             </ul>
           </div>
           
@@ -59,11 +56,6 @@ export function Footer() {
               <li>
                 <Link href="/about" className="text-gray-300 transition-colors hover:text-purple-400">
                   About
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="text-gray-300 transition-colors hover:text-purple-400">
-                  Blog
                 </Link>
               </li>
               <li>

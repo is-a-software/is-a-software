@@ -35,22 +35,24 @@ export async function GET(req: NextRequest) {
 
     const domains: Array<{ domain?: string; owner?: { github?: string }; record?: Record<string, string> }> = await res.json();
     
-    // Check if subdomain exists
+    // Check if subdomain exists (domains are stored without the .json extension)
     const existingDomain = domains.find((d) => 
-      d?.domain?.toLowerCase() === subdomain
+      d?.domain?.toLowerCase() === subdomain ||
+      d?.domain?.replace(/\.json$/, '').toLowerCase() === subdomain
     );
 
     if (existingDomain) {
       // Domain is taken, return owner info
+      const ownerGithub = existingDomain.owner?.github;
       return Response.json({
         available: false,
         reserved: false,
         owner: {
-          github: existingDomain.owner?.github,
-          profileUrl: `https://github.com/${existingDomain.owner?.github}`
+          github: ownerGithub,
+          profileUrl: `https://github.com/${ownerGithub}`
         },
-        domain: existingDomain.domain,
-        record: existingDomain.record
+        subdomain: subdomain,
+        message: `${subdomain}.is-a.software is already taken`
       });
     }
 
@@ -58,7 +60,8 @@ export async function GET(req: NextRequest) {
     return Response.json({
       available: true,
       reserved: false,
-      subdomain: subdomain
+      subdomain: subdomain,
+      message: `${subdomain}.is-a.software is available!`
     });
 
   } catch (error) {
