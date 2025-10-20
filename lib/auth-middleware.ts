@@ -42,7 +42,7 @@ export async function validateAuth(request: NextRequest): Promise<{ user: AuthUs
       user: {
         uid: user.localId,
         email: user.email,
-        githubLogin: user.providerUserInfo?.find((p: any) => p.providerId === 'github.com')?.screenName
+        githubLogin: user.providerUserInfo?.find((p: { providerId: string; screenName?: string }) => p.providerId === 'github.com')?.screenName
       }
     };
   } catch (error) {

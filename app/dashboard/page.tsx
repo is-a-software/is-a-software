@@ -17,7 +17,8 @@ import {
   CheckCircle,
   RefreshCw,
   AlertCircle,
-  HelpCircle
+  HelpCircle,
+  Trash2
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -48,6 +49,10 @@ export default function DashboardPage() {
   const [editError, setEditError] = useState('');
   const [editValidation, setEditValidation] = useState<{ isValid: boolean; message: string }>({ isValid: true, message: '' });
   const [editRetryCount, setEditRetryCount] = useState(0);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [deleteDomain, setDeleteDomain] = useState<string>('');
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
@@ -300,6 +305,65 @@ export default function DashboardPage() {
       setEditError(message);
     } finally {
       setEditSaving(false);
+    }
+  };
+
+  const openDeleteConfirm = (domain: string) => {
+    setDeleteDomain(domain);
+    setDeleteError('');
+    setDeleteConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteDomain) return;
+    
+    setDeleteLoading(true);
+    setDeleteError('');
+    try {
+      const authHeaders = await getAuthHeaders();
+      const res = await fetch(`/api/subdomains/${encodeURIComponent(deleteDomain)}`, {
+        method: 'DELETE',
+        headers: authHeaders
+      });
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText);
+      }
+      
+      // Refresh domains list
+      const r = await fetch(`/api/subdomains?owner=${encodeURIComponent(githubLogin || '')}`, { 
+        cache: 'no-store',
+        headers: authHeaders
+      });
+      
+      if (r.ok) {
+        const items: Array<{ domain: string; owner: { github: string }; record: Record<string, string>; proxy?: boolean }> = await r.json();
+        setDomains(items.map((i) => ({ domain: i.domain, owner: i.owner, record: i.record, proxy: i.proxy })));
+      }
+      
+      setDeleteConfirmOpen(false);
+      setDeleteDomain('');
+    } catch (e) {
+      let message = 'Failed to delete domain';
+      
+      if (e instanceof Error) {
+        const errorText = e.message.toLowerCase();
+        
+        if (errorText.includes('not found') || errorText.includes('404')) {
+          message = 'Domain not found. It may have already been deleted.';
+        } else if (errorText.includes('unauthorized') || errorText.includes('403')) {
+          message = 'You do not have permission to delete this domain.';
+        } else if (errorText.includes('rate limit')) {
+          message = 'Too many deletion requests. Please wait a moment and try again.';
+        } else {
+          message = e.message || 'An unexpected error occurred';
+        }
+      }
+      
+      setDeleteError(message);
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -571,6 +635,10 @@ export default function DashboardPage() {
                             <Settings className="h-3 w-3 mr-1" />
                             DNS
                           </Button>
+                          <Button size="sm" variant="outline" className="border-red-600 text-red-300 hover:bg-red-800 hover:text-white" onClick={() => openDeleteConfirm(d.domain)}>
+                            <Trash2 className="h-3 w-3 mr-1" />
+                            Delete
+                          </Button>
                           <Button size="sm" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white" asChild>
                             <a href={`https://${hostname}`} target="_blank" rel="noreferrer">
                               <Globe className="h-3 w-3 mr-1" />
@@ -702,6 +770,74 @@ export default function DashboardPage() {
                   </div>
                 ) : (
                   'Save Changes'
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {deleteConfirmOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-md bg-black/90 border border-red-700 rounded-lg p-6 shadow-2xl">
+            <div className="flex items-center gap-2 mb-2">
+              <Trash2 className="h-5 w-5 text-red-400" />
+              <h3 className="text-white text-lg font-semibold">Delete Domain</h3>
+            </div>
+            
+            <p className="text-gray-300 mb-4">
+              Are you sure you want to delete{' '}
+              <span className="font-mono text-red-300">{deleteDomain}.is-a.software</span>?
+            </p>
+            
+            <div className="bg-red-900/20 border border-red-500/20 rounded-md p-3 mb-4">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-red-300">
+                  <p className="font-medium mb-1">This action cannot be undone!</p>
+                  <p>The domain will be permanently removed and become available for others to register.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Error Message */}
+            {deleteError && (
+              <div className="flex items-center gap-2 text-red-400 text-sm mb-4 p-3 bg-red-900/20 border border-red-500/20 rounded-md">
+                <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                {deleteError}
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-3 pt-4 border-t border-gray-700">
+              <Button 
+                variant="outline" 
+                className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white" 
+                onClick={() => {
+                  setDeleteConfirmOpen(false);
+                  setDeleteError('');
+                  setDeleteDomain('');
+                }} 
+                disabled={deleteLoading}
+              >
+                Cancel
+              </Button>
+              <Button 
+                className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white border-0 disabled:opacity-50" 
+                onClick={confirmDelete} 
+                disabled={deleteLoading}
+              >
+                {deleteLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Deleting...
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Trash2 className="h-4 w-4" />
+                    Delete Domain
+                  </div>
                 )}
               </Button>
             </div>

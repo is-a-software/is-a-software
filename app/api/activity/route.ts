@@ -5,7 +5,6 @@ import { requireAuth, rateLimit } from '@/lib/auth-middleware';
 const GITHUB_API = 'https://api.github.com';
 const OWNER = 'is-a-software';
 const REPO = 'is-a-software';
-const RAW_DB_URL = 'https://raw.is-a.software/domains.json';
 
 async function gh(path: string) {
   const res = await fetch(`${GITHUB_API}${path}`, {

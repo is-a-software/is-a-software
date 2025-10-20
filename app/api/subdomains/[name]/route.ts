@@ -115,4 +115,70 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ na
   }
 }
 
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ name: string }> }) {
+  // Authenticate user
+  const authResult = await requireAuth(req);
+  if (authResult instanceof Response) return authResult;
+  
+  const { githubLogin, uid } = authResult;
+  const { name } = await params;
+  
+  if (!name) {
+    return Response.json({ error: 'Missing domain name' }, { status: 400 });
+  }
+
+  // Rate limiting for deletion (stricter than edits)
+  if (!rateLimit(`dns-delete-${uid}`, 3, 60000)) {
+    return Response.json({ error: 'Too many deletion requests. Please wait a moment.' }, { status: 429 });
+  }
+
+  try {
+    // Load existing file to check ownership
+    const filePath = `domains/${name}.json`;
+    const contents = await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filePath)}`);
+    const existing = JSON.parse(Buffer.from(contents.content, contents.encoding || 'base64').toString('utf8'));
+
+    // Verify ownership
+    if (!existing.owner?.github || existing.owner.github.toLowerCase() !== githubLogin?.toLowerCase()) {
+      return Response.json({ error: 'Unauthorized: You do not own this domain' }, { status: 403 });
+    }
+
+    // Delete the file by committing an empty commit with delete
+    await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filePath)}`, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        message: `Delete: ${name}.is-a.software on behalf of @${githubLogin}`,
+        sha: contents.sha,
+        committer: {
+          name: 'priyanshbot',
+          email: '129733067+priyanshbot@users.noreply.github.com'
+        },
+        author: {
+          name: 'priyanshbot',
+          email: '129733067+priyanshbot@users.noreply.github.com'
+        }
+      })
+    });
+
+    return Response.json({
+      success: true,
+      message: 'Domain deleted successfully'
+    });
+
+  } catch (error: unknown) {
+    console.error('DNS deletion error:', error);
+    
+    if (error instanceof Error) {
+      const errorMessage = error.message.toLowerCase();
+      
+      if (errorMessage.includes('not found') || errorMessage.includes('404')) {
+        return Response.json({ error: 'Domain not found' }, { status: 404 });
+      } else if (errorMessage.includes('forbidden') || errorMessage.includes('403')) {
+        return Response.json({ error: 'Access denied' }, { status: 403 });
+      }
+    }
+    
+    return Response.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
 
