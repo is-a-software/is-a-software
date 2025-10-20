@@ -51,6 +51,12 @@ export default function DashboardPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
+  // Helper function to get auth headers
+  const getAuthHeaders = async (): Promise<Record<string, string>> => {
+    const token = await user?.getIdToken();
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  };
+
   const githubLogin = useMemo(() => {
     // Best-effort: try to derive github username from displayName or email prefix as fallback.
     // In production, prefer storing verified GitHub login in user metadata.
@@ -72,11 +78,14 @@ export default function DashboardPage() {
       setDomainsLoading(true);
       setDomainsError('');
       try {
-        const res = await fetch(`/api/subdomains?owner=${encodeURIComponent(login)}`, { cache: 'no-store' });
+        const authHeaders = await getAuthHeaders();
+        const res = await fetch(`/api/subdomains?owner=${encodeURIComponent(login)}`, { 
+          cache: 'no-store',
+          headers: authHeaders
+        });
         if (!res.ok) throw new Error(await res.text());
         const items: Array<{ domain: string; owner: { github: string }; record: Record<string, string>; proxy?: boolean }> = await res.json();
-        const filtered = items.filter((i) => i.owner?.github?.toLowerCase() === login);
-        if (!aborted) setDomains(filtered.map((i) => ({ domain: i.domain, owner: i.owner, record: i.record, proxy: i.proxy })));
+        if (!aborted) setDomains(items.map((i) => ({ domain: i.domain, owner: i.owner, record: i.record, proxy: i.proxy })));
       } catch (e) {
         const message = e instanceof Error ? e.message : 'Failed to load domains';
         if (!aborted) setDomainsError(message);
@@ -145,7 +154,11 @@ export default function DashboardPage() {
     async function loadActivity() {
       setActivityError('');
       try {
-        const r = await fetch(`/api/activity?owner=${encodeURIComponent(login)}&limit=2`, { cache: 'no-store' });
+        const authHeaders = await getAuthHeaders();
+        const r = await fetch(`/api/activity?owner=${encodeURIComponent(login)}&limit=2`, { 
+          cache: 'no-store',
+          headers: authHeaders
+        });
         if (!r.ok) throw new Error(await r.text());
         const j = await r.json();
         if (!aborted) setActivity(j);
@@ -165,8 +178,12 @@ export default function DashboardPage() {
     let aborted = false;
     async function loadStats() {
       try {
+        const authHeaders = await getAuthHeaders();
         const [statsRes, uptimeRes] = await Promise.all([
-          fetch(`/api/stats?owner=${encodeURIComponent(login)}`, { cache: 'no-store' }),
+          fetch(`/api/stats?owner=${encodeURIComponent(login)}`, { 
+            cache: 'no-store',
+            headers: authHeaders
+          }),
           fetch('/api/uptime', { cache: 'no-store' })
         ]);
         
@@ -234,18 +251,24 @@ export default function DashboardPage() {
     setEditSaving(true);
     setEditError('');
     try {
+      const authHeaders = await getAuthHeaders();
       const res = await fetch(`/api/subdomains/${encodeURIComponent(editDomain)}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...authHeaders
+        },
         body: JSON.stringify({ 
           record: { [editType]: editValue }, 
-          proxy: editProxy,
-          user: githubLogin 
+          proxy: editProxy
         })
       });
       if (!res.ok) throw new Error(await res.text());
       // Refresh domains list
-      const r = await fetch(`/api/subdomains?owner=${encodeURIComponent(githubLogin || '')}`, { cache: 'no-store' });
+      const r = await fetch(`/api/subdomains?owner=${encodeURIComponent(githubLogin || '')}`, { 
+        cache: 'no-store',
+        headers: authHeaders
+      });
       if (r.ok) {
         const items: Array<{ domain: string; owner: { github: string }; record: Record<string, string>; proxy?: boolean }> = await r.json();
         setDomains(items.map((i) => ({ domain: i.domain, owner: i.owner, record: i.record, proxy: i.proxy })));

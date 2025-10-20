@@ -1,5 +1,6 @@
 export const runtime = "edge";
 import { NextRequest } from 'next/server';
+import { requireAuth, rateLimit } from '@/lib/auth-middleware';
 
 const GITHUB_API = 'https://api.github.com';
 const OWNER = 'is-a-software';
@@ -8,6 +9,17 @@ const REPO = 'is-a-software';
 const RAW_DB_URL = 'https://raw.is-a.software/domains.json';
 
 export async function GET(req: NextRequest) {
+  // Authenticate user
+  const authResult = await requireAuth(req);
+  if (authResult instanceof Response) return authResult;
+  
+  const { githubLogin, uid } = authResult;
+  
+  // Rate limiting
+  if (!rateLimit(`subdomains-${uid}`, 20, 60000)) {
+    return Response.json({ error: 'Too many requests. Please wait a moment.' }, { status: 429 });
+  }
+
   const owner = req.nextUrl.searchParams.get('owner')?.toLowerCase();
 
   const res = await fetch(RAW_DB_URL, { cache: 'no-store' });
@@ -26,9 +38,14 @@ export async function GET(req: NextRequest) {
     return new Response('Unexpected upstream format', { status: 502 });
   }
 
-  const items = owner
-    ? data.filter((d) => d?.owner?.github?.toLowerCase() === owner)
-    : data;
+  // Only allow users to see their own domains or if they request a specific owner that matches their login
+  const requestedOwner = owner || githubLogin?.toLowerCase();
+  
+  if (requestedOwner !== githubLogin?.toLowerCase()) {
+    return Response.json({ error: 'Unauthorized: Can only view your own domains' }, { status: 403 });
+  }
+
+  const items = data.filter((d) => d?.owner?.github?.toLowerCase() === requestedOwner);
 
   return Response.json(items);
 }

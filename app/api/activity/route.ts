@@ -1,9 +1,11 @@
 export const dynamic = "force-dynamic";
 import { NextRequest } from 'next/server';
+import { requireAuth, rateLimit } from '@/lib/auth-middleware';
 
 const GITHUB_API = 'https://api.github.com';
 const OWNER = 'is-a-software';
 const REPO = 'is-a-software';
+const RAW_DB_URL = 'https://raw.is-a.software/domains.json';
 
 async function gh(path: string) {
   const res = await fetch(`${GITHUB_API}${path}`, {
@@ -19,8 +21,25 @@ async function gh(path: string) {
 }
 
 export async function GET(req: NextRequest) {
+  // Authenticate user
+  const authResult = await requireAuth(req);
+  if (authResult instanceof Response) return authResult;
+  
+  const { githubLogin, uid } = authResult;
+  
+  // Rate limiting
+  if (!rateLimit(`activity-${uid}`, 15, 60000)) {
+    return Response.json({ error: 'Too many requests. Please wait a moment.' }, { status: 429 });
+  }
   const ownerQ = req.nextUrl.searchParams.get('owner')?.toLowerCase();
   const limit = Number(req.nextUrl.searchParams.get('limit') || 10);
+  
+  // Only allow users to see their own activity or if they request a specific owner that matches their login
+  const requestedOwner = ownerQ || githubLogin?.toLowerCase();
+  
+  if (requestedOwner !== githubLogin?.toLowerCase()) {
+    return Response.json({ error: 'Unauthorized: Can only view your own activity' }, { status: 403 });
+  }
 
   // List files under domains and filter to owner's domains
   const perPage = 100;

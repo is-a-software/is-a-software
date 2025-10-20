@@ -1,9 +1,20 @@
 export const dynamic = "force-dynamic";
 import { NextRequest } from 'next/server';
+import { requireAuth, rateLimit } from '@/lib/auth-middleware';
 
 const RAW_DB_URL = 'https://raw.is-a.software/domains.json';
 
 export async function GET(req: NextRequest) {
+  // Authenticate user
+  const authResult = await requireAuth(req);
+  if (authResult instanceof Response) return authResult;
+  
+  const { githubLogin, uid } = authResult;
+  
+  // Rate limiting
+  if (!rateLimit(`stats-${uid}`, 10, 60000)) {
+    return Response.json({ error: 'Too many requests. Please wait a moment.' }, { status: 429 });
+  }
   try {
     // Fetch all domains
     const res = await fetch(RAW_DB_URL, { cache: 'no-store' });
@@ -31,9 +42,15 @@ export async function GET(req: NextRequest) {
     // For now, we'll do a simple check on a subset or return estimated values
     
     const owner = req.nextUrl.searchParams.get('owner')?.toLowerCase();
-    const userDomains = owner 
-      ? realDomains.filter((d) => d?.owner?.github?.toLowerCase() === owner)
-      : realDomains;
+    
+    // Only allow users to see their own stats or if they request a specific owner that matches their login
+    const requestedOwner = owner || githubLogin?.toLowerCase();
+    
+    if (requestedOwner !== githubLogin?.toLowerCase()) {
+      return Response.json({ error: 'Unauthorized: Can only view your own stats' }, { status: 403 });
+    }
+    
+    const userDomains = realDomains.filter((d) => d?.owner?.github?.toLowerCase() === requestedOwner);
 
     // Check DNS status for user's domains (or all if no owner specified)
     const checkLimit = Math.min(userDomains.length, 50); // Limit concurrent checks
