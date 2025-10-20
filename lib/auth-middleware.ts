@@ -6,6 +6,10 @@ export interface AuthUser {
   githubLogin?: string;
 }
 
+// In-memory cache for auth tokens (Edge runtime compatible)
+const authCache = new Map<string, { user: AuthUser; timestamp: number }>();
+const AUTH_CACHE_TTL = 3600000; // 1 hour cache for auth tokens (Firebase tokens are valid for 1 hour)
+
 export async function validateAuth(request: NextRequest): Promise<{ user: AuthUser } | { error: string; status: number }> {
   const authHeader = request.headers.get('authorization');
   
@@ -14,6 +18,17 @@ export async function validateAuth(request: NextRequest): Promise<{ user: AuthUs
   }
 
   const token = authHeader.substring(7);
+  
+  // Check cache first
+  const cached = authCache.get(token);
+  if (cached && Date.now() - cached.timestamp < AUTH_CACHE_TTL) {
+    return { user: cached.user };
+  }
+  
+  // Clean expired cache entries
+  if (cached && Date.now() - cached.timestamp >= AUTH_CACHE_TTL) {
+    authCache.delete(token);
+  }
   
   try {
     // Validate the Firebase ID token
@@ -38,13 +53,16 @@ export async function validateAuth(request: NextRequest): Promise<{ user: AuthUs
       return { error: 'User not found', status: 401 };
     }
 
-    return { 
-      user: {
-        uid: user.localId,
-        email: user.email,
-        githubLogin: user.providerUserInfo?.find((p: { providerId: string; screenName?: string }) => p.providerId === 'github.com')?.screenName
-      }
+    const authUser: AuthUser = {
+      uid: user.localId,
+      email: user.email,
+      githubLogin: user.providerUserInfo?.find((p: { providerId: string; screenName?: string }) => p.providerId === 'github.com')?.screenName
     };
+    
+    // Cache the validated user
+    authCache.set(token, { user: authUser, timestamp: Date.now() });
+
+    return { user: authUser };
   } catch (error) {
     console.error('Authentication error:', error);
     return { error: 'Authentication failed', status: 500 };

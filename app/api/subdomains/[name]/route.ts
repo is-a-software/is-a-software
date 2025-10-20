@@ -8,7 +8,25 @@ const GITHUB_API = 'https://api.github.com';
 const OWNER = 'is-a-software';
 const REPO = 'is-a-software';
 
-async function gh(path: string, init?: RequestInit) {
+// In-memory cache for file contents (Edge runtime compatible)
+const fileCache = new Map<string, { content: unknown; etag: string; timestamp: number }>();
+const CACHE_TTL = 900000; // 15 minutes cache (DNS records don't change frequently)
+
+async function gh(path: string, init?: RequestInit, useCache = false) {
+  const cacheKey = `${path}-${JSON.stringify(init?.method || 'GET')}`;
+  
+  // Check cache for GET requests only
+  let cached = useCache && !init?.method ? fileCache.get(cacheKey) : undefined;
+  
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    return cached.content;
+  }
+  
+  if (cached && Date.now() - cached.timestamp >= CACHE_TTL) {
+    fileCache.delete(cacheKey);
+    cached = undefined;
+  }
+
   const res = await fetch(`${GITHUB_API}${path}`, {
     ...init,
     headers: {
@@ -16,12 +34,29 @@ async function gh(path: string, init?: RequestInit) {
       'X-GitHub-Api-Version': '2022-11-28',
       Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
       'Content-Type': 'application/json',
+      ...(cached?.etag && !init?.method ? { 'If-None-Match': cached.etag } : {}),
       ...(init?.headers || {})
     },
     cache: 'no-store'
   });
+
+  // Handle 304 Not Modified
+  if (res.status === 304 && cached) {
+    cached.timestamp = Date.now(); // Refresh cache timestamp
+    return cached.content;
+  }
+
   if (!res.ok) throw new Error(await res.text());
-  return res.json();
+  
+  const content = await res.json();
+  
+  // Cache GET requests with ETag
+  if (useCache && !init?.method) {
+    const etag = res.headers.get('etag') || '';
+    fileCache.set(cacheKey, { content, etag, timestamp: Date.now() });
+  }
+  
+  return content;
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ name: string }> }) {
@@ -56,9 +91,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ na
       return Response.json({ error: `Invalid DNS record: ${validation.message}` }, { status: 400 });
     }
 
-    // Load existing file to check ownership
+    // Load existing file to check ownership (with caching for repeated requests)
     const filePath = `domains/${name}.json`;
-    const contents = await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filePath)}`);
+    const contents = await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filePath)}`, undefined, true);
     const existing = JSON.parse(Buffer.from(contents.content, contents.encoding || 'base64').toString('utf8'));
 
     // Verify ownership
@@ -72,8 +107,24 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ na
       proxy: !!body.proxy
     };
 
+    // Skip update if content hasn't changed (saves GitHub API calls)
+    const existingContentStr = JSON.stringify({
+      owner: existing.owner,
+      record: existing.record,
+      proxy: existing.proxy
+    }, null, 2);
+    const newContentStr = JSON.stringify(newContent, null, 2);
+    
+    if (existingContentStr === newContentStr) {
+      return Response.json({
+        success: true,
+        message: 'No changes detected - record already up to date',
+        unchanged: true
+      });
+    }
+
     // Direct commit to main branch
-    const blob = Buffer.from(JSON.stringify(newContent, null, 2)).toString('base64');
+    const blob = Buffer.from(newContentStr).toString('base64');
     const commit = await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filePath)}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -91,6 +142,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ na
         }
       })
     });
+
+    // Clear relevant caches after successful update
+    fileCache.clear();
 
     return Response.json({
       success: true,
@@ -159,6 +213,9 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ n
         }
       })
     });
+
+    // Clear relevant caches after successful deletion
+    fileCache.clear();
 
     return Response.json({
       success: true,

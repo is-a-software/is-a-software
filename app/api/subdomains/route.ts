@@ -8,6 +8,11 @@ const REPO = 'is-a-software';
 
 const RAW_DB_URL = 'https://raw.is-a.software/domains.json';
 
+// Cache for raw data to reduce external API calls
+type DomainData = Array<{ domain?: string; owner?: { github?: string }; record?: Record<string, string> }>;
+const dataCache = new Map<string, { data: DomainData; timestamp: number }>();
+const DATA_CACHE_TTL = 300000; // 5 minutes cache for domain listings (reasonable balance for data freshness)
+
 export async function GET(req: NextRequest) {
   // Authenticate user
   const authResult = await requireAuth(req);
@@ -22,20 +27,34 @@ export async function GET(req: NextRequest) {
 
   const owner = req.nextUrl.searchParams.get('owner')?.toLowerCase();
 
-  const res = await fetch(RAW_DB_URL, { cache: 'no-store' });
-  if (!res.ok) {
-    return new Response('Upstream fetch failed', { status: 502 });
-  }
+  // Check cache first
+  const cacheKey = RAW_DB_URL;
+  let data: DomainData;
+  
+  const cached = dataCache.get(cacheKey);
+  if (cached && Date.now() - cached.timestamp < DATA_CACHE_TTL) {
+    data = cached.data;
+  } else {
+    // Clean expired cache
+    if (cached) dataCache.delete(cacheKey);
+    
+    const res = await fetch(RAW_DB_URL, { cache: 'no-store' });
+    if (!res.ok) {
+      return new Response('Upstream fetch failed', { status: 502 });
+    }
 
-  let data: Array<{ domain?: string; owner?: { github?: string }; record?: Record<string, string> }>;
-  try {
-    data = await res.json();
-  } catch {
-    return new Response('Invalid upstream JSON', { status: 502 });
-  }
+    try {
+      data = await res.json();
+    } catch {
+      return new Response('Invalid upstream JSON', { status: 502 });
+    }
 
-  if (!Array.isArray(data)) {
-    return new Response('Unexpected upstream format', { status: 502 });
+    if (!Array.isArray(data)) {
+      return new Response('Unexpected upstream format', { status: 502 });
+    }
+    
+    // Cache the data
+    dataCache.set(cacheKey, { data, timestamp: Date.now() });
   }
 
   // Only allow users to see their own domains or if they request a specific owner that matches their login
@@ -113,6 +132,9 @@ export async function POST(req: NextRequest) {
         }
       })
     });
+
+    // Clear data cache after successful registration
+    dataCache.clear();
 
     return Response.json({ success: true, commit: result });
   } catch (error: unknown) {

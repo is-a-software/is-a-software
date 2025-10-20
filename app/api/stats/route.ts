@@ -4,6 +4,11 @@ import { requireAuth, rateLimit } from '@/lib/auth-middleware';
 
 const RAW_DB_URL = 'https://raw.is-a.software/domains.json';
 
+// Cache for stats data (stats don't change often)
+type StatsData = Array<{ domain: string; owner?: { github?: string }; record?: Record<string, string> }>;
+const statsCache = new Map<string, { data: StatsData; timestamp: number }>();
+const STATS_CACHE_TTL = 600000; // 10 minutes cache for stats
+
 export async function GET(req: NextRequest) {
   // Authenticate user
   const authResult = await requireAuth(req);
@@ -16,17 +21,31 @@ export async function GET(req: NextRequest) {
     return Response.json({ error: 'Too many requests. Please wait a moment.' }, { status: 429 });
   }
   try {
-    // Fetch all domains
-    const res = await fetch(RAW_DB_URL, { cache: 'no-store' });
-    if (!res.ok) {
-      return new Response('Upstream fetch failed', { status: 502 });
-    }
+    // Check cache first
+    const cacheKey = `${RAW_DB_URL}-${githubLogin}`;
+    let data: StatsData;
+    
+    const cached = statsCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < STATS_CACHE_TTL) {
+      data = cached.data;
+    } else {
+      // Clean expired cache
+      if (cached) statsCache.delete(cacheKey);
+      
+      // Fetch all domains
+      const res = await fetch(RAW_DB_URL, { cache: 'no-store' });
+      if (!res.ok) {
+        return new Response('Upstream fetch failed', { status: 502 });
+      }
 
-    let data: Array<{ domain: string; owner?: { github?: string }; record?: Record<string, string> }>;
-    try {
-      data = await res.json();
-    } catch {
-      return new Response('Invalid upstream JSON', { status: 502 });
+      try {
+        data = await res.json();
+      } catch {
+        return new Response('Invalid upstream JSON', { status: 502 });
+      }
+      
+      // Cache the data
+      statsCache.set(cacheKey, { data, timestamp: Date.now() });
     }
 
     if (!Array.isArray(data)) {

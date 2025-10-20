@@ -6,6 +6,10 @@ const GITHUB_API = 'https://api.github.com';
 const OWNER = 'is-a-software';
 const REPO = 'is-a-software';
 
+// Cache for activity data (activity updates less frequently)
+const activityCache = new Map<string, { data: unknown; timestamp: number }>();
+const ACTIVITY_CACHE_TTL = 120000; // 2 minutes cache for activity (balance between freshness and performance)
+
 async function gh(path: string) {
   const res = await fetch(`${GITHUB_API}${path}`, {
     headers: {
@@ -39,6 +43,16 @@ export async function GET(req: NextRequest) {
   if (requestedOwner !== githubLogin?.toLowerCase()) {
     return Response.json({ error: 'Unauthorized: Can only view your own activity' }, { status: 403 });
   }
+
+  // Check cache first
+  const cacheKey = `activity-${requestedOwner}-${limit}`;
+  const cached = activityCache.get(cacheKey);
+  if (cached && Date.now() - cached.timestamp < ACTIVITY_CACHE_TTL) {
+    return Response.json(cached.data);
+  }
+  
+  // Clean expired cache
+  if (cached) activityCache.delete(cacheKey);
 
   // List files under domains and filter to owner's domains
   const perPage = 100;
@@ -94,7 +108,12 @@ export async function GET(req: NextRequest) {
   }
 
   activities.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  return Response.json(activities.slice(0, limit));
+  const result = activities.slice(0, limit);
+  
+  // Cache the result
+  activityCache.set(cacheKey, { data: result, timestamp: Date.now() });
+  
+  return Response.json(result);
 }
 
 
