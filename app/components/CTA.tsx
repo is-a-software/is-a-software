@@ -4,11 +4,10 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Search, CheckCircle, XCircle, ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 export function CTA() {
-  const [stats, setStats] = useState<{ total: number; active: number } | null>(null);
   const [subdomain, setSubdomain] = useState("");
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -19,25 +18,6 @@ export function CTA() {
     message?: string;
     subdomain?: string;
   } | null>(null);
-
-  useEffect(() => {
-    async function loadStats() {
-      try {
-        // Load public stats
-        const statsRes = await fetch('/api/public-stats', { cache: 'no-store' });
-        
-        if (statsRes.ok) {
-          const statsData = await statsRes.json();
-          setStats({ total: statsData.total, active: statsData.active });
-        }
-      } catch (e) {
-        console.error('Failed to load stats:', e);
-        // Set fallback values if API fails
-        setStats({ total: 100, active: 85 });
-      }
-    }
-    loadStats();
-  }, []);
 
   const handleCheck = async () => {
     if (!subdomain.trim()) return;

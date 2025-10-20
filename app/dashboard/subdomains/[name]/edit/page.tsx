@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/contexts/AuthContext';
@@ -14,12 +14,6 @@ import { Toaster } from '@/app/components/ui/sonner';
 import { Terminal, ArrowLeft, Globe, Server, FileText, Shield, CheckCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-interface DomainData {
-  owner: { github: string };
-  record: Record<string, string>;
-  proxy?: boolean;
-}
-
 export default function EditSubdomainPage() {
   const { user } = useAuth();
   const router = useRouter();
@@ -27,7 +21,6 @@ export default function EditSubdomainPage() {
   const subdomainName = params.name as string;
   
   const [loading, setLoading] = useState(true);
-  const [domainData, setDomainData] = useState<DomainData | null>(null);
   const [type, setType] = useState('CNAME');
   const [value, setValue] = useState('');
   const [proxy, setProxy] = useState(false);
@@ -41,10 +34,10 @@ export default function EditSubdomainPage() {
   }, [user]);
 
   // Helper function to get auth headers
-  const getAuthHeaders = async (): Promise<Record<string, string>> => {
+  const getAuthHeaders = useCallback(async (): Promise<Record<string, string>> => {
     const token = await user?.getIdToken();
     return token ? { 'Authorization': `Bearer ${token}` } : {};
-  };
+  }, [user]);
 
   // Load existing domain data
   useEffect(() => {
@@ -65,13 +58,11 @@ export default function EditSubdomainPage() {
         }
 
         const domains = await response.json();
-        const domain = domains.find((d: any) => d.domain === subdomainName);
+        const domain = domains.find((d: { domain: string }) => d.domain === subdomainName);
         
         if (!domain) {
           throw new Error('Domain not found or you do not have access to it');
         }
-
-        setDomainData(domain);
         
         // Set form values from existing data
         const recordType = Object.keys(domain.record)[0];
@@ -92,7 +83,7 @@ export default function EditSubdomainPage() {
     }
 
     loadDomain();
-  }, [user, githubLogin, subdomainName]);
+  }, [user, githubLogin, subdomainName, getAuthHeaders]);
 
   const getPlaceholderForType = (recordType: string) => {
     switch (recordType) {

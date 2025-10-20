@@ -6,12 +6,9 @@ import { Badge } from '@/app/components/ui/badge';
 import { 
   Globe, 
   RefreshCw, 
-  AlertCircle, 
   Plus,
   Edit,
-  Trash2,
-  CheckCircle,
-  HelpCircle
+  Trash2
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';

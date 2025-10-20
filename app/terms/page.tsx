@@ -47,7 +47,7 @@ export default function TermsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-slate-700 dark:text-slate-300">
-              is-a.software provides free subdomain allocation services under the "is-a.software" domain. 
+              is-a.software provides free subdomain allocation services under the &quot;is-a.software&quot; domain. 
               Our service allows developers and creators to register subdomains for their projects, 
               configure DNS records, and manage their web presence.
             </p>
@@ -195,7 +195,7 @@ export default function TermsPage() {
             <div>
               <h3 className="font-semibold mb-2">Service Level</h3>
               <p className="text-slate-700 dark:text-slate-300 mb-3">
-                is-a.software is provided as a free service on a "best effort" basis. While we strive for high availability:
+                is-a.software is provided as a free service on a &quot;best effort&quot; basis. While we strive for high availability:
               </p>
               <ul className="space-y-1 text-slate-600 dark:text-slate-400">
                 <li>• We do not guarantee 100% uptime or availability</li>
@@ -261,7 +261,7 @@ export default function TermsPage() {
               <ul className="space-y-1 text-slate-600 dark:text-slate-400">
                 <li>• Is open source and available under MIT license</li>
                 <li>• Can be viewed and contributed to on GitHub</li>
-                <li>• The "is-a.software" domain and branding remain our property</li>
+                <li>• The &quot;is-a.software&quot; domain and branding remain our property</li>
                 <li>• You may not create competing services using our branding</li>
               </ul>
             </div>
@@ -350,7 +350,7 @@ export default function TermsPage() {
               <div>
                 <strong>No Warranties:</strong>
                 <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                  The service is provided "as is" without warranties of any kind, express or implied.
+                  The service is provided &quot;as is&quot; without warranties of any kind, express or implied.
                 </p>
               </div>
               
@@ -438,9 +438,9 @@ export default function TermsPage() {
               <div>
                 <h4 className="font-semibold mb-2">Abuse Reports</h4>
                 <ul className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
-                  <li>• Open an issue with "abuse" label</li>
+                  <li>• Open an issue with &quot;abuse&quot; label</li>
                   <li>• Include relevant details and evidence</li>
-                  <li>• We'll respond within 24-48 hours</li>
+                  <li>• We&apos;ll respond within 24-48 hours</li>
                 </ul>
               </div>
             </div>

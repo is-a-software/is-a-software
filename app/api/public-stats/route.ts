@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 const RAW_DB_URL = 'https://raw.is-a.software/domains.json';
 
 // Cache for public stats data
-const publicStatsCache = new Map<string, { data: any; timestamp: number }>();
+const publicStatsCache = new Map<string, { data: { total: number; active: number; growth: string }; timestamp: number }>();
 const STATS_CACHE_TTL = 600000; // 10 minutes cache for stats
 
 export async function GET() {

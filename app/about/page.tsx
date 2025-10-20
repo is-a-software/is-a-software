@@ -35,8 +35,8 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
-              We believe every developer deserves an easy way to showcase their work online. Whether you're building your first portfolio, 
-              launching an innovative project, or contributing to open source, having a professional web presence shouldn't be a barrier.
+              We believe every developer deserves an easy way to showcase their work online. Whether you&apos;re building your first portfolio, 
+              launching an innovative project, or contributing to open source, having a professional web presence shouldn&apos;t be a barrier.
             </p>
             <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
               is-a.software provides free subdomains that you can use to bring your projects to life, making web development more 
@@ -216,7 +216,7 @@ export default function AboutPage() {
           <CardHeader>
             <CardTitle className="text-2xl">Get in Touch</CardTitle>
             <CardDescription>
-              Have questions, suggestions, or need help? We'd love to hear from you!
+              Have questions, suggestions, or need help? We&apos;d love to hear from you!
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

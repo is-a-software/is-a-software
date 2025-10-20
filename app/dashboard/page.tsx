@@ -141,7 +141,7 @@ export default function DashboardPage() {
       const promises = domains.map(async (domain) => {
         const hostname = `${domain.domain}.is-a.software`;
         try {
-          const response = await fetch(`https://${hostname}`, { 
+          await fetch(`https://${hostname}`, { 
             method: 'HEAD', 
             mode: 'no-cors',
             cache: 'no-store'

@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card'
 import { Badge } from '@/app/components/ui/badge'
 import { Footer } from '@/app/components/Footer'
 import { Shield, Database, Users, Eye, Mail, FileText } from 'lucide-react'
@@ -86,7 +86,7 @@ export default function PrivacyPage() {
             <div>
               <h3 className="font-semibold text-lg mb-3">Domain Configuration</h3>
               <ul className="space-y-2 text-slate-600 dark:text-slate-400">
-                <li>• <strong>Subdomain names:</strong> The subdomains you register (e.g., "myproject.is-a.software")</li>
+                <li>• <strong>Subdomain names:</strong> The subdomains you register (e.g., &quot;myproject.is-a.software&quot;)</li>
                 <li>• <strong>DNS records:</strong> IP addresses, CNAME targets, and TXT records you configure</li>
                 <li>• <strong>Proxy settings:</strong> Whether you enable Cloudflare proxy for your domain</li>
               </ul>
@@ -273,7 +273,7 @@ export default function PrivacyPage() {
                 <h3 className="font-semibold mb-3">Data Deletion</h3>
                 <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
                   <li>• <strong>Account deletion:</strong> Contact us to delete your account</li>
-                  <li>• <strong>Data removal:</strong> We'll remove all personal data within 30 days</li>
+                  <li>• <strong>Data removal:</strong> We&apos;ll remove all personal data within 30 days</li>
                   <li>• <strong>Domain records:</strong> Publicly visible records remain for service integrity</li>
                   <li>• <strong>Cache expiration:</strong> Cached data expires automatically</li>
                 </ul>
@@ -321,8 +321,8 @@ export default function PrivacyPage() {
               We may update this privacy policy from time to time. When we do:
             </p>
             <ul className="space-y-1 text-slate-600 dark:text-slate-400">
-              <li>• We'll update the "Last updated" date at the top of this page</li>
-              <li>• For significant changes, we'll notify users via email or dashboard announcement</li>
+              <li>• We&apos;ll update the &quot;Last updated&quot; date at the top of this page</li>
+              <li>• For significant changes, we&apos;ll notify users via email or dashboard announcement</li>
               <li>• The updated policy will be effective immediately upon posting</li>
               <li>• Previous versions will be available in our GitHub repository</li>
             </ul>
@@ -339,7 +339,7 @@ export default function PrivacyPage() {
           </CardHeader>
           <CardContent>
             <p className="text-slate-700 dark:text-slate-300 mb-4">
-              Have questions about this privacy policy or how we handle your data? We're here to help:
+              Have questions about this privacy policy or how we handle your data? We&apos;re here to help:
             </p>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
@@ -353,8 +353,8 @@ export default function PrivacyPage() {
                 <h4 className="font-semibold mb-2">Privacy Concerns</h4>
                 <ul className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
                   <li>• Open a privacy-related issue on GitHub</li>
-                  <li>• Tag your issue with "privacy" label</li>
-                  <li>• We'll respond within 48 hours</li>
+                  <li>• Tag your issue with &quot;privacy&quot; label</li>
+                  <li>• We&apos;ll respond within 48 hours</li>
                 </ul>
               </div>
             </div>

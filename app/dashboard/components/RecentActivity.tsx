@@ -1,7 +1,6 @@
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
-import { Activity, AlertCircle, Clock, Plus } from 'lucide-react';
-import Link from 'next/link';
+import { Activity, AlertCircle, Clock } from 'lucide-react';
 
 export interface ActivityItem {
   domain: string;

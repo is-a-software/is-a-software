@@ -2,7 +2,6 @@
 
 import { Button } from '@/app/components/ui/button';
 import { Terminal, LogOut } from 'lucide-react';
-import Link from 'next/link';
 import Image from 'next/image';
 
 export interface DashboardHeaderProps {
