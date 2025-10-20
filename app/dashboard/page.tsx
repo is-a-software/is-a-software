@@ -15,10 +15,18 @@ import {
   Activity,
   Clock,
   CheckCircle,
-  RefreshCw
+  RefreshCw,
+  AlertCircle,
+  HelpCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { 
+  validateDNSRecord, 
+  getDNSRecordExample, 
+  getDNSRecordDescription, 
+  type DNSRecordType 
+} from '@/lib/dns-validation';
 
 export default function DashboardPage() {
   const { user, loading, logout } = useAuth();
@@ -38,6 +46,8 @@ export default function DashboardPage() {
   const [editProxy, setEditProxy] = useState<boolean>(false);
   const [editSaving, setEditSaving] = useState(false);
   const [editError, setEditError] = useState('');
+  const [editValidation, setEditValidation] = useState<{ isValid: boolean; message: string }>({ isValid: true, message: '' });
+  const [editRetryCount, setEditRetryCount] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
@@ -56,7 +66,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!user || !githubLogin) return;
-    const login = githubLogin; // capture for closure
+    const login = githubLogin.toLowerCase(); 
     let aborted = false;
     async function load() {
       setDomainsLoading(true);
@@ -65,8 +75,7 @@ export default function DashboardPage() {
         const res = await fetch(`/api/subdomains?owner=${encodeURIComponent(login)}`, { cache: 'no-store' });
         if (!res.ok) throw new Error(await res.text());
         const items: Array<{ domain: string; owner: { github: string }; record: Record<string, string>; proxy?: boolean }> = await res.json();
-        // Filter domains to only those owned by the logged-in user
-        const filtered = items.filter((i) => i.owner?.github?.toLowerCase() === login?.toLowerCase());
+        const filtered = items.filter((i) => i.owner?.github?.toLowerCase() === login);
         if (!aborted) setDomains(filtered.map((i) => ({ domain: i.domain, owner: i.owner, record: i.record, proxy: i.proxy })));
       } catch (e) {
         const message = e instanceof Error ? e.message : 'Failed to load domains';
@@ -131,7 +140,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!githubLogin) return;
-    const login = githubLogin; // capture for closure
+    const login = githubLogin.toLowerCase(); // ensure lowercase for API
     let aborted = false;
     async function loadActivity() {
       setActivityError('');
@@ -152,7 +161,7 @@ export default function DashboardPage() {
   // Fetch stats and uptime
   useEffect(() => {
     if (!githubLogin) return;
-    const login = githubLogin; // capture for closure
+    const login = githubLogin.toLowerCase(); // ensure lowercase for API
     let aborted = false;
     async function loadStats() {
       try {
@@ -189,6 +198,17 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, [domains, activeMap, refreshDomainStatuses]);
 
+  // Validate DNS record in real-time
+  useEffect(() => {
+    if (!editOpen || !editType || !editValue) {
+      setEditValidation({ isValid: true, message: '' });
+      return;
+    }
+    
+    const validation = validateDNSRecord(editType as DNSRecordType, editValue);
+    setEditValidation(validation);
+  }, [editType, editValue, editOpen]);
+
   const openEdit = (d: { domain: string; record: Record<string, string>; proxy?: boolean }) => {
     const t = Object.keys(d.record || {})[0] || 'CNAME';
     const v = t ? d.record[t] : '';
@@ -197,18 +217,31 @@ export default function DashboardPage() {
     setEditValue(String(v || ''));
     setEditProxy(!!d.proxy);
     setEditError('');
+    setEditValidation({ isValid: true, message: '' });
+    setEditRetryCount(0);
     setEditOpen(true);
   };
 
   const saveEdit = async () => {
     if (!editDomain || !editType || !editValue) return;
+    
+    // Validate before saving
+    if (!editValidation.isValid) {
+      setEditError(`Invalid DNS record: ${editValidation.message}`);
+      return;
+    }
+    
     setEditSaving(true);
     setEditError('');
     try {
       const res = await fetch(`/api/subdomains/${encodeURIComponent(editDomain)}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ record: { [editType]: editValue }, proxy: editProxy })
+        body: JSON.stringify({ 
+          record: { [editType]: editValue }, 
+          proxy: editProxy,
+          user: githubLogin 
+        })
       });
       if (!res.ok) throw new Error(await res.text());
       // Refresh domains list
@@ -219,7 +252,28 @@ export default function DashboardPage() {
       }
       setEditOpen(false);
     } catch (e) {
-      const message = e instanceof Error ? e.message : 'Failed to save';
+      let message = 'Failed to save DNS record';
+      
+      if (e instanceof Error) {
+        const errorText = e.message.toLowerCase();
+        
+        if (errorText.includes('not found') || errorText.includes('404')) {
+          message = 'Domain not found. Please refresh and try again.';
+        } else if (errorText.includes('unauthorized') || errorText.includes('403')) {
+          message = 'You do not have permission to edit this domain.';
+        } else if (errorText.includes('network') || errorText.includes('fetch')) {
+          message = 'Network error. Please check your connection and try again.';
+        } else if (errorText.includes('validation') || errorText.includes('invalid')) {
+          message = `Invalid DNS record: ${e.message}`;
+        } else if (errorText.includes('rate limit')) {
+          message = 'Too many requests. Please wait a moment and try again.';
+        } else if (errorText.includes('timeout')) {
+          message = 'Request timed out. Please try again.';
+        } else {
+          message = e.message || 'An unexpected error occurred';
+        }
+      }
+      
       setEditError(message);
     } finally {
       setEditSaving(false);
@@ -316,7 +370,6 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-
           <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -328,7 +381,6 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-
           <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -340,7 +392,6 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-
           <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -394,18 +445,21 @@ export default function DashboardPage() {
                 {activity.length === 0 ? (
                   <div className="text-gray-400 text-sm">No recent activity found.</div>
                 ) : (
-                  activity.map((a, idx) => (
-                    <div key={idx} className="flex items-center justify-between p-3 bg-black/20 rounded-lg">
-                      <div>
-                        <p className="text-white text-sm font-medium">{a.domain}.is-a.software</p>
-                        <p className="text-gray-400 text-xs truncate max-w-[42ch]">{a.message}</p>
-                        <p className="text-gray-500 text-xs">{new Date(a.date).toLocaleString()}</p>
+                  activity
+                    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                    .slice(0, 2)
+                    .map((a, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-3 bg-black/20 rounded-lg">
+                        <div>
+                          <p className="text-white text-sm font-medium">{a.domain}.is-a.software</p>
+                          <p className="text-gray-400 text-xs truncate max-w-[42ch]">{a.message}</p>
+                          <p className="text-gray-500 text-xs">{new Date(a.date).toLocaleString()}</p>
+                        </div>
+                        <Button size="sm" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white" asChild>
+                          <a href={a.html_url} target="_blank" rel="noreferrer">View</a>
+                        </Button>
                       </div>
-                      <Button size="sm" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white" asChild>
-                        <a href={a.html_url} target="_blank" rel="noreferrer">View</a>
-                      </Button>
-                    </div>
-                  ))
+                    ))
                 )}
               </div>
             </CardContent>
@@ -512,38 +566,121 @@ export default function DashboardPage() {
       </main>
       {/* Edit DNS Dialog */}
       {editOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="w-full max-w-md bg-black/80 border border-gray-700 rounded-lg p-5">
-            <h3 className="text-white text-lg font-semibold mb-1">Edit DNS</h3>
-            <p className="text-gray-400 text-sm mb-4">{editDomain}.is-a.software</p>
-            <div className="grid grid-cols-3 gap-3 mb-3">
-              <div className="col-span-1">
-                <label className="text-gray-300 text-xs">Record Type</label>
-                <select value={editType} onChange={(e) => setEditType(e.target.value)} className="w-full bg-black/40 border border-gray-700 text-white rounded px-2 py-2 mt-1">
-                  <option value="CNAME">CNAME</option>
-                  <option value="A">A</option>
-                  <option value="AAAA">AAAA</option>
-                  <option value="TXT">TXT</option>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-lg bg-black/90 border border-gray-700 rounded-lg p-6 shadow-2xl">
+            <div className="flex items-center gap-2 mb-2">
+              <Settings className="h-5 w-5 text-purple-400" />
+              <h3 className="text-white text-lg font-semibold">Edit DNS Record</h3>
+            </div>
+            <p className="text-gray-400 text-sm mb-6">
+              <span className="font-mono">{editDomain}.is-a.software</span>
+            </p>
+            
+            <div className="space-y-4 mb-6">
+              {/* Record Type Section */}
+              <div>
+                <label className="flex items-center gap-2 text-gray-300 text-sm font-medium mb-2">
+                  Record Type
+                  <HelpCircle className="h-4 w-4 text-gray-500" />
+                </label>
+                <select 
+                  value={editType} 
+                  onChange={(e) => setEditType(e.target.value)} 
+                  className="w-full bg-black/40 border border-gray-700 text-white rounded-md px-3 py-2.5 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
+                >
+                  <option value="CNAME">CNAME - Alias to another domain</option>
+                  <option value="A">A - IPv4 address</option>
+                  <option value="AAAA">AAAA - IPv6 address</option>
+                  <option value="TXT">TXT - Text record</option>
                 </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  {getDNSRecordDescription(editType as DNSRecordType)}
+                </p>
               </div>
-              <div className="col-span-2">
-                <label className="text-gray-300 text-xs">Value</label>
+
+              {/* Value Section */}
+              <div>
+                <label className="flex items-center gap-2 text-gray-300 text-sm font-medium mb-2">
+                  Value
+                  {!editValidation.isValid && (
+                    <AlertCircle className="h-4 w-4 text-red-400" />
+                  )}
+                </label>
                 <input 
                   value={editValue} 
                   onChange={(e) => setEditValue(e.target.value)} 
-                  className="w-full bg-black/40 border border-gray-700 text-white rounded px-3 py-2 mt-1" 
-                  placeholder={editType === 'TXT' ? 'v=spf1 include:_spf.google.com ~all' : 'target.example.com or 1.2.3.4'} 
+                  className={`w-full bg-black/40 border rounded-md px-3 py-2.5 focus:ring-1 transition-colors ${
+                    !editValidation.isValid 
+                      ? 'border-red-500 focus:border-red-500 focus:ring-red-500 text-red-100' 
+                      : 'border-gray-700 focus:border-purple-500 focus:ring-purple-500 text-white'
+                  }`}
+                  placeholder={getDNSRecordExample(editType as DNSRecordType)}
                 />
+                <div className="flex items-center justify-between mt-1">
+                  <p className="text-xs text-gray-500">
+                    Example: {getDNSRecordExample(editType as DNSRecordType)}
+                  </p>
+                  {editValue && (
+                    <p className={`text-xs ${editValidation.isValid ? 'text-green-400' : 'text-red-400'}`}>
+                      {editValidation.isValid ? '✓ Valid' : `✗ ${editValidation.message}`}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Proxy Section */}
+              <div className="flex items-start gap-3 p-3 bg-gray-800/30 rounded-md border border-gray-700">
+                <input 
+                  id="proxy" 
+                  type="checkbox" 
+                  checked={editProxy} 
+                  onChange={(e) => setEditProxy(e.target.checked)} 
+                  className="h-4 w-4 mt-0.5 accent-purple-500" 
+                />
+                <div>
+                  <label htmlFor="proxy" className="text-gray-300 text-sm font-medium block">
+                    Enable Cloudflare Proxy
+                  </label>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Routes traffic through Cloudflare for added security, caching, and DDoS protection. 
+                    Only available for A, AAAA, and CNAME records.
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-2 mb-4">
-              <input id="proxy" type="checkbox" checked={editProxy} onChange={(e) => setEditProxy(e.target.checked)} className="h-4 w-4" />
-              <label htmlFor="proxy" className="text-gray-300 text-sm">Enable proxy</label>
-            </div>
-            {editError && <div className="text-red-400 text-sm mb-3">{editError}</div>}
-            <div className="flex justify-end gap-2">
-              <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white" onClick={() => setEditOpen(false)} disabled={editSaving}>Cancel</Button>
-              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0" onClick={saveEdit} disabled={editSaving}>{editSaving ? 'Saving...' : 'Save Changes'}</Button>
+
+            {/* Error Message */}
+            {editError && (
+              <div className="flex items-center gap-2 text-red-400 text-sm mb-4 p-3 bg-red-900/20 border border-red-500/20 rounded-md">
+                <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                {editError}
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-3 pt-4 border-t border-gray-700">
+              <Button 
+                variant="outline" 
+                className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white" 
+                onClick={() => setEditOpen(false)} 
+                disabled={editSaving}
+              >
+                Cancel
+              </Button>
+              <Button 
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 disabled:opacity-50" 
+                onClick={saveEdit} 
+                disabled={editSaving || !editValidation.isValid}
+              >
+                {editSaving ? (
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Saving...
+                  </div>
+                ) : (
+                  'Save Changes'
+                )}
+              </Button>
             </div>
           </div>
         </div>

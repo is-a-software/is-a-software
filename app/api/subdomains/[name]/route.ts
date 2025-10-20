@@ -25,7 +25,7 @@ async function gh(path: string, init?: RequestInit) {
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ name: string }> }) {
   const { name } = await params;
   if (!name) return new Response('Missing name', { status: 400 });
-  const body = await req.json().catch(() => null) as { record: Record<string, string>, proxy?: boolean } | null;
+  const body = await req.json().catch(() => null) as { record: Record<string, string>, proxy?: boolean, user?: string } | null;
   if (!body || !body.record || typeof body.record !== 'object') {
     return new Response('Invalid body', { status: 400 });
   }
@@ -41,35 +41,32 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ na
     proxy: !!body.proxy
   };
 
-  const base = 'main';
-  const baseRef = await gh(`/repos/${OWNER}/${REPO}/git/refs/heads/${base}`);
-  const branch = `update/${name}-${Date.now()}`;
-  await gh(`/repos/${OWNER}/${REPO}/git/refs`, {
-    method: 'POST',
-    body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseRef.object.sha })
-  });
-
+  // Direct commit to main branch instead of creating PR
+  const userOnBehalfOf = body.user || existing.owner?.github || 'unknown';
   const blob = Buffer.from(JSON.stringify(newContent, null, 2)).toString('base64');
-  await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filePath)}`, {
+  const commit = await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filePath)}`, {
     method: 'PUT',
     body: JSON.stringify({
-      message: `Update: ${name}.is-a.software`,
+      message: `Update: ${name}.is-a.software on behalf of @${userOnBehalfOf}`,
       content: blob,
-      branch,
-      sha: contents.sha
+      branch: 'main',
+      sha: contents.sha,
+      committer: {
+        name: 'priyanshbot',
+        email: '129733067+priyanshbot@users.noreply.github.com'
+      },
+      author: {
+        name: 'priyanshbot',
+        email: '129733067+priyanshbot@users.noreply.github.com'
+      }
     })
   });
 
-  const pr = await gh(`/repos/${OWNER}/${REPO}/pulls`, {
-    method: 'POST',
-    body: JSON.stringify({
-      title: `Update: ${name}.is-a.software`,
-      head: branch,
-      base
-    })
+  return Response.json({
+    success: true,
+    commit: commit.commit,
+    message: 'DNS record updated successfully'
   });
-
-  return Response.json(pr);
 }
 
 

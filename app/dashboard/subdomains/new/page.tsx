@@ -101,7 +101,7 @@ export default function NewSubdomainPage() {
         <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
           <CardHeader>
             <CardTitle className="text-white">Register a subdomain</CardTitle>
-            <CardDescription className="text-gray-300">This will open a PR to add your domain.</CardDescription>
+            <CardDescription className="text-gray-300">This will commit on you behalf to add your domain.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={onSubmit} className="space-y-4">

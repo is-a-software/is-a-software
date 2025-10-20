@@ -1,4 +1,4 @@
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 import { NextRequest } from 'next/server';
 
 const GITHUB_API = 'https://api.github.com';
@@ -47,15 +47,31 @@ export async function GET(req: NextRequest) {
   for (const f of domainFiles) {
     const filePath = `domains/${f.name}`;
     const commits = await gh(`/repos/${OWNER}/${REPO}/commits?path=${encodeURIComponent(filePath)}&per_page=3`);
+    
+    // Get the domain owner to check if activity is owner-related
+    const domainData = await fetch(f.download_url, { cache: 'no-store' }).then(r => r.json()).catch(() => null);
+    const domainOwner = domainData?.owner?.github?.toLowerCase();
+    
     for (const c of commits) {
-      activities.push({
-        domain: f.name.replace('.json',''),
-        message: c.commit?.message || 'Update',
-        author: c.author?.login || c.commit?.author?.name || 'unknown',
-        date: c.commit?.author?.date || c.commit?.committer?.date,
-        sha: c.sha,
-        html_url: c.html_url,
-      });
+      const commitAuthor = c.author?.login || c.commit?.author?.name || 'unknown';
+      const commitAuthorLower = commitAuthor.toLowerCase();
+      
+      // Include activity if:
+      // 1. Author is the domain owner directly, OR  
+      // 2. Author is a bot acting on behalf of the owner (like priyanshbot doing automated registrations)
+      const isOwnerActivity = commitAuthorLower === domainOwner;
+      const isBotActivity = commitAuthor === 'priyanshbot' || commitAuthor.includes('bot');
+      
+      if (isOwnerActivity || isBotActivity) {
+        activities.push({
+          domain: f.name.replace('.json',''),
+          message: c.commit?.message || 'Update',
+          author: commitAuthor,
+          date: c.commit?.author?.date || c.commit?.committer?.date,
+          sha: c.sha,
+          html_url: c.html_url,
+        });
+      }
     }
   }
 
