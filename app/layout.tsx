@@ -2,6 +2,20 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import { GoogleAnalytics } from '@next/third-parties/google';
+import { Inter, Poppins } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-poppins',
+});
 
 export const metadata: Metadata = {
   title: "is-a.software | Free subdomains for developers",
@@ -52,7 +66,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" className="dark">
-      <body className={`antialiased bg-gradient-to-br from-[#1c1c1c] to-[#111111] text-white`}>
+      <body className={`${inter.variable} ${poppins.variable} font-poppins antialiased bg-gradient-to-br from-[#1c1c1c] to-[#111111] text-white`}>
         <AuthProvider>
           {children}
         </AuthProvider>

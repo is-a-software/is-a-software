@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { Footer } from '@/app/components/Footer';
 import { Terminal, ArrowLeft, Globe, Server, FileText, Shield, CheckCircle } from 'lucide-react';
 
 export default function NewSubdomainPage() {
@@ -67,9 +68,16 @@ export default function NewSubdomainPage() {
     }
     setSubmitting(true);
     try {
+      // Get auth headers
+      const token = await user?.getIdToken();
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
       const res = await fetch('/api/subdomains', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ name, ownerGithub: githubLogin, record: { [type]: value }, proxy })
       });
       if (!res.ok) throw new Error(await res.text());
@@ -101,7 +109,7 @@ export default function NewSubdomainPage() {
         <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
           <CardHeader>
             <CardTitle className="text-white">Register a subdomain</CardTitle>
-            <CardDescription className="text-gray-300">This will commit on you behalf to add your domain.</CardDescription>
+            <CardDescription className="text-gray-300">This will commit on your behalf to add your domain.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={onSubmit} className="space-y-4">
@@ -175,7 +183,9 @@ export default function NewSubdomainPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+
+      <Footer />
+      </div>
   );
 }
 

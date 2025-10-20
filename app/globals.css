@@ -4,6 +4,7 @@
 
 :root {
   --font-size: 16px;
+  --radius: 0.5rem;
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;
@@ -188,4 +189,28 @@
 
 html {
   font-size: var(--font-size);
+}
+
+/* Custom font styles */
+h1, h2, h3, h4, h5, h6,
+.font-heading {
+  font-family: var(--font-inter), 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+/* Body text uses Poppins by default from layout */
+body {
+  font-family: var(--font-poppins), 'Poppins', sans-serif;
+}
+
+/* Additional font utilities */
+.font-display {
+  font-family: var(--font-inter), 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.font-body {
+  font-family: var(--font-poppins), 'Poppins', sans-serif;
+  font-weight: 400;
 }

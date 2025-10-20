@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Button } from '@/app/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card'
 import { Badge } from '@/app/components/ui/badge'
+import { Footer } from '@/app/components/Footer'
 import { Github, Globe, Heart, Users, Zap, Shield } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -261,6 +262,8 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+      
+      <Footer />
     </div>
   )
 }

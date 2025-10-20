@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card'
 import { Badge } from '@/app/components/ui/badge'
+import { Footer } from '@/app/components/Footer'
 import { Shield, Database, Users, Eye, Mail, FileText } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -372,6 +373,8 @@ export default function PrivacyPage() {
           </p>
         </div>
       </div>
+      
+      <Footer />
     </div>
   )
 }

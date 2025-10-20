@@ -2,14 +2,13 @@
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Search, CheckCircle, XCircle, User, ExternalLink } from "lucide-react";
+import { Search, CheckCircle, XCircle, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export function CTA() {
   const [stats, setStats] = useState<{ total: number; active: number } | null>(null);
-  const [uptime, setUptime] = useState<{ percentage: number } | null>(null);
   const [subdomain, setSubdomain] = useState("");
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,26 +23,17 @@ export function CTA() {
   useEffect(() => {
     async function loadStats() {
       try {
-        // Load public stats and uptime
-        const [statsRes, uptimeRes] = await Promise.all([
-          fetch('/api/public-stats', { cache: 'no-store' }),
-          fetch('/api/uptime', { cache: 'no-store' })
-        ]);
+        // Load public stats
+        const statsRes = await fetch('/api/public-stats', { cache: 'no-store' });
         
         if (statsRes.ok) {
           const statsData = await statsRes.json();
           setStats({ total: statsData.total, active: statsData.active });
         }
-        
-        if (uptimeRes.ok) {
-          const uptimeData = await uptimeRes.json();
-          setUptime(uptimeData);
-        }
       } catch (e) {
         console.error('Failed to load stats:', e);
         // Set fallback values if API fails
         setStats({ total: 100, active: 85 });
-        setUptime({ percentage: 99.9 });
       }
     }
     loadStats();
@@ -77,7 +67,6 @@ export function CTA() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '');
     setSubdomain(value);
-    // Clear previous results when user types
     setCheckResult(null);
     setError(null);
   };
@@ -173,7 +162,6 @@ export function CTA() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-3 text-yellow-400">
-                    <User className="h-5 w-5 flex-shrink-0" />
                     <div className="text-left flex-1">
                       <p className="font-medium">👤 {subdomain}.is-a.software is taken</p>
                       {checkResult.owner?.github && (
@@ -215,24 +203,8 @@ export function CTA() {
           </div>
           
           <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-gray-300">
-            <div className="text-center">
-              <div className="mb-1 text-2xl font-bold text-white">
-                {stats ? `${stats.active.toLocaleString()}` : '8,500'}
-              </div>
-              <div className="text-gray-400">Active Subdomains</div>
-            </div>
-            <div className="h-8 w-px bg-gray-600" />
-            <div className="text-center">
-              <div className="mb-1 text-2xl font-bold text-white">
-                {uptime ? `${uptime.percentage.toFixed(1)}%` : '99.9%'}
-              </div>
-              <div className="text-gray-400">Uptime</div>
-            </div>
-            <div className="h-8 w-px bg-gray-600" />
-            <div className="text-center">
-              <div className="mb-1 text-2xl font-bold text-white">24/7</div>
-              <div className="text-gray-400">Support</div>
-            </div>
+            
+            
           </div>
         </div>
       </div>

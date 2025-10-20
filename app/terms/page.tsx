@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card'
 import { Badge } from '@/app/components/ui/badge'
 import { Alert, AlertDescription } from '@/app/components/ui/alert'
+import { Footer } from '@/app/components/Footer'
 import { FileText, Shield, AlertTriangle, Users, Globe, Gavel } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -460,6 +461,8 @@ export default function TermsPage() {
           </p>
         </div>
       </div>
+      
+      <Footer />
     </div>
   )
 }

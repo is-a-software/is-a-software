@@ -74,7 +74,15 @@ export function Footer() {
         
         <div className="mt-12 border-t border-gray-800 pt-8">
           <p className="text-center text-gray-400">
-            © 2025 is-a.software. Built with ❤️ for developers.
+            © 2025 is-a.software. Built with ❤️ for developers by{" "}
+            <Link 
+              href="https://oyepriyansh.github.io" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-purple-400 hover:text-purple-300 transition-colors"
+            >
+              Priyansh Prajapat
+            </Link>.
           </p>
         </div>
       </div>
