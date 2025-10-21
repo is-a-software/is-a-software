@@ -1,7 +1,8 @@
-
 <div align="center">
   <h1>is-a.software</h1>
-  <p><b>Free subdomains for developers.</b></p>
+  <p>Get your free .is-a.software subdomain for developers. Perfect for side projects, demos, and showcasing your work to the world.</p>
+  <a href="https://is-a.software/about">About</a> | <a href="https://is-a.software/terms">Terms of Service</a> | <a href="https://is-a.software/privacy">Privacy Policy</a>
+  <br/><br/>
   <p>
     <a href="#"><img src="https://img.shields.io/github/stars/is-a-software/is-a-software?style=for-the-badge" alt="GitHub Stars"></a>
     <a href="#"><img src="https://img.shields.io/github/directory-file-count/is-a-software/is-a-software/domains?style=for-the-badge&label=domains" alt="Domains"></a>
@@ -13,26 +14,30 @@
 
 ## 🚀 How to Register Your Subdomain
 
-Follow these simple steps to get your free subdomain.
+You can get your free subdomain using either of the following methods:
 
-### 1. 🍴  Fork the Repository
-First, [fork this repository](https://github.com/is-a-software/is-a-software/fork) to your own GitHub account.
+### Option 1: Dashboard Registration (Recommended)
 
-### 2. 📝 Create Your Record File
-Navigate to the `domains/` folder and create a new JSON file. The name of this file will be your subdomain.
+1. Go to [is-a.software](https://is-a.software)
+2. Sign in with your GitHub account
+3. Search for and claim your subdomain
+4. Manage your DNS records directly from the dashboard
 
-> **For example:** To register `example.is-a-software`, you must create a file named `example.json`.
+---
 
-### 3. ⚙️ Add Your DNS Records
-Open your new JSON file and add the required information. You must include an `owner` section and a `record` section.
+### Option 2: GitHub Pull Request (Classic Method)
 
-* **`owner`**: Your GitHub username.
-* **`record`**: The DNS records you want. We support `A`, `AAAA`, and `CNAME`.
-* **`proxy`** (Optional): Set to `true` to enable Cloudflare's proxy (orange cloud) or `false` to disable it (DNS only). Defaults to `false`.
+1. 🍴 **Fork this repository** to your own GitHub account.
+2. 📝 **Create a JSON file** in the `domains/` folder. The file name will be your subdomain.
+   - Example: To register `example.is-a-software`, create `domains/example.json`.
+3. ⚙️ **Add your DNS records** in the JSON file.  
+   - Include your GitHub username as `owner`.
+   - Add your desired DNS records (`A`, `AAAA`, `CNAME`, etc.).
+   - Optionally, set `"proxy": true` to enable Cloudflare proxy.
+4. 🚀 **Create a Pull Request** back to this repository.  
+   - If all checks pass, your PR will be auto-merged and your subdomain will be live soon!
 
-#### **JSON File Examples**
-
-**Using a CNAME record (for services like GitHub Pages, Vercel, etc.):**
+#### **JSON Example**
 ```json
 {
   "owner": {
@@ -43,40 +48,6 @@ Open your new JSON file and add the required information. You must include an `o
   },
   "proxy": false
 }
-```
-
-### 4. 🚀 Create a Pull Request
-Once you've created and saved your file, create a Pull Request from your fork back to this main repository.  all checks pass,then it will be automatically merged.
-
-Your subdomain should be live within a few minutes!
-
-> [!NOTE]
-> **Make sure to add a good commit message and a good PR title**<br>
-> example: `Register: example.is-a.software`<br>
-
----
-
-## ✨ Features
-
--   ✅ **Fully Automated:** Just create a Pull Request, and our GitHub Actions handle the rest.
--   ✅ **Fast & Reliable:** Your subdomain is powered by Cloudflare's robust DNS infrastructure.
--   ✅ **Developer-Friendly:** Supports `A`, `AAAA`, and `CNAME` records to point to any service.
--   ✅ **Community Driven:** An open-source project that you can contribute to and help improve.
-
----
-
-## ⚙️ How It Works: The Automated Workflow
-
-The magic behind `is-a.software` is its fully automated, Git-based workflow. Here’s a visual representation of the process:
-
-```mermaid
-graph TD
-    A[You: Create a PR with a new domain.json file] --> B{GitHub Action: Validate PR};
-    B -->|Valid| C[Action: Auto-merge to main];
-    B -->|Invalid| D[Action: Comment on PR with error];
-    C --> E{GitHub Action: Sync DNS};
-    E --> F[Cloudflare: Create/Update DNS Record];
-    F --> G[Your Subdomain is Live! ✨];
 ```
 
 ---
