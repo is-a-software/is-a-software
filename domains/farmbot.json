@@ -1,0 +1,9 @@
+{
+  "owner": {
+    "github": "DogIcing"
+  },
+  "record": {
+    "CNAME": "farmbot-discord.vercel.app"
+  },
+  "proxy": false
+}
