@@ -5,5 +5,5 @@
   "record": {
     "CNAME": "modeliqint.vercel.app"
   },
-  "proxy": false
+  "proxy": true
 }
