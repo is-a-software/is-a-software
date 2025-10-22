@@ -1,0 +1,9 @@
+{
+  "owner": {
+    "github": "jaiyankargupta"
+  },
+  "record": {
+    "CNAME": "jaiyankargupta.vercel.app"
+  },
+  "proxy": true
+}
