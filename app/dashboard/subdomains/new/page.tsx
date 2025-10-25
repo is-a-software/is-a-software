@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/contexts/AuthContext';
@@ -20,6 +20,13 @@ export default function NewSubdomainPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [valueError, setValueError] = useState('');
+  const [availabilityStatus, setAvailabilityStatus] = useState<{
+    checking: boolean;
+    available?: boolean;
+    owned?: boolean;
+    message?: string;
+    editUrl?: string;
+  }>({ checking: false });
 
   const githubLogin = useMemo(() => {
     const userInfo = user as { reloadUserInfo?: { screenName?: string } } | null;
@@ -113,6 +120,61 @@ export default function NewSubdomainPage() {
     }
   };
 
+  const checkAvailability = async (subdomainName: string) => {
+    if (!subdomainName || subdomainName.length < 2) {
+      setAvailabilityStatus({ checking: false });
+      return;
+    }
+
+    setAvailabilityStatus({ checking: true });
+
+    try {
+      const token = await user?.getIdToken();
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const res = await fetch(`/api/subdomains/check?name=${encodeURIComponent(subdomainName)}`, {
+        headers
+      });
+
+      if (res.ok) {
+        const result = await res.json();
+        setAvailabilityStatus({
+          checking: false,
+          available: result.available,
+          owned: result.owned,
+          message: result.reason,
+          editUrl: result.editUrl
+        });
+      } else {
+        setAvailabilityStatus({
+          checking: false,
+          available: undefined,
+          message: 'Unable to check availability'
+        });
+      }
+    } catch {
+      setAvailabilityStatus({
+        checking: false,
+        available: undefined,
+        message: 'Unable to check availability'
+      });
+    }
+  };
+
+  // Check availability when name changes (with debounce)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (name && user) {
+        checkAvailability(name);
+      }
+    }, 500); // 500ms debounce
+
+    return () => clearTimeout(timer);
+  }, [name, user]);
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -148,7 +210,27 @@ export default function NewSubdomainPage() {
         headers,
         body: JSON.stringify({ name, ownerGithub: githubLogin, record: { [type]: value }, proxy })
       });
-      if (!res.ok) throw new Error(await res.text());
+      
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+        
+        if (errorData?.code === 'OWNED_BY_USER') {
+          // User owns the domain, offer to edit it
+          if (confirm(`${errorData.error}\n\nClick OK to edit the existing subdomain, or Cancel to stay here.`)) {
+            router.push(errorData.editUrl);
+            return;
+          } else {
+            throw new Error('Please choose a different subdomain name or edit your existing one.');
+          }
+        } else if (errorData?.code === 'ALREADY_TAKEN') {
+          // Domain taken by someone else
+          throw new Error(errorData.error);
+        } else {
+          // Other errors
+          throw new Error(errorData?.error || await res.text());
+        }
+      }
+      
       const result = await res.json();
       if (result.success) {
         setSuccess(true);
@@ -187,6 +269,44 @@ export default function NewSubdomainPage() {
                   <input value={name} onChange={(e) => setName(validateSubdomainName(e.target.value, type))} className="flex-1 bg-black/40 border border-gray-700 text-white rounded px-3 py-2" placeholder={type === 'TXT' ? '_vercel' : 'myapp'} />
                   <span className="text-gray-400">.is-a.software</span>
                 </div>
+                {name && (
+                  <div className="mt-2">
+                    {availabilityStatus.checking ? (
+                      <div className="flex items-center gap-2 text-gray-400 text-sm">
+                        <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                        Checking availability...
+                      </div>
+                    ) : availabilityStatus.available === true ? (
+                      <div className="flex items-center gap-2 text-green-400 text-sm">
+                        <CheckCircle className="w-4 h-4" />
+                        {availabilityStatus.message || 'Subdomain is available'}
+                      </div>
+                    ) : availabilityStatus.available === false ? (
+                      <div className="flex items-center gap-2 text-red-400 text-sm">
+                        <div className="w-4 h-4 rounded-full bg-red-400 flex items-center justify-center">
+                          <span className="text-xs text-black font-bold">!</span>
+                        </div>
+                        <span>{availabilityStatus.message}</span>
+                        {availabilityStatus.owned && availabilityStatus.editUrl && (
+                          <button
+                            type="button"
+                            onClick={() => router.push(availabilityStatus.editUrl!)}
+                            className="ml-2 text-purple-400 hover:text-purple-300 underline"
+                          >
+                            Edit existing
+                          </button>
+                        )}
+                      </div>
+                    ) : availabilityStatus.message ? (
+                      <div className="flex items-center gap-2 text-yellow-400 text-sm">
+                        <div className="w-4 h-4 rounded-full bg-yellow-400 flex items-center justify-center">
+                          <span className="text-xs text-black font-bold">?</span>
+                        </div>
+                        {availabilityStatus.message}
+                      </div>
+                    ) : null}
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-3 gap-3">
@@ -274,9 +394,18 @@ export default function NewSubdomainPage() {
                 <Button 
                   type="submit" 
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0" 
-                  disabled={submitting || !!valueError || !name || !value}
+                  disabled={
+                    submitting || 
+                    !!valueError || 
+                    !name || 
+                    !value || 
+                    availabilityStatus.checking || 
+                    (availabilityStatus.available === false && !availabilityStatus.owned)
+                  }
                 >
-                  {submitting ? 'Creating...' : 'Create Subdomain'}
+                  {submitting ? 'Creating...' : 
+                   availabilityStatus.owned ? 'Update Subdomain' :
+                   'Create Subdomain'}
                 </Button>
               </div>
             </form>

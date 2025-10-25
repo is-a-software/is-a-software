@@ -109,6 +109,42 @@ export async function POST(req: NextRequest) {
 
   try {
     const filePath = `domains/${body.name}.json`;
+    
+    // Check if domain already exists
+    let existingFile;
+    try {
+      existingFile = await gh(`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filePath)}`);
+    } catch (error) {
+      // File doesn't exist, which is what we want for new domains
+      if (error instanceof Error && error.message.includes('404')) {
+        existingFile = null;
+      } else {
+        throw error;
+      }
+    }
+    
+    if (existingFile) {
+      // Domain exists, check ownership
+      const existingContent = Buffer.from(existingFile.content, 'base64').toString('utf-8');
+      const existingData = JSON.parse(existingContent);
+      const existingOwner = existingData?.owner?.github?.toLowerCase();
+      
+      if (existingOwner === githubLogin?.toLowerCase()) {
+        // User owns the domain, suggest editing instead
+        return Response.json({ 
+          error: 'You already own this subdomain. Would you like to edit it instead?',
+          code: 'OWNED_BY_USER',
+          editUrl: `/dashboard/subdomains/${body.name}/edit`
+        }, { status: 409 });
+      } else {
+        // Domain owned by someone else
+        return Response.json({ 
+          error: `Subdomain "${body.name}" is already taken. Try another one!`,
+          code: 'ALREADY_TAKEN'
+        }, { status: 409 });
+      }
+    }
+    
     const content = {
       owner: { github: body.ownerGithub },
       record: body.record,
