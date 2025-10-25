@@ -65,11 +65,11 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  // Check for invalid characters (allow letters, numbers, hyphens, dots)
-  if (!/^[a-z0-9.-]+$/.test(name)) {
+  // Check for invalid characters (allow letters, numbers, hyphens, dots, underscores)
+  if (!/^[a-z0-9._-]+$/.test(name)) {
     return Response.json({ 
       available: false, 
-      reason: 'Subdomain can only contain lowercase letters, numbers, hyphens, and dots' 
+      reason: 'Subdomain can only contain lowercase letters, numbers, hyphens, dots, and underscores' 
     });
   }
 
