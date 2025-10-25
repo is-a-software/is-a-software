@@ -36,11 +36,12 @@ export default function NewSubdomainPage() {
   const validateSubdomainName = (value: string, recordType: string) => {
     const lowercased = value.toLowerCase();
     // Allow underscores for TXT records (common for verification records like _vercel, _github, etc.)
+    // Allow dots for all record types to enable multi-level subdomains (e.g., api.myapp.is-a.software)
     if (recordType === 'TXT') {
-      return lowercased.replace(/[^a-z0-9-_]/g, '');
+      return lowercased.replace(/[^a-z0-9-_.]/g, '');
     }
-    // Standard validation for other record types
-    return lowercased.replace(/[^a-z0-9-]/g, '');
+    // Standard validation for other record types (allow dots for multi-level subdomains)
+    return lowercased.replace(/[^a-z0-9-.]/g, '');
   };
 
   const validateRecordValue = (value: string, recordType: string): { isValid: boolean; message?: string } => {
@@ -259,14 +260,14 @@ export default function NewSubdomainPage() {
         <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
           <CardHeader>
             <CardTitle className="text-white">Register a subdomain</CardTitle>
-            <CardDescription className="text-gray-300">This will commit on your behalf to add your domain.</CardDescription>
+            <CardDescription className="text-gray-300">Create single or multi-level subdomains (e.g., "myapp" or "api.myapp"). This will commit on your behalf to add your domain.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
                 <label className="text-gray-300 text-sm">Subdomain</label>
                 <div className="mt-1 flex items-center gap-2">
-                  <input value={name} onChange={(e) => setName(validateSubdomainName(e.target.value, type))} className="flex-1 bg-black/40 border border-gray-700 text-white rounded px-3 py-2" placeholder={type === 'TXT' ? '_vercel' : 'myapp'} />
+                  <input value={name} onChange={(e) => setName(validateSubdomainName(e.target.value, type))} className="flex-1 bg-black/40 border border-gray-700 text-white rounded px-3 py-2" placeholder={type === 'TXT' ? '_vercel.myapp' : 'api.myapp or blog.company'} />
                   <span className="text-gray-400">.is-a.software</span>
                 </div>
                 {name && (

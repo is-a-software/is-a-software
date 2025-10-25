@@ -41,10 +41,43 @@ export async function GET(req: NextRequest) {
   }
 
   // Basic validation
-  if (name.length > 63) {
+  if (name.length > 200) {
     return Response.json({ 
       available: false, 
-      reason: 'Subdomain name cannot exceed 63 characters' 
+      reason: 'Subdomain name cannot exceed 200 characters' 
+    });
+  }
+
+  // Validate individual labels (parts between dots)
+  const labels = name.split('.');
+  for (const label of labels) {
+    if (label.length > 63) {
+      return Response.json({ 
+        available: false, 
+        reason: 'Each part of the subdomain (between dots) cannot exceed 63 characters' 
+      });
+    }
+    if (label.length === 0) {
+      return Response.json({ 
+        available: false, 
+        reason: 'Subdomain cannot have empty parts or consecutive dots' 
+      });
+    }
+  }
+
+  // Check for invalid characters (allow letters, numbers, hyphens, dots)
+  if (!/^[a-z0-9.-]+$/.test(name)) {
+    return Response.json({ 
+      available: false, 
+      reason: 'Subdomain can only contain lowercase letters, numbers, hyphens, and dots' 
+    });
+  }
+
+  // Check for consecutive dots
+  if (name.includes('..')) {
+    return Response.json({ 
+      available: false, 
+      reason: 'Subdomain cannot contain consecutive dots' 
     });
   }
 

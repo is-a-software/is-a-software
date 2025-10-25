@@ -31,8 +31,22 @@ function validateSubdomainName(name, recordTypes = []) {
         return errors;
     }
     
-    if (name.length > 63) {
-        errors.push('Subdomain name cannot exceed 63 characters');
+    // Check total length (DNS allows up to 253 characters for full domain)
+    if (name.length > 200) {
+        errors.push('Subdomain name cannot exceed 200 characters');
+    }
+    
+    // Check individual labels (parts between dots) - each must be <= 63 characters
+    const labels = name.split('.');
+    for (const label of labels) {
+        if (label.length > 63) {
+            errors.push('Each part of the subdomain (between dots) cannot exceed 63 characters');
+            break;
+        }
+        if (label.length === 0) {
+            errors.push('Subdomain cannot have empty parts (consecutive dots or leading/trailing dots)');
+            break;
+        }
     }
     
     if (name.startsWith('-') || name.endsWith('-')) {
