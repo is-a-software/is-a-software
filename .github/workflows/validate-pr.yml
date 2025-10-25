@@ -3,6 +3,8 @@ name: Validate PR
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
+    paths:
+      - 'domains/**'
 
 permissions:
   contents: read

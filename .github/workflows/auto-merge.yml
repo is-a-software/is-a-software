@@ -3,6 +3,8 @@ name: Auto-Merge
 on:
   pull_request_target:
     types: [labeled]
+    paths:
+      - 'domains/**'
 
 permissions:
   contents: write
