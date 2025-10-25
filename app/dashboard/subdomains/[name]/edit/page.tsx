@@ -27,11 +27,56 @@ export default function EditSubdomainPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [valueError, setValueError] = useState('');
 
   const githubLogin = useMemo(() => {
     const userInfo = user as { reloadUserInfo?: { screenName?: string } } | null;
     return userInfo?.reloadUserInfo?.screenName || (user?.email ? user.email.split('@')[0] : undefined);
   }, [user]);
+
+  const validateRecordValue = (value: string, recordType: string): { isValid: boolean; message?: string } => {
+    const trimmedValue = value.trim();
+    
+    if (!trimmedValue) {
+      return { isValid: false, message: 'Value cannot be empty' };
+    }
+
+    switch (recordType) {
+      case 'CNAME':
+        if (trimmedValue.match(/^https?:\/\//i)) {
+          return { isValid: false, message: 'CNAME cannot contain http:// or https://' };
+        }
+        if (trimmedValue.match(/\/|\?|#/)) {
+          return { isValid: false, message: 'CNAME should only contain domain name (no paths or query strings)' };
+        }
+        if (!trimmedValue.match(/^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.?$/)) {
+          return { isValid: false, message: 'Invalid domain format (e.g., example.com)' };
+        }
+        break;
+
+      case 'A':
+        const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+        if (!ipv4Regex.test(trimmedValue)) {
+          return { isValid: false, message: 'Invalid IPv4 address format (e.g., 192.168.1.1)' };
+        }
+        break;
+
+      case 'AAAA':
+        const ipv6Regex = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^::1$|^::$|^(?:(?:[0-9a-fA-F]{1,4}:)*)?(?:(?:[0-9a-fA-F]{1,4})?::(?:[0-9a-fA-F]{1,4}:)*)?(?:[0-9a-fA-F]{1,4})?$/;
+        if (!ipv6Regex.test(trimmedValue)) {
+          return { isValid: false, message: 'Invalid IPv6 address format (e.g., 2001:db8::1)' };
+        }
+        break;
+
+      case 'TXT':
+        if (trimmedValue.length > 1024) {
+          return { isValid: false, message: 'TXT record cannot exceed 1024 characters' };
+        }
+        break;
+    }
+
+    return { isValid: true };
+  };
 
   // Helper function to get auth headers
   const getAuthHeaders = useCallback(async (): Promise<Record<string, string>> => {
@@ -122,8 +167,16 @@ export default function EditSubdomainPage() {
       return;
     }
 
+    // Validate record value
+    const validation = validateRecordValue(value, type);
+    if (!validation.isValid) {
+      setValueError(validation.message || 'Invalid value');
+      return;
+    }
+
     setSubmitting(true);
     setError('');
+    setValueError('');
 
     try {
       const authHeaders = await getAuthHeaders();
@@ -254,7 +307,10 @@ export default function EditSubdomainPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="type" className="text-white">DNS Record Type</Label>
-                  <Select value={type} onValueChange={setType}>
+                  <Select value={type} onValueChange={(newType) => {
+                    setType(newType);
+                    setValueError('');
+                  }}>
                     <SelectTrigger className="bg-black/30 border-gray-600 text-white">
                       <SelectValue />
                     </SelectTrigger>
@@ -293,11 +349,27 @@ export default function EditSubdomainPage() {
                     id="value"
                     type="text"
                     value={value}
-                    onChange={(e) => setValue(e.target.value)}
+                    onChange={(e) => {
+                      setValue(e.target.value);
+                      if (valueError) setValueError('');
+                    }}
+                    onBlur={() => {
+                      if (value.trim()) {
+                        const validation = validateRecordValue(value, type);
+                        if (!validation.isValid) {
+                          setValueError(validation.message || 'Invalid value');
+                        }
+                      }
+                    }}
                     placeholder={getPlaceholderForType(type)}
-                    className="bg-black/30 border-gray-600 text-white placeholder:text-gray-500"
+                    className={`bg-black/30 text-white placeholder:text-gray-500 ${
+                      valueError ? 'border-red-500' : 'border-gray-600'
+                    }`}
                     required
                   />
+                  {valueError && (
+                    <p className="text-red-400 text-xs">{valueError}</p>
+                  )}
                 </div>
 
                 <div className="flex items-center space-x-2">
@@ -316,7 +388,7 @@ export default function EditSubdomainPage() {
                 <div className="flex gap-3 pt-4">
                   <Button
                     type="submit"
-                    disabled={submitting}
+                    disabled={submitting || !!valueError || !value.trim()}
                     className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
                   >
                     {submitting ? (

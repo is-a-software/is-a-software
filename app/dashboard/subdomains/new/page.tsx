@@ -19,11 +19,70 @@ export default function NewSubdomainPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [valueError, setValueError] = useState('');
 
   const githubLogin = useMemo(() => {
     const userInfo = user as { reloadUserInfo?: { screenName?: string } } | null;
     return userInfo?.reloadUserInfo?.screenName || (user?.email ? user.email.split('@')[0] : undefined);
   }, [user]);
+
+  const validateSubdomainName = (value: string, recordType: string) => {
+    const lowercased = value.toLowerCase();
+    // Allow underscores for TXT records (common for verification records like _vercel, _github, etc.)
+    if (recordType === 'TXT') {
+      return lowercased.replace(/[^a-z0-9-_]/g, '');
+    }
+    // Standard validation for other record types
+    return lowercased.replace(/[^a-z0-9-]/g, '');
+  };
+
+  const validateRecordValue = (value: string, recordType: string): { isValid: boolean; message?: string } => {
+    const trimmedValue = value.trim();
+    
+    if (!trimmedValue) {
+      return { isValid: false, message: 'Value cannot be empty' };
+    }
+
+    switch (recordType) {
+      case 'CNAME':
+        // Remove common protocol prefixes that users might accidentally add
+        if (trimmedValue.match(/^https?:\/\//i)) {
+          return { isValid: false, message: 'CNAME cannot contain http:// or https://' };
+        }
+        if (trimmedValue.match(/\/|\?|#/)) {
+          return { isValid: false, message: 'CNAME should only contain domain name (no paths or query strings)' };
+        }
+        // Basic domain format validation
+        if (!trimmedValue.match(/^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.?$/)) {
+          return { isValid: false, message: 'Invalid domain format (e.g., example.com)' };
+        }
+        break;
+
+      case 'A':
+        // IPv4 validation
+        const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+        if (!ipv4Regex.test(trimmedValue)) {
+          return { isValid: false, message: 'Invalid IPv4 address format (e.g., 192.168.1.1)' };
+        }
+        break;
+
+      case 'AAAA':
+        // IPv6 validation (basic)
+        const ipv6Regex = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^::1$|^::$|^(?:(?:[0-9a-fA-F]{1,4}:)*)?(?:(?:[0-9a-fA-F]{1,4})?::(?:[0-9a-fA-F]{1,4}:)*)?(?:[0-9a-fA-F]{1,4})?$/;
+        if (!ipv6Regex.test(trimmedValue)) {
+          return { isValid: false, message: 'Invalid IPv6 address format (e.g., 2001:db8::1)' };
+        }
+        break;
+
+      case 'TXT':
+        if (trimmedValue.length > 1024) {
+          return { isValid: false, message: 'TXT record cannot exceed 1024 characters' };
+        }
+        break;
+    }
+
+    return { isValid: true };
+  };
 
   const getPlaceholderForType = (recordType: string) => {
     switch (recordType) {
@@ -58,12 +117,21 @@ export default function NewSubdomainPage() {
     e.preventDefault();
     setError('');
     setSuccess(false);
+    setValueError('');
+    
     if (!githubLogin) {
       setError('Unable to determine your GitHub username.');
       return;
     }
     if (!name || !type || !value) {
       setError('Please fill all fields.');
+      return;
+    }
+
+    // Validate record value
+    const validation = validateRecordValue(value, type);
+    if (!validation.isValid) {
+      setValueError(validation.message || 'Invalid value');
       return;
     }
     setSubmitting(true);
@@ -116,7 +184,7 @@ export default function NewSubdomainPage() {
               <div>
                 <label className="text-gray-300 text-sm">Subdomain</label>
                 <div className="mt-1 flex items-center gap-2">
-                  <input value={name} onChange={(e) => setName(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))} className="flex-1 bg-black/40 border border-gray-700 text-white rounded px-3 py-2" placeholder="myapp" />
+                  <input value={name} onChange={(e) => setName(validateSubdomainName(e.target.value, type))} className="flex-1 bg-black/40 border border-gray-700 text-white rounded px-3 py-2" placeholder={type === 'TXT' ? '_vercel' : 'myapp'} />
                   <span className="text-gray-400">.is-a.software</span>
                 </div>
               </div>
@@ -124,7 +192,15 @@ export default function NewSubdomainPage() {
               <div className="grid grid-cols-3 gap-3">
                 <div className="col-span-1">
                   <label className="text-gray-300 text-sm">Record Type</label>
-                  <select value={type} onChange={(e) => setType(e.target.value)} className="w-full bg-black/40 border border-gray-700 text-white rounded px-2 py-2 mt-1">
+                  <select 
+                    value={type} 
+                    onChange={(e) => {
+                      setType(e.target.value);
+                      // Clear validation errors when type changes
+                      setValueError('');
+                    }} 
+                    className="w-full bg-black/40 border border-gray-700 text-white rounded px-2 py-2 mt-1"
+                  >
                     <option value="CNAME">CNAME</option>
                     <option value="A">A</option>
                     <option value="AAAA">AAAA</option>
@@ -135,10 +211,28 @@ export default function NewSubdomainPage() {
                   <label className="text-gray-300 text-sm">Value</label>
                   <input 
                     value={value} 
-                    onChange={(e) => setValue(e.target.value)} 
-                    className="w-full bg-black/40 border border-gray-700 text-white rounded px-3 py-2 mt-1" 
+                    onChange={(e) => {
+                      setValue(e.target.value);
+                      // Clear value error when user starts typing
+                      if (valueError) setValueError('');
+                    }}
+                    onBlur={() => {
+                      // Validate on blur
+                      if (value.trim()) {
+                        const validation = validateRecordValue(value, type);
+                        if (!validation.isValid) {
+                          setValueError(validation.message || 'Invalid value');
+                        }
+                      }
+                    }}
+                    className={`w-full bg-black/40 border rounded px-3 py-2 mt-1 text-white ${
+                      valueError ? 'border-red-500' : 'border-gray-700'
+                    }`}
                     placeholder={getPlaceholderForType(type)}
                   />
+                  {valueError && (
+                    <p className="text-red-400 text-xs mt-1">{valueError}</p>
+                  )}
                 </div>
               </div>
 
@@ -152,7 +246,7 @@ export default function NewSubdomainPage() {
                   {type === 'CNAME' && 'Points your subdomain to another domain name (e.g., GitHub Pages, Vercel)'}
                   {type === 'A' && 'Points your subdomain to an IPv4 address (e.g., 192.168.1.1)'}
                   {type === 'AAAA' && 'Points your subdomain to an IPv6 address (e.g., 2001:db8::1)'}
-                  {type === 'TXT' && 'Adds text records for verification, SPF, DKIM, or other purposes'}
+                  {type === 'TXT' && 'Adds text records for verification, SPF, DKIM, or other purposes (underscores allowed)'}
                 </div>
               </div>
 
@@ -177,7 +271,13 @@ export default function NewSubdomainPage() {
 
               <div className="flex justify-end gap-2">
                 <Button type="button" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white" onClick={() => router.push('/dashboard')}>Cancel</Button>
-                <Button type="submit" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0" disabled={submitting}>{submitting ? 'Creating...' : 'Create Subdomain'}</Button>
+                <Button 
+                  type="submit" 
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0" 
+                  disabled={submitting || !!valueError || !name || !value}
+                >
+                  {submitting ? 'Creating...' : 'Create Subdomain'}
+                </Button>
               </div>
             </form>
           </CardContent>
