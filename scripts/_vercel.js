@@ -16,7 +16,8 @@
  */
 function isVercelSubdomain(filename) {
     // Must contain "_vercel." and be in the format domains/_vercel.something.json
-    return filename.includes('domains/_vercel.') && filename.endsWith('.json');
+    const pattern = /^domains\/_vercel\.[a-zA-Z0-9.-]+\.json$/;
+    return pattern.test(filename);
 }
 
 /**
