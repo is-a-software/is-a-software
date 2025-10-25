@@ -22,6 +22,13 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
     if (!response.ok) {
         const errorText = await response.text();
+        
+        // Handle specific Cloudflare errors more gracefully
+        if (response.status === 400 && (errorText.includes('81058') || errorText.toLowerCase().includes('identical record already exists'))) {
+            console.log('⚠️  Record is already identical, skipping update...');
+            return { success: true, message: 'Record already identical' };
+        }
+        
         throw new Error(`Cloudflare API Error: ${response.status} ${response.statusText} - ${errorText}`);
     }
     if (method.toUpperCase() === 'DELETE') {
@@ -119,27 +126,75 @@ async function main() {
             const existingMatch = existingForDomain.find(r => r.content === recordData.content);
             
             if (existingMatch) {
-                // Check if update is needed
-                if (existingMatch.proxied !== recordData.proxied || existingMatch.ttl !== recordData.ttl) {
-                    console.log(`Updating _vercel TXT record from ${recordData.sourceFile}...`);
-                    await apiRequest(`/dns_records/${existingMatch.id}`, 'PUT', recordData);
+                // Check if update is needed (compare all relevant fields)
+                const existingTTL = existingMatch.ttl;
+                const desiredTTL = recordData.ttl;
+                
+                const needsUpdate = 
+                    existingMatch.proxied !== recordData.proxied || 
+                    (existingTTL !== desiredTTL && !(existingTTL === 1 && desiredTTL === 1));
+                
+                if (needsUpdate) {
+                    console.log(`Updating _vercel TXT record from ${recordData.sourceFile}:`);
+                    console.log(`  Proxied: ${existingMatch.proxied} -> ${recordData.proxied} ${existingMatch.proxied !== recordData.proxied ? '(CHANGED)' : '(SAME)'}`);
+                    console.log(`  TTL: ${existingTTL} -> ${desiredTTL} ${existingTTL !== desiredTTL ? '(CHANGED)' : '(SAME)'}`);
+                    
+                    try {
+                        await apiRequest(`/dns_records/${existingMatch.id}`, 'PUT', recordData);
+                        console.log(`✓ Successfully updated _vercel TXT record`);
+                    } catch (error) {
+                        console.log(`⚠️  Failed to update _vercel TXT record: ${error.message}`);
+                    }
+                } else {
+                    console.log(`✓ _vercel TXT record from ${recordData.sourceFile} is already up to date`);
                 }
             } else {
                 console.log(`Creating new _vercel TXT record from ${recordData.sourceFile}...`);
-                await apiRequest('/dns_records', 'POST', recordData);
+                try {
+                    await apiRequest('/dns_records', 'POST', recordData);
+                    console.log(`✓ Successfully created _vercel TXT record`);
+                } catch (error) {
+                    console.log(`⚠️  Failed to create _vercel TXT record: ${error.message}`);
+                }
             }
         } else {
             // Handle regular single records (A, AAAA, CNAME, etc.)
             const existing = existingForDomain[0]; // Should only be one for these types
             
             if (existing) {
-                if (existing.content !== recordData.content || existing.proxied !== recordData.proxied) {
-                    console.log(`Updating record for ${recordData.name}...`);
-                    await apiRequest(`/dns_records/${existing.id}`, 'PUT', recordData);
+                // Check if update is needed (compare all relevant fields)
+                // Note: Cloudflare might return ttl: 1 but we also set ttl: 1, so normalize comparison
+                const existingTTL = existing.ttl;
+                const desiredTTL = recordData.ttl;
+                
+                const needsUpdate = 
+                    existing.content !== recordData.content || 
+                    existing.proxied !== recordData.proxied ||
+                    (existingTTL !== desiredTTL && !(existingTTL === 1 && desiredTTL === 1));
+                
+                if (needsUpdate) {
+                    console.log(`Updating record for ${recordData.name}:`);
+                    console.log(`  Content: "${existing.content}" -> "${recordData.content}" ${existing.content !== recordData.content ? '(CHANGED)' : '(SAME)'}`);
+                    console.log(`  Proxied: ${existing.proxied} -> ${recordData.proxied} ${existing.proxied !== recordData.proxied ? '(CHANGED)' : '(SAME)'}`);
+                    console.log(`  TTL: ${existingTTL} -> ${desiredTTL} ${existingTTL !== desiredTTL ? '(CHANGED)' : '(SAME)'}`);
+                    
+                    try {
+                        await apiRequest(`/dns_records/${existing.id}`, 'PUT', recordData);
+                        console.log(`✓ Successfully updated record for ${recordData.name}`);
+                    } catch (error) {
+                        console.log(`⚠️  Failed to update record for ${recordData.name}: ${error.message}`);
+                    }
+                } else {
+                    console.log(`✓ Record for ${recordData.name} is already up to date`);
                 }
             } else {
                 console.log(`Creating new record for ${recordData.name}...`);
-                await apiRequest('/dns_records', 'POST', recordData);
+                try {
+                    await apiRequest('/dns_records', 'POST', recordData);
+                    console.log(`✓ Successfully created record for ${recordData.name}`);
+                } catch (error) {
+                    console.log(`⚠️  Failed to create record for ${recordData.name}: ${error.message}`);
+                }
             }
         }
     }
