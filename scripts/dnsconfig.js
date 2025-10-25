@@ -37,6 +37,7 @@ async function main() {
     }
 
     const desiredRecords = new Map();
+    const vercelTxtRecords = new Map(); // Map to track _vercel TXT records by unique ID
     const localFilesDir = path.join(__dirname, '..', DOMAIN_FOLDER);
     const localFiles = fs.readdirSync(localFilesDir).filter(f => f.endsWith('.json'));
 
@@ -47,11 +48,34 @@ async function main() {
 
     for (const file of localFiles) {
         const subdomain = path.basename(file, '.json');
-        const fullDomain = subdomain === "@" ? BASE_DOMAIN : `${subdomain}.${BASE_DOMAIN}`;
         
         const fileContent = fs.readFileSync(path.join(localFilesDir, file), 'utf8');
         const data = JSON.parse(fileContent);
 
+        // Special handling for _vercel.* files - they create TXT records at _vercel subdomain
+        if (subdomain.startsWith('_vercel.')) {
+            const recordType = Object.keys(data.record)[0];
+            if (recordType.toUpperCase() === 'TXT') {
+                const vercelDomain = `_vercel.${BASE_DOMAIN}`;
+                const content = Array.isArray(data.record[recordType]) ? data.record[recordType][0] : data.record[recordType];
+                
+                // Use filename as unique identifier for each _vercel TXT record
+                const uniqueKey = `${vercelDomain}_${file}`;
+                vercelTxtRecords.set(uniqueKey, {
+                    type: 'TXT',
+                    name: vercelDomain,
+                    content: content,
+                    proxied: false, // TXT records are never proxied
+                    ttl: 1,
+                    sourceFile: file // Track source file for logging
+                });
+            }
+            continue; // Skip adding to regular desiredRecords
+        }
+
+        // Handle regular domains
+        const fullDomain = subdomain === "@" ? BASE_DOMAIN : `${subdomain}.${BASE_DOMAIN}`;
+        
         const recordType = Object.keys(data.record)[0];
         const content = Array.isArray(data.record[recordType]) ? data.record[recordType][0] : data.record[recordType];
 
@@ -63,32 +87,100 @@ async function main() {
             ttl: 1 
         });
     }
+
+    // Add all _vercel TXT records to desired records
+    for (const [key, record] of vercelTxtRecords) {
+        desiredRecords.set(key, record);
+    }
     console.log(`Found ${desiredRecords.size} desired records in local files.`);
 
     console.log("Fetching existing DNS records from Cloudflare...");
     const existingRecordsData = await apiRequest('/dns_records');
-    const existingRecords = new Map(existingRecordsData.result.map(r => [r.name, r]));
-    console.log(`Found ${existingRecords.size} existing records on Cloudflare.`);
+    const existingRecords = existingRecordsData.result;
+    console.log(`Found ${existingRecords.length} existing records on Cloudflare.`);
 
-    for (const [fullName, recordData] of desiredRecords.entries()) {
-        if (existingRecords.has(fullName)) {
-            const existing = existingRecords.get(fullName);
-            if (existing.type !== recordData.type || existing.content !== recordData.content || existing.proxied !== recordData.proxied) {
-                console.log(`Updating record for ${fullName}...`);
-                await apiRequest(`/dns_records/${existing.id}`, 'PUT', recordData);
+    // Group existing records by domain name and type for easier comparison
+    const existingByDomain = new Map();
+    for (const record of existingRecords) {
+        const key = `${record.name}_${record.type}`;
+        if (!existingByDomain.has(key)) {
+            existingByDomain.set(key, []);
+        }
+        existingByDomain.get(key).push(record);
+    }
+
+    // Create/Update desired records
+    for (const [uniqueKey, recordData] of desiredRecords.entries()) {
+        const domainTypeKey = `${recordData.name}_${recordData.type}`;
+        const existingForDomain = existingByDomain.get(domainTypeKey) || [];
+        
+        // For _vercel TXT records, find matching record by content
+        if (recordData.name === `_vercel.${BASE_DOMAIN}` && recordData.type === 'TXT') {
+            const existingMatch = existingForDomain.find(r => r.content === recordData.content);
+            
+            if (existingMatch) {
+                // Check if update is needed
+                if (existingMatch.proxied !== recordData.proxied || existingMatch.ttl !== recordData.ttl) {
+                    console.log(`Updating _vercel TXT record from ${recordData.sourceFile}...`);
+                    await apiRequest(`/dns_records/${existingMatch.id}`, 'PUT', recordData);
+                }
+            } else {
+                console.log(`Creating new _vercel TXT record from ${recordData.sourceFile}...`);
+                await apiRequest('/dns_records', 'POST', recordData);
             }
         } else {
-            console.log(`Creating new record for ${fullName}...`);
-            await apiRequest('/dns_records', 'POST', recordData);
+            // Handle regular single records (A, AAAA, CNAME, etc.)
+            const existing = existingForDomain[0]; // Should only be one for these types
+            
+            if (existing) {
+                if (existing.content !== recordData.content || existing.proxied !== recordData.proxied) {
+                    console.log(`Updating record for ${recordData.name}...`);
+                    await apiRequest(`/dns_records/${existing.id}`, 'PUT', recordData);
+                }
+            } else {
+                console.log(`Creating new record for ${recordData.name}...`);
+                await apiRequest('/dns_records', 'POST', recordData);
+            }
         }
     }
 
-    for (const [fullName, recordData] of existingRecords.entries()) {
-        if (['A', 'AAAA', 'CNAME'].includes(recordData.type)) {
-            if (!desiredRecords.has(fullName)) {
-                console.log(`Deleting orphaned record for ${fullName}...`);
-                await apiRequest(`/dns_records/${recordData.id}`, 'DELETE');
+    // Collect all desired TXT record contents for _vercel subdomain
+    const desiredVercelContents = new Set();
+    for (const [uniqueKey, recordData] of desiredRecords.entries()) {
+        if (recordData.name === `_vercel.${BASE_DOMAIN}` && recordData.type === 'TXT') {
+            desiredVercelContents.add(recordData.content);
+        }
+    }
+
+    // Delete orphaned records
+    for (const record of existingRecords) {
+        const shouldKeep = (() => {
+            // Keep TXT records that might be system-managed
+            if (record.type === 'TXT' && record.name !== `_vercel.${BASE_DOMAIN}`) {
+                return true;
             }
+            
+            // For _vercel TXT records, only keep if they match desired content
+            if (record.name === `_vercel.${BASE_DOMAIN}` && record.type === 'TXT') {
+                return desiredVercelContents.has(record.content);
+            }
+            
+            // For other record types (A, AAAA, CNAME), check if we have a desired record for this domain
+            if (['A', 'AAAA', 'CNAME'].includes(record.type)) {
+                for (const [uniqueKey, recordData] of desiredRecords.entries()) {
+                    if (recordData.name === record.name && recordData.type === record.type) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            
+            return true; // Keep other record types
+        })();
+
+        if (!shouldKeep) {
+            console.log(`Deleting orphaned record for ${record.name} (${record.type}: ${record.content})...`);
+            await apiRequest(`/dns_records/${record.id}`, 'DELETE');
         }
     }
 
