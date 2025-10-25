@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/contexts/AuthContext';
@@ -121,7 +121,7 @@ export default function NewSubdomainPage() {
     }
   };
 
-  const checkAvailability = async (subdomainName: string) => {
+  const checkAvailability = useCallback(async (subdomainName: string) => {
     if (!subdomainName || subdomainName.length < 2) {
       setAvailabilityStatus({ checking: false });
       return;
@@ -163,7 +163,7 @@ export default function NewSubdomainPage() {
         message: 'Unable to check availability'
       });
     }
-  };
+  }, [user, setAvailabilityStatus]);
 
   // Check availability when name changes (with debounce)
   useEffect(() => {
@@ -174,7 +174,7 @@ export default function NewSubdomainPage() {
     }, 500); // 500ms debounce
 
     return () => clearTimeout(timer);
-  }, [name, user]);
+  }, [name, user, checkAvailability]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -260,7 +260,7 @@ export default function NewSubdomainPage() {
         <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
           <CardHeader>
             <CardTitle className="text-white">Register a subdomain</CardTitle>
-            <CardDescription className="text-gray-300">Create single or multi-level subdomains (e.g., "myapp" or "api.myapp"). This will commit on your behalf to add your domain.</CardDescription>
+            <CardDescription className="text-gray-300">Create single or multi-level subdomains (e.g., &ldquo;myapp&rdquo; or &ldquo;api.myapp&rdquo;). This will commit on your behalf to add your domain.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={onSubmit} className="space-y-4">
