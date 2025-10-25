@@ -43,6 +43,11 @@ async function main() {
         process.exit(1);
     }
 
+    console.log(`🔧 DNS Sync for base domain: ${BASE_DOMAIN}`);
+    console.log(`📁 Managing subdomains from: ${DOMAIN_FOLDER}/`);
+    console.log(`🔒 Root domain (${BASE_DOMAIN}) records will be protected from deletion`);
+    console.log(`🔒 System records (MX, NS, SOA, CAA) will be protected from deletion`);
+
     const desiredRecords = new Map();
     const vercelTxtRecords = new Map(); // Map to track _vercel TXT records by unique ID
     const localFilesDir = path.join(__dirname, '..', DOMAIN_FOLDER);
@@ -210,9 +215,37 @@ async function main() {
     // Delete orphaned records
     for (const record of existingRecords) {
         const shouldKeep = (() => {
-            // Keep TXT records that might be system-managed
-            if (record.type === 'TXT' && record.name !== `_vercel.${BASE_DOMAIN}`) {
+            // CRITICAL: Never delete root domain records that aren't managed by this repo
+            if (record.name === BASE_DOMAIN) {
+                console.log(`🔒 Protecting root domain record: ${record.type} ${record.content} (not managed by repo)`);
                 return true;
+            }
+            
+            // Keep system-managed DNS records (MX, NS, SOA, etc.)
+            if (['MX', 'NS', 'SOA', 'CAA'].includes(record.type)) {
+                console.log(`🔒 Protecting system record: ${record.name} (${record.type})`);
+                return true;
+            }
+            
+            // Keep TXT records that might be system-managed (except _vercel)
+            if (record.type === 'TXT' && record.name !== `_vercel.${BASE_DOMAIN}`) {
+                // Only delete TXT records for subdomains that we manage
+                const isSubdomainWeManage = record.name.endsWith(`.${BASE_DOMAIN}`) && 
+                    record.name !== BASE_DOMAIN;
+                    
+                if (!isSubdomainWeManage) {
+                    console.log(`🔒 Protecting TXT record: ${record.name} (system-managed)`);
+                    return true;
+                }
+                
+                // For managed subdomains, check if we have a corresponding JSON file
+                const subdomain = record.name.replace(`.${BASE_DOMAIN}`, '');
+                const hasJsonFile = Array.from(desiredRecords.keys()).some(key => {
+                    const [, recordData] = Array.from(desiredRecords.entries()).find(([k]) => k === key) || [];
+                    return recordData && recordData.name === record.name;
+                });
+                
+                return hasJsonFile; // Keep if we manage it, delete if orphaned
             }
             
             // For _vercel TXT records, only keep if they match desired content
@@ -220,21 +253,28 @@ async function main() {
                 return desiredVercelContents.has(record.content);
             }
             
-            // For other record types (A, AAAA, CNAME), check if we have a desired record for this domain
+            // For other record types (A, AAAA, CNAME), only delete if they're subdomains
             if (['A', 'AAAA', 'CNAME'].includes(record.type)) {
+                // Don't delete records that aren't subdomains of our base domain
+                if (!record.name.endsWith(`.${BASE_DOMAIN}`)) {
+                    console.log(`🔒 Protecting external record: ${record.name} (${record.type})`);
+                    return true;
+                }
+                
+                // Check if we have a desired record for this domain
                 for (const [uniqueKey, recordData] of desiredRecords.entries()) {
                     if (recordData.name === record.name && recordData.type === record.type) {
                         return true;
                     }
                 }
-                return false;
+                return false; // Delete orphaned subdomain records
             }
             
-            return true; // Keep other record types
+            return true; // Keep other record types by default
         })();
 
         if (!shouldKeep) {
-            console.log(`Deleting orphaned record for ${record.name} (${record.type}: ${record.content})...`);
+            console.log(`🗑️  Deleting orphaned subdomain record: ${record.name} (${record.type}: ${record.content})`);
             try {
                 await apiRequest(`/dns_records/${record.id}`, 'DELETE');
                 console.log(`✓ Successfully deleted orphaned record`);
@@ -244,7 +284,8 @@ async function main() {
         }
     }
 
-    console.log("DNS sync process complete!");
+    console.log("🎉 DNS sync process complete!");
+    console.log(`🔒 Protected records: Root domain (${BASE_DOMAIN}), system records (MX/NS/SOA/CAA), and external TXT records`);
 }
 
 main().catch(err => {
