@@ -3,6 +3,146 @@ const path = require('path');
 const github = require('@actions/github');
 const vercelValidation = require('./_vercel');
 
+// DNS Record Validation Functions
+function isValidIPv4(ip) {
+    const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    return ipv4Regex.test(ip);
+}
+
+function isValidIPv6(ip) {
+    const ipv6Regex = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^::1$|^::$/;
+    return ipv6Regex.test(ip) || /^(?:[0-9a-fA-F]{1,4}:){1,7}:$/.test(ip) || /^:(?:[0-9a-fA-F]{1,6})[0-9a-fA-F]{1,4}$/.test(ip);
+}
+
+function isValidDomain(domain) {
+    const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+    return domainRegex.test(domain) && !domain.includes('..') && domain.length <= 253;
+}
+
+function validateSubdomainName(name, recordTypes = []) {
+    const errors = [];
+    
+    // Allow underscores for TXT records only
+    const hasTxtRecord = recordTypes.some(type => type.toUpperCase() === 'TXT');
+    const allowUnderscore = hasTxtRecord;
+    
+    if (!name || name.length === 0) {
+        errors.push('Subdomain name cannot be empty');
+        return errors;
+    }
+    
+    if (name.length > 63) {
+        errors.push('Subdomain name cannot exceed 63 characters');
+    }
+    
+    if (name.startsWith('-') || name.endsWith('-')) {
+        errors.push('Subdomain name cannot start or end with a hyphen');
+    }
+    
+    const validChars = allowUnderscore ? /^[a-z0-9._-]+$/ : /^[a-z0-9.-]+$/;
+    if (!validChars.test(name)) {
+        if (allowUnderscore) {
+            errors.push('Subdomain name can only contain lowercase letters, numbers, periods, hyphens, and underscores (for TXT records)');
+        } else {
+            errors.push('Subdomain name can only contain lowercase letters, numbers, periods, and hyphens');
+        }
+    }
+    
+    if (name.includes('..')) {
+        errors.push('Subdomain name cannot contain consecutive periods');
+    }
+    
+    return errors;
+}
+
+function validateRecordValue(type, value) {
+    const errors = [];
+    
+    switch (type.toUpperCase()) {
+        case 'A':
+            if (!isValidIPv4(value)) {
+                errors.push('A record must contain a valid IPv4 address');
+            }
+            break;
+            
+        case 'AAAA':
+            if (!isValidIPv6(value)) {
+                errors.push('AAAA record must contain a valid IPv6 address');
+            }
+            break;
+            
+        case 'CNAME':
+            if (value.includes('http://') || value.includes('https://')) {
+                errors.push('CNAME record cannot contain http:// or https://');
+            }
+            if (!isValidDomain(value)) {
+                errors.push('CNAME record must contain a valid domain name');
+            }
+            break;
+            
+        case 'MX':
+            const mxParts = value.split(' ');
+            if (mxParts.length !== 2) {
+                errors.push('MX record must be in format "priority domain"');
+            } else {
+                const [priority, domain] = mxParts;
+                if (!/^\d+$/.test(priority) || parseInt(priority) > 65535) {
+                    errors.push('MX priority must be a number between 0 and 65535');
+                }
+                if (!isValidDomain(domain)) {
+                    errors.push('MX record must contain a valid domain name');
+                }
+            }
+            break;
+            
+        case 'TXT':
+            if (value.length > 255) {
+                errors.push('TXT record cannot exceed 255 characters');
+            }
+            break;
+            
+        case 'NS':
+            if (!isValidDomain(value)) {
+                errors.push('NS record must contain a valid domain name');
+            }
+            break;
+            
+        default:
+            // Allow other record types without specific validation
+            break;
+    }
+    
+    return errors;
+}
+
+async function validateSubdomainAndRecords(filename, content) {
+    const subdomain = path.basename(filename, '.json').toLowerCase();
+    
+    let data;
+    try {
+        data = JSON.parse(content);
+    } catch (e) {
+        await fail(`Invalid JSON: ${e.message}`);
+    }
+    
+    // Validate subdomain name (allow underscores for TXT records)
+    const recordTypes = data.record ? Object.keys(data.record) : [];
+    const subdomainErrors = validateSubdomainName(subdomain, recordTypes);
+    if (subdomainErrors.length > 0) {
+        await fail(`Invalid subdomain name: ${subdomainErrors.join(', ')}`);
+    }
+    
+    // Validate DNS record values
+    if (data.record) {
+        for (const [recordType, recordValue] of Object.entries(data.record)) {
+            const validationErrors = validateRecordValue(recordType, recordValue);
+            if (validationErrors.length > 0) {
+                await fail(`Invalid ${recordType} record: ${validationErrors.join(', ')}`);
+            }
+        }
+    }
+}
+
 async function run() {
 	const token = process.env.GITHUB_TOKEN;
 	const octokit = github.getOctokit(token);
@@ -143,7 +283,14 @@ async function run() {
 				if (isVercelSubdomain) {
 					console.log('✅ Vercel subdomain addition authorized (ownership already verified)');
 				} else {
-					// For regular domains, validate the file owner matches PR author
+					// For regular domains, validate subdomain name and DNS records
+					const content = Buffer.from(
+						file.content,
+						file.encoding || "base64"
+					).toString("utf8");
+					await validateSubdomainAndRecords(file.filename, content);
+					
+					// Validate the file owner matches PR author
 					const newOwner = await getOwner(file.filename, prHeadSha);
 					if (!newOwner) {
 						await fail(`Unable to retrieve owner information from the new file.`);
@@ -168,7 +315,14 @@ async function run() {
 						await fail(result.message);
 					}
 				} else {
-					// For regular domains, check file ownership
+					// For regular domains, validate subdomain name and DNS records
+					const content = Buffer.from(
+						file.content,
+						file.encoding || "base64"
+					).toString("utf8");
+					await validateSubdomainAndRecords(file.filename, content);
+					
+					// Check file ownership
 					const oldOwner = await getOwner(file.filename, prBaseSha);
 					const modifiedNewOwner = await getOwner(file.filename, prHeadSha);
 					if (!modifiedNewOwner) {
