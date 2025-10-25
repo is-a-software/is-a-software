@@ -235,7 +235,12 @@ async function main() {
 
         if (!shouldKeep) {
             console.log(`Deleting orphaned record for ${record.name} (${record.type}: ${record.content})...`);
-            await apiRequest(`/dns_records/${record.id}`, 'DELETE');
+            try {
+                await apiRequest(`/dns_records/${record.id}`, 'DELETE');
+                console.log(`✓ Successfully deleted orphaned record`);
+            } catch (error) {
+                console.log(`⚠️  Failed to delete orphaned record: ${error.message}`);
+            }
         }
     }
 
