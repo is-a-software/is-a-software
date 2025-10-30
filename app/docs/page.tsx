@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/ca
 import { Badge } from '@/app/components/ui/badge'
 import Link from 'next/link';
 import Image from 'next/image';
-import { FileText, Zap, Globe, AlertCircle, Users } from 'lucide-react'
+import { FileText, Users } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Documentation - is-a.software',
@@ -117,7 +117,7 @@ export default function DocsPage() {
                           <Link href={step.link} className="text-purple-400 hover:text-purple-300 underline">
                             is-a.software dashboard
                           </Link>
-                          , sign in with GitHub, and choose your subdomain name like 'myproject'. This will create myproject.is-a.software for you.
+                          , sign in with GitHub, and choose your subdomain name like &apos;myproject&apos;. This will create myproject.is-a.software for you.
                         </>
                       ) : (
                         step.description

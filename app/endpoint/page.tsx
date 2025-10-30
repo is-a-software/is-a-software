@@ -1,6 +1,5 @@
 "use client";
 
-import { Metadata } from 'next'
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card'
 import { Badge } from '@/app/components/ui/badge'
 import { Footer } from '@/app/components/Footer'
@@ -62,7 +61,7 @@ export default function ApiPage() {
           </CardHeader>
           <CardContent>
             <p className="text-amber-700 dark:text-amber-300 text-lg leading-relaxed">
-              We're currently developing comprehensive API endpoints. 
+              We&apos;re currently developing comprehensive API endpoints. 
               This will allow developers to manage their subdomains, 
               check availability, and integrate is-a.software into their applications.
             </p>

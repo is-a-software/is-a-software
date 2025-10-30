@@ -24,7 +24,7 @@ import {
 } from '@/app/components/ui/alert-dialog';
 
 export default function DashboardPage() {
-  const { user, loading, logout } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
   const [domains, setDomains] = useState<Array<{ domain: string; owner: { github: string }; record: Record<string, string>; proxy?: boolean }>>([]);
   const [domainsLoading, setDomainsLoading] = useState(true);
@@ -162,14 +162,7 @@ export default function DashboardPage() {
     }
   }, [domains, refreshing]);
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      router.push('/');
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
+
 
   const handleEditDomain = (domain: { domain: string; record: Record<string, string>; proxy?: boolean }) => {
     // Navigate to edit page (we'll need to create this)
