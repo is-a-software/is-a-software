@@ -4,7 +4,7 @@ import { useAuth } from '@/app/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { Footer } from '@/app/components/Footer';
-import { DashboardHeader } from './components/DashboardHeader';
+import { Navbar } from '@/app/components/Navbar';
 import { WelcomeSection } from './components/WelcomeSection';
 import { StatsCards } from './components/StatsCards';
 import { QuickActions } from './components/QuickActions';
@@ -243,7 +243,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1c1c1c] to-[#111111]">
-      <DashboardHeader user={user} onLogout={handleLogout} />
+      <Navbar currentPage="dashboard" />
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         <WelcomeSection userName={user.displayName} userEmail={user.email} />

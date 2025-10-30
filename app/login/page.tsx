@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Footer } from '@/app/components/Footer';
+import { Navbar } from '@/app/components/Navbar';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { Terminal, ArrowLeft, Github } from 'lucide-react';
 
@@ -31,6 +32,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1c1c1c] to-[#111111] flex flex-col">
+      <Navbar currentPage="login" />
       {/* Main Content Area */}
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md">

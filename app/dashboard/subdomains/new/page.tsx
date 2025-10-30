@@ -7,6 +7,7 @@ import { useAuth } from '@/app/contexts/AuthContext';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
 import { Footer } from '@/app/components/Footer';
+import { Navbar } from '@/app/components/Navbar';
 import { Terminal, ArrowLeft, Globe, Server, FileText, Shield, CheckCircle } from 'lucide-react';
 
 export default function NewSubdomainPage() {
@@ -246,8 +247,10 @@ export default function NewSubdomainPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1c1c1c] to-[#111111] px-6 py-8">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-[#1c1c1c] to-[#111111]">
+      <Navbar currentPage="dashboard" />
+      <div className="px-6 py-8">
+        <div className="max-w-2xl mx-auto">
         <Link href="/dashboard" className="inline-flex items-center gap-2 text-gray-400 hover:text-purple-400 transition-colors mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to Dashboard
         </Link>
@@ -412,10 +415,10 @@ export default function NewSubdomainPage() {
             </form>
           </CardContent>
         </Card>
+        </div>
       </div>
-
       <Footer />
-      </div>
+    </div>
   );
 }
 
