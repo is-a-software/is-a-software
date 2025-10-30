@@ -35,7 +35,7 @@ export function Hero() {
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white">
-              <Link href="https://docs.is-a.software">
+              <Link href="/docs">
                 View Documentation
               </Link>
             </Button>

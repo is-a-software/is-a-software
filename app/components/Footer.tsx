@@ -43,7 +43,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="https://docs.is-a.software" className="text-gray-300 transition-colors hover:text-purple-400">
+                <Link href="/docs" className="text-gray-300 transition-colors hover:text-purple-400">
                   Documentation
                 </Link>
               </li>
