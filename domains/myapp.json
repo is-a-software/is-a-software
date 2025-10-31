@@ -5,5 +5,5 @@
   "record": {
     "CNAME": "Nuggets"
   },
-  "proxy": false
+  "proxy": true
 }
