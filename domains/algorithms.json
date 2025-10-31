@@ -5,5 +5,5 @@
   "record": {
     "CNAME": "saksham-shekher.github.io"
   },
-  "proxy": true
+  "proxy": false
 }
