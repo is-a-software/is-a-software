@@ -1,6 +1,7 @@
 export const runtime = "edge";
 import { NextRequest } from 'next/server';
-import { requireAuth, rateLimit } from '@/lib/auth-middleware';
+import { requireAuth, rateLimit, getClientIP } from '@/lib/auth-middleware';
+import { validateGitHubUsername } from '@/lib/validation';
 
 const GITHUB_API = 'https://api.github.com';
 const OWNER = 'is-a-software';
@@ -14,18 +15,37 @@ const dataCache = new Map<string, { data: DomainData; timestamp: number }>();
 const DATA_CACHE_TTL = 300000; // 5 minutes cache for domain listings (reasonable balance for data freshness)
 
 export async function GET(req: NextRequest) {
+  // Get client IP for enhanced rate limiting
+  const clientIP = getClientIP(req);
+  
+  // Enhanced rate limiting by IP
+  if (!rateLimit(`ip-${clientIP}`, 100, 60000)) {
+    return Response.json({ error: 'Too many requests from this IP. Please wait.' }, { status: 429 });
+  }
+  
   // Authenticate user
   const authResult = await requireAuth(req);
   if (authResult instanceof Response) return authResult;
   
   const { githubLogin, uid } = authResult;
   
-  // Rate limiting
+  // User-specific rate limiting
   if (!rateLimit(`subdomains-${uid}`, 20, 60000)) {
     return Response.json({ error: 'Too many requests. Please wait a moment.' }, { status: 429 });
   }
 
-  const owner = req.nextUrl.searchParams.get('owner')?.toLowerCase();
+  // Validate and sanitize owner parameter
+  const ownerParam = req.nextUrl.searchParams.get('owner');
+  if (!ownerParam) {
+    return Response.json({ error: 'Owner parameter is required' }, { status: 400 });
+  }
+
+  const ownerValidation = validateGitHubUsername(ownerParam);
+  if (!ownerValidation.isValid) {
+    return Response.json({ error: ownerValidation.error }, { status: 400 });
+  }
+
+  const owner = ownerValidation.sanitized!.toLowerCase();
 
   // Check cache first
   const cacheKey = RAW_DB_URL;

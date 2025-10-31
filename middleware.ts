@@ -1,19 +1,67 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { addSecurityHeaders } from '@/lib/security-headers';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Get the pathname of the request (e.g. /, /dashboard, /login)
   const path = request.nextUrl.pathname;
 
   // Define paths that are considered public (no authentication required)
-  const isPublicPath = path === '/login' || path === '/' || path.startsWith('/api/') || path.startsWith('/_next/') || path.startsWith('/favicon');
+  const isPublicPath = path === '/login' || 
+                      path === '/' || 
+                      path === '/about' || 
+                      path === '/docs' || 
+                      path === '/endpoint' || 
+                      path === '/privacy' || 
+                      path === '/terms' ||
+                      path.startsWith('/_next/') || 
+                      path.startsWith('/favicon') ||
+                      path.startsWith('/api/public-stats') ||
+                      path.startsWith('/api/check');
 
-  // For serverless architecture, we let the client-side handle authentication
-  // The dashboard page will check authentication status and redirect if needed
-  // This middleware only handles basic route protection for static assets
+  // Allow public paths
+  if (isPublicPath) {
+    const response = NextResponse.next();
+    return addSecurityHeaders(response);
+  }
 
-  // Allow all requests to pass through - authentication is handled client-side
-  return NextResponse.next();
+  // Protected paths that require authentication
+  const isProtectedPath = path.startsWith('/dashboard') || 
+                         path.startsWith('/api/subdomains') || 
+                         path.startsWith('/api/activity') || 
+                         path.startsWith('/api/stats');
+
+  if (isProtectedPath) {
+    const authHeader = request.headers.get('authorization');
+    const isApiRoute = path.startsWith('/api/');
+
+    // For API routes, check for Bearer token
+    if (isApiRoute) {
+      if (!authHeader?.startsWith('Bearer ')) {
+        return Response.json({ 
+          error: 'Authentication required',
+          code: 'AUTH_REQUIRED' 
+        }, { status: 401 });
+      }
+      // Let the API route handle token validation
+      const response = NextResponse.next();
+      return addSecurityHeaders(response);
+    }
+
+    // For dashboard routes, check if user has a session
+    // If not authenticated, redirect to login
+    const cookies = request.cookies;
+    const hasSession = cookies.get('__session') || authHeader;
+    
+    if (!hasSession) {
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('redirect', path);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
+  const response = NextResponse.next();
+  return addSecurityHeaders(response);
 }
 
 // See "Matching Paths" below to learn more
