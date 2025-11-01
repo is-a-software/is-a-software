@@ -3,7 +3,7 @@
     "github": "pygod7"
   },
   "record": {
-    "CNAME": "b1d6a5515f7d666d.vercel-dns-017.com"
+    "TXT": "vc-domain-verify=unspoken.is-a.software,563f8ea7c110aca9cdc8"
   },
-  "proxy": false
+  "proxy": true
 }
