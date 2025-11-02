@@ -16,7 +16,6 @@ export default function NewSubdomainPage() {
   const [name, setName] = useState('');
   const [type, setType] = useState('CNAME');
   const [value, setValue] = useState('');
-  const [proxy, setProxy] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -210,7 +209,7 @@ export default function NewSubdomainPage() {
       const res = await fetch('/api/subdomains', {
         method: 'POST',
         headers,
-        body: JSON.stringify({ name, ownerGithub: githubLogin, record: { [type]: value }, proxy })
+        body: JSON.stringify({ name, ownerGithub: githubLogin, record: { [type]: value } })
       });
       
       if (!res.ok) {
@@ -372,11 +371,6 @@ export default function NewSubdomainPage() {
                   {type === 'AAAA' && 'Points your subdomain to an IPv6 address (e.g., 2001:db8::1)'}
                   {type === 'TXT' && 'Adds text records for verification, SPF, DKIM, or other purposes (underscores allowed)'}
                 </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <input id="proxy" type="checkbox" checked={proxy} onChange={(e) => setProxy(e.target.checked)} className="h-4 w-4" />
-                <label htmlFor="proxy" className="text-gray-300 text-sm">Enable proxy (Cloudflare orange cloud)</label>
               </div>
 
               {error && <div className="text-red-400 text-sm">{error}</div>}

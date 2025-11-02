@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
     return Response.json({ error: 'Too many registration requests. Please wait a moment.' }, { status: 429 });
   }
 
-  const body = await req.json().catch(() => null) as { name: string; ownerGithub: string; record: Record<string, string>; proxy?: boolean } | null;
+  const body = await req.json().catch(() => null) as { name: string; ownerGithub: string; record: Record<string, string> } | null;
   if (!body || !body.name || !body.ownerGithub || !body.record) {
     return Response.json({ error: 'Invalid request body' }, { status: 400 });
   }
@@ -147,8 +147,7 @@ export async function POST(req: NextRequest) {
     
     const content = {
       owner: { github: body.ownerGithub },
-      record: body.record,
-      proxy: !!body.proxy
+      record: body.record
     };
     
     const blob = Buffer.from(JSON.stringify(content, null, 2)).toString('base64');

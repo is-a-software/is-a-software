@@ -4,6 +4,5 @@
   },
   "record": {
     "CNAME": "mail-mail-is--a-software.dkim1._domainkey.firebasemail.com"
-  },
-  "proxy": false
+  }
 }

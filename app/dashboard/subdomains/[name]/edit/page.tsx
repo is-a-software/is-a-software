@@ -24,7 +24,6 @@ export default function EditSubdomainPage() {
   const [loading, setLoading] = useState(true);
   const [type, setType] = useState('CNAME');
   const [value, setValue] = useState('');
-  const [proxy, setProxy] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -115,7 +114,6 @@ export default function EditSubdomainPage() {
         const recordValue = domain.record[recordType];
         setType(recordType);
         setValue(recordValue);
-        setProxy(!!domain.proxy);
         
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to load domain';
@@ -188,8 +186,7 @@ export default function EditSubdomainPage() {
           ...authHeaders
         },
         body: JSON.stringify({
-          record: { [type]: value.trim() },
-          proxy
+          record: { [type]: value.trim() }
         })
       });
 
@@ -372,19 +369,6 @@ export default function EditSubdomainPage() {
                   {valueError && (
                     <p className="text-red-400 text-xs">{valueError}</p>
                   )}
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="proxy"
-                    checked={proxy}
-                    onChange={(e) => setProxy(e.target.checked)}
-                    className="rounded border-gray-600 bg-black/30 text-purple-600 focus:ring-purple-500 focus:ring-offset-0"
-                  />
-                  <Label htmlFor="proxy" className="text-white text-sm">
-                    Enable proxy protection (recommended for web services)
-                  </Label>
                 </div>
 
                 <div className="flex gap-3 pt-4">

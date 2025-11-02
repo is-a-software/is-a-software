@@ -90,7 +90,6 @@ export default function PrivacyPage() {
               <ul className="space-y-2 text-slate-600 dark:text-slate-400">
                 <li>• <strong>Subdomain names:</strong> The subdomains you register (e.g., &quot;myproject.is-a.software&quot;)</li>
                 <li>• <strong>DNS records:</strong> IP addresses, CNAME targets, and TXT records you configure</li>
-                <li>• <strong>Proxy settings:</strong> Whether you enable Cloudflare proxy for your domain</li>
               </ul>
             </div>
 

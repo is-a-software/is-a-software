@@ -4,6 +4,5 @@
   },
   "record": {
     "TXT": "vc-domain-verify=manstral.is-a.software,8b1e7065c97923ad977c"
-  },
-  "proxy": false
+  }
 }

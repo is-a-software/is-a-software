@@ -4,6 +4,5 @@
   },
   "record": {
     "TXT": "vc-domain-verify=noku.is-a.software,17829ec47679b7bff11c"
-  },
-  "proxy": false
+  }
 }

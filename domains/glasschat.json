@@ -4,6 +4,5 @@
   },
   "record": {
     "CNAME": "glasschat.onrender.com"
-  },
-  "proxy": false
+  }
 }
