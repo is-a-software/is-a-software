@@ -1,10 +1,29 @@
 export const runtime = "edge";
 import { NextRequest } from 'next/server';
 import { requireAuth, rateLimit } from '@/lib/auth-middleware';
+import reservedDomains from '@/config/reserved.json';
 
 const GITHUB_API = 'https://api.github.com';
 const OWNER = 'is-a-software';
 const REPO = 'is-a-software';
+
+/**
+ * Check if a subdomain is reserved
+ */
+function isReservedDomain(subdomain: string): boolean {
+  const lowercased = subdomain.toLowerCase().trim();
+  // Check if the subdomain itself is reserved
+  if (reservedDomains.includes(lowercased)) {
+    return true;
+  }
+  // For multi-level subdomains (e.g., "something.admin"), check if the last part is reserved
+  if (lowercased.includes('.')) {
+    const parts = lowercased.split('.');
+    const lastPart = parts[parts.length - 1];
+    return reservedDomains.includes(lastPart);
+  }
+  return false;
+}
 
 async function gh(path: string, init?: RequestInit) {
   const res = await fetch(`${GITHUB_API}${path}`, {
@@ -45,6 +64,14 @@ export async function GET(req: NextRequest) {
     return Response.json({ 
       available: false, 
       reason: 'Subdomain name cannot exceed 200 characters' 
+    });
+  }
+
+  // Check if domain is reserved
+  if (isReservedDomain(name)) {
+    return Response.json({ 
+      available: false, 
+      reason: 'This subdomain is reserved and cannot be registered' 
     });
   }
 

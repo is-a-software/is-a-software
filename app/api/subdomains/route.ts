@@ -1,6 +1,7 @@
 export const runtime = "edge";
 import { NextRequest } from 'next/server';
 import { requireAuth, rateLimit } from '@/lib/auth-middleware';
+import reservedDomains from '@/config/reserved.json';
 
 const GITHUB_API = 'https://api.github.com';
 const OWNER = 'is-a-software';
@@ -12,6 +13,24 @@ const RAW_DB_URL = 'https://raw.is-a.software/domains.json';
 type DomainData = Array<{ domain?: string; owner?: { github?: string }; record?: Record<string, string> }>;
 const dataCache = new Map<string, { data: DomainData; timestamp: number }>();
 const DATA_CACHE_TTL = 300000; // 5 minutes cache for domain listings (reasonable balance for data freshness)
+
+/**
+ * Check if a subdomain is reserved
+ */
+function isReservedDomain(subdomain: string): boolean {
+  const lowercased = subdomain.toLowerCase().trim();
+  // Check if the subdomain itself is reserved
+  if (reservedDomains.includes(lowercased)) {
+    return true;
+  }
+  // For multi-level subdomains (e.g., "something.admin"), check if the last part is reserved
+  if (lowercased.includes('.')) {
+    const parts = lowercased.split('.');
+    const lastPart = parts[parts.length - 1];
+    return reservedDomains.includes(lastPart);
+  }
+  return false;
+}
 
 export async function GET(req: NextRequest) {
   // Authenticate user
@@ -100,6 +119,14 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null) as { name: string; ownerGithub: string; record: Record<string, string> } | null;
   if (!body || !body.name || !body.ownerGithub || !body.record) {
     return Response.json({ error: 'Invalid request body' }, { status: 400 });
+  }
+
+  // Check if domain is reserved
+  if (isReservedDomain(body.name)) {
+    return Response.json({ 
+      error: 'This subdomain is reserved and cannot be registered',
+      code: 'RESERVED_DOMAIN'
+    }, { status: 403 });
   }
 
   // Verify the requesting user matches the owner

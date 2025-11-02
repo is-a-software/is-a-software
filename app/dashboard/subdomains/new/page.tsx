@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app
 import { Footer } from '@/app/components/Footer';
 import { Navbar } from '@/app/components/Navbar';
 import { Terminal, ArrowLeft, Globe, Server, FileText, Shield, CheckCircle } from 'lucide-react';
+import reservedDomains from '@/config/reserved.json';
 
 export default function NewSubdomainPage() {
   const { user } = useAuth();
@@ -42,6 +43,21 @@ export default function NewSubdomainPage() {
     }
     // Standard validation for other record types (allow dots for multi-level subdomains)
     return lowercased.replace(/[^a-z0-9-.]/g, '');
+  };
+
+  const isReservedDomain = (subdomain: string): boolean => {
+    const lowercased = subdomain.toLowerCase().trim();
+    // Check if the subdomain itself is reserved
+    if (reservedDomains.includes(lowercased)) {
+      return true;
+    }
+    // For multi-level subdomains (e.g., "something.admin"), check if the last part is reserved
+    if (lowercased.includes('.')) {
+      const parts = lowercased.split('.');
+      const lastPart = parts[parts.length - 1];
+      return reservedDomains.includes(lastPart);
+    }
+    return false;
   };
 
   const validateRecordValue = (value: string, recordType: string): { isValid: boolean; message?: string } => {
@@ -167,6 +183,16 @@ export default function NewSubdomainPage() {
 
   // Check availability when name changes (with debounce)
   useEffect(() => {
+    // Check for reserved domain first
+    if (name && isReservedDomain(name)) {
+      setAvailabilityStatus({
+        checking: false,
+        available: false,
+        message: 'This subdomain is reserved and cannot be registered'
+      });
+      return;
+    }
+
     const timer = setTimeout(() => {
       if (name && user) {
         checkAvailability(name);
