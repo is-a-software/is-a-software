@@ -4,6 +4,5 @@
   },
   "record": {
     "CNAME": "oshekharo.github.io"
-  },
-  "proxy": true
+  }
 }

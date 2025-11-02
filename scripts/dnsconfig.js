@@ -95,7 +95,7 @@ async function main() {
             type: recordType.toUpperCase(),
             name: fullDomain,
             content: content,
-            proxied: data.proxy === true,
+            proxied: false,
             ttl: 1 
         });
     }

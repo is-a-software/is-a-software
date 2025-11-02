@@ -33,7 +33,6 @@ You can get your free subdomain using either of the following methods:
 3. ⚙️ **Add your DNS records** in the JSON file.  
    - Include your GitHub username as `owner`.
    - Add your desired DNS records (`A`, `AAAA`, `CNAME`, etc.).
-   - Optionally, set `"proxy": true` to enable Cloudflare proxy.
 4. 🚀 **Create a Pull Request** back to this repository.  
    - If all checks pass, your PR will be auto-merged and your subdomain will be live soon!
 
@@ -45,8 +44,7 @@ You can get your free subdomain using either of the following methods:
   },
   "record": {
     "CNAME": "your-username.github.io"
-  },
-  "proxy": false
+  }
 }
 ```
 

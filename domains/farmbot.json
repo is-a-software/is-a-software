@@ -4,6 +4,5 @@
   },
   "record": {
     "CNAME": "farmbot-discord.vercel.app"
-  },
-  "proxy": true
+  }
 }

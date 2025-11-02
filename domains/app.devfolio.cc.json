@@ -4,6 +4,5 @@
   },
   "record": {
     "CNAME": "eee"
-  },
-  "proxy": true
+  }
 }

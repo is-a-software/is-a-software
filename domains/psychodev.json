@@ -4,6 +4,5 @@
   },
   "record": {
     "CNAME": "abhishekjaat.vercel.app"
-  },
-  "proxy": true
+  }
 }

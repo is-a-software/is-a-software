@@ -4,6 +4,5 @@
   },
   "record": {
     "CNAME": "aimockdata.onrender.com"
-  },
-  "proxy": false
+  }
 }

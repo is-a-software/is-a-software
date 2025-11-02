@@ -4,6 +4,5 @@
   },
   "record": {
     "CNAME": "is-a-software.github.io"
-  },
-  "proxy": false
+  }
 }

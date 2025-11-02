@@ -26,7 +26,7 @@ import {
 export default function DashboardPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [domains, setDomains] = useState<Array<{ domain: string; owner: { github: string }; record: Record<string, string>; proxy?: boolean }>>([]);
+  const [domains, setDomains] = useState<Array<{ domain: string; owner: { github: string }; record: Record<string, string> }>>([]);
   const [domainsLoading, setDomainsLoading] = useState(true);
   const [domainsError, setDomainsError] = useState('');
   const [activeMap, setActiveMap] = useState<Record<string, boolean>>({});
@@ -72,8 +72,8 @@ export default function DashboardPage() {
           headers: authHeaders
         });
         if (!res.ok) throw new Error(await res.text());
-        const items: Array<{ domain: string; owner: { github: string }; record: Record<string, string>; proxy?: boolean }> = await res.json();
-        if (!aborted) setDomains(items.map((i) => ({ domain: i.domain, owner: i.owner, record: i.record, proxy: i.proxy })));
+        const items: Array<{ domain: string; owner: { github: string }; record: Record<string, string> }> = await res.json();
+        if (!aborted) setDomains(items.map((i) => ({ domain: i.domain, owner: i.owner, record: i.record })));
       } catch (e) {
         const message = e instanceof Error ? e.message : 'Failed to load domains';
         if (!aborted) setDomainsError(message);
@@ -164,7 +164,7 @@ export default function DashboardPage() {
 
 
 
-  const handleEditDomain = (domain: { domain: string; record: Record<string, string>; proxy?: boolean }) => {
+  const handleEditDomain = (domain: { domain: string; record: Record<string, string> }) => {
     // Navigate to edit page (we'll need to create this)
     router.push(`/dashboard/subdomains/${domain.domain}/edit`);
   };

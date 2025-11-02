@@ -4,6 +4,5 @@
   },
   "record": {
     "CNAME": "ns1.vercel-dns.com"
-  },
-  "proxy": false
+  }
 }
