@@ -8,6 +8,20 @@ const DOMAIN_FOLDER = "domains";
 const BASE_DOMAIN = "is-a.software";
 const API_BASE_URL = `https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}`;
 
+// Load reserved domains from config
+const RESERVED_DOMAINS = JSON.parse(
+    fs.readFileSync(path.join(__dirname, '..', 'config', 'reserved.json'), 'utf8')
+);
+
+/**
+ * Check if a subdomain is reserved
+ * @param {string} subdomain - The subdomain to check (without the base domain)
+ * @returns {boolean} - True if the subdomain is reserved
+ */
+function isReservedDomain(subdomain) {
+    return RESERVED_DOMAINS.includes(subdomain.toLowerCase());
+}
+
 async function apiRequest(endpoint, method = 'GET', body = null) {
     const headers = {
         "Authorization": `Bearer ${CF_API_TOKEN}`,
@@ -47,6 +61,7 @@ async function main() {
     console.log(`📁 Managing subdomains from: ${DOMAIN_FOLDER}/`);
     console.log(`🔒 Root domain (${BASE_DOMAIN}) records will be protected from deletion`);
     console.log(`🔒 System records (MX, NS, SOA, CAA) will be protected from deletion`);
+    console.log(`🔒 Reserved domains (${RESERVED_DOMAINS.length} total) will be protected from modification`);
 
     const desiredRecords = new Map();
     const vercelTxtRecords = new Map(); // Map to track _vercel TXT records by unique ID
@@ -60,6 +75,12 @@ async function main() {
 
     for (const file of localFiles) {
         const subdomain = path.basename(file, '.json');
+        
+        // Check if this is a reserved domain
+        if (isReservedDomain(subdomain)) {
+            console.log(`⚠️  Skipping reserved domain: ${subdomain}`);
+            continue;
+        }
         
         const fileContent = fs.readFileSync(path.join(localFilesDir, file), 'utf8');
         const data = JSON.parse(fileContent);
@@ -219,6 +240,15 @@ async function main() {
             if (record.name === BASE_DOMAIN) {
                 console.log(`🔒 Protecting root domain record: ${record.type} ${record.content} (not managed by repo)`);
                 return true;
+            }
+            
+            // CRITICAL: Never delete reserved domain records
+            if (record.name.endsWith(`.${BASE_DOMAIN}`)) {
+                const subdomain = record.name.replace(`.${BASE_DOMAIN}`, '');
+                if (isReservedDomain(subdomain)) {
+                    console.log(`🔒 Protecting reserved domain record: ${record.name} (${record.type})`);
+                    return true;
+                }
             }
             
             // Keep system-managed DNS records (MX, NS, SOA, etc.)
