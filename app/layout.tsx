@@ -100,7 +100,7 @@ export default function RootLayout({
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}/>
       </head>
-      <body className={`${inter.variable} ${poppins.variable} font-poppins antialiased bg-gradient-to-br from-[#1c1c1c] to-[#111111] text-white`}>
+      <body className={`${inter.variable} ${poppins.variable} font-poppins antialiased bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a] text-white`}>
         <AuthProvider>
           {children}
         </AuthProvider>

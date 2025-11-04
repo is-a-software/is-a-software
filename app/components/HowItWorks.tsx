@@ -23,11 +23,11 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <div className="bg-gradient-to-br from-[#1c1c1c] to-[#111111] py-24">
+    <div className="bg-gradient-to-b from-black via-[#0a0a0a] to-[#1a1a1a] py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="mb-4 text-white">How It Works</h2>
-          <p className="text-gray-300">
+          <p className="text-gray-400">
             Get started in three simple steps. No credit card required.
           </p>
         </div>
@@ -37,20 +37,20 @@ export function HowItWorks() {
             {steps.map((step, index) => (
               <div key={step.title} className="relative">
                 {index < steps.length - 1 && (
-                  <div className="absolute left-1/2 top-16 hidden h-1 w-full bg-gradient-to-r from-purple-600 to-cyan-600 md:block" />
+                  <div className="absolute left-1/2 top-16 hidden h-1 w-full bg-[#333333] md:block" />
                 )}
                 
                 <div className="relative flex flex-col items-center text-center">
-                  <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-cyan-600 text-white shadow-lg">
-                    <step.icon className="h-10 w-10" />
+                  <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border-2 border-[#333333] text-white shadow-lg shadow-white/[0.05]">
+                    <step.icon className="h-10 w-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]" />
                   </div>
                   
-                  <div className="mb-2 inline-block rounded-full bg-purple-900/30 backdrop-blur-sm border border-purple-500/20 px-3 py-1">
-                    <span className="text-purple-400">Step {step.step}</span>
+                  <div className="mb-2 inline-block rounded-full bg-gradient-to-r from-[#0C0C0C] to-[#1a1a1a] border border-[#333333] px-3 py-1 shadow-[0_0_10px_rgba(255,255,255,0.03)]">
+                    <span className="text-gray-400">Step {step.step}</span>
                   </div>
                   
                   <h3 className="mb-2 text-white">{step.title}</h3>
-                  <p className="text-gray-300">{step.description}</p>
+                  <p className="text-gray-400">{step.description}</p>
                 </div>
               </div>
             ))}

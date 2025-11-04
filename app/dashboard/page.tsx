@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/app/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { Footer } from '@/app/components/Footer';
 import { Navbar } from '@/app/components/Navbar';
 import { WelcomeSection } from './components/WelcomeSection';
@@ -40,6 +40,7 @@ export default function DashboardPage() {
     domain: null,
     deleting: false
   });
+  const hasInitiallyCheckedRef = useRef(false);
 
   // Helper function to get auth headers
   const getAuthHeaders = useCallback(async (): Promise<Record<string, string>> => {
@@ -141,12 +142,18 @@ export default function DashboardPage() {
       const promises = domains.map(async (domain) => {
         const hostname = `${domain.domain}.is-a.software`;
         try {
-          await fetch(`https://${hostname}`, { 
-            method: 'HEAD', 
-            mode: 'no-cors',
-            cache: 'no-store'
+          const authHeaders = await getAuthHeaders();
+          const response = await fetch(`/api/domain-status?subdomain=${encodeURIComponent(domain.domain)}`, {
+            cache: 'no-store',
+            headers: authHeaders
           });
-          newActiveMap[hostname] = true;
+          
+          if (response.ok) {
+            const data = await response.json();
+            newActiveMap[hostname] = data.status === 'active';
+          } else {
+            newActiveMap[hostname] = false;
+          }
         } catch {
           newActiveMap[hostname] = false;
         }
@@ -160,8 +167,14 @@ export default function DashboardPage() {
     } finally {
       setRefreshing(false);
     }
-  }, [domains, refreshing]);
+  }, [domains, refreshing, getAuthHeaders]);
 
+  useEffect(() => {
+    if (domains.length > 0 && !hasInitiallyCheckedRef.current) {
+      hasInitiallyCheckedRef.current = true;
+      refreshDomainStatuses();
+    }
+  }, [domains]);
 
 
   const handleEditDomain = (domain: { domain: string; record: Record<string, string> }) => {
@@ -221,10 +234,10 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#1c1c1c] to-[#111111] flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto mb-4"></div>
-          <p className="text-gray-300">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading...</p>
         </div>
       </div>
     );
@@ -235,7 +248,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1c1c1c] to-[#111111]">
+    <div className="min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a]">
       <Navbar currentPage="dashboard" />
 
       <main className="max-w-7xl mx-auto px-6 py-8">
@@ -271,10 +284,10 @@ export default function DashboardPage() {
       
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ open, domain: null, deleting: false })}>
-        <AlertDialogContent className="bg-gray-900 border-gray-700">
+        <AlertDialogContent className="bg-gradient-to-br from-[#0C0C0C] to-black border-[#333333]">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-white">Delete Subdomain</AlertDialogTitle>
-            <AlertDialogDescription className="text-gray-300">
+            <AlertDialogDescription className="text-gray-400">
               Are you sure you want to delete <span className="font-mono text-red-400">{deleteDialog.domain?.domain}.is-a.software</span>?
               <br />
               <span className="text-red-400 font-medium mt-2 block">This action cannot be undone.</span>
