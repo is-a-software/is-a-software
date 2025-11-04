@@ -40,7 +40,7 @@ export function Hero() {
             <div className="rounded-md bg-gradient-to-r from-[#0a0a0a] to-[#0C0C0C] border border-[#333333] px-4 py-2 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
               <code className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                 <TypingAnimation 
-                  texts={['example', 'yourproject', 'foo', 'yourapp']} 
+                  texts={['myproject', 'something', 'foo', 'yourapp', 'devprofiles', 'redroselinux', 'glasschat', 'unspoken', 'covergenius', 'githubroaster', 'relivemusic']} 
                   className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
                 />
                 .is-a.software
