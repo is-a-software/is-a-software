@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/app/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { Footer } from '@/app/components/Footer';
 import { Navbar } from '@/app/components/Navbar';
 import { WelcomeSection } from './components/WelcomeSection';
@@ -40,6 +40,7 @@ export default function DashboardPage() {
     domain: null,
     deleting: false
   });
+  const hasInitiallyCheckedRef = useRef(false);
 
   // Helper function to get auth headers
   const getAuthHeaders = useCallback(async (): Promise<Record<string, string>> => {
@@ -169,10 +170,11 @@ export default function DashboardPage() {
   }, [domains, refreshing, getAuthHeaders]);
 
   useEffect(() => {
-    if (domains.length > 0 && Object.keys(activeMap).length === 0) {
+    if (domains.length > 0 && !hasInitiallyCheckedRef.current) {
+      hasInitiallyCheckedRef.current = true;
       refreshDomainStatuses();
     }
-  }, [domains, activeMap, refreshDomainStatuses]);
+  }, [domains]);
 
 
   const handleEditDomain = (domain: { domain: string; record: Record<string, string> }) => {
