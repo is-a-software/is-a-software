@@ -23,7 +23,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <div className="bg-[#000000] py-24">
+    <div className="bg-gradient-to-b from-black via-[#0a0a0a] to-[#1a1a1a] py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="mb-4 text-white">How It Works</h2>
@@ -41,11 +41,11 @@ export function HowItWorks() {
                 )}
                 
                 <div className="relative flex flex-col items-center text-center">
-                  <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-[#0C0C0C] border-2 border-[#333333] text-white shadow-lg">
-                    <step.icon className="h-10 w-10" />
+                  <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border-2 border-[#333333] text-white shadow-lg shadow-white/[0.05]">
+                    <step.icon className="h-10 w-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]" />
                   </div>
                   
-                  <div className="mb-2 inline-block rounded-full bg-[#0C0C0C] border border-[#333333] px-3 py-1">
+                  <div className="mb-2 inline-block rounded-full bg-gradient-to-r from-[#0C0C0C] to-[#1a1a1a] border border-[#333333] px-3 py-1 shadow-[0_0_10px_rgba(255,255,255,0.03)]">
                     <span className="text-gray-400">Step {step.step}</span>
                   </div>
                   

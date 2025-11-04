@@ -20,7 +20,7 @@ export function StatsCards({
 }: StatsCardsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      <Card className="bg-[#0C0C0C] border-[#333333] hover:border-[#555555] transition-colors">
+      <Card className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] hover:border-[#555555] transition-colors shadow-[0_0_15px_rgba(255,255,255,0.02)] hover:shadow-[0_0_25px_rgba(255,255,255,0.04)]">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -29,14 +29,14 @@ export function StatsCards({
                 {stats ? stats.total : (domainsLoading ? '—' : domainsCount)}
               </p>
             </div>
-            <div className="p-2 bg-[#1A1A1A] border border-[#333333] rounded-lg">
-              <Globe className="h-6 w-6 text-white" />
+            <div className="p-2 bg-gradient-to-br from-[#1A1A1A] to-[#0a0a0a] border border-[#333333] rounded-lg shadow-[0_0_10px_rgba(255,255,255,0.03)]">
+              <Globe className="h-6 w-6 text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.2)]" />
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-[#0C0C0C] border-[#333333] hover:border-[#555555] transition-colors">
+      <Card className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] hover:border-[#555555] transition-colors shadow-[0_0_15px_rgba(255,255,255,0.02)] hover:shadow-[0_0_25px_rgba(255,255,255,0.04)]">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -45,8 +45,8 @@ export function StatsCards({
                 {stats ? stats.active : (domainsLoading ? '—' : activeCount)}
               </p>
             </div>
-            <div className="p-2 bg-[#1A1A1A] border border-[#333333] rounded-lg">
-              <CheckCircle className="h-6 w-6 text-green-400" />
+            <div className="p-2 bg-gradient-to-br from-[#1A1A1A] to-[#0a0a0a] border border-[#333333] rounded-lg shadow-[0_0_10px_rgba(255,255,255,0.03)]">
+              <CheckCircle className="h-6 w-6 text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
             </div>
           </div>
         </CardContent>

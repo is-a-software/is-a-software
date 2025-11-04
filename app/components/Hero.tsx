@@ -1,22 +1,17 @@
 import { Button } from "./ui/button";
-import { Terminal, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { TypingAnimation } from "./TypingAnimation";
 import Link from "next/link";
 
 export function Hero() {
-  return (
-    <div className="relative overflow-hidden bg-[#000000]">
+  return (  
+    <div className="relative overflow-hidden bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a]">
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-[#0C0C0C] border border-[#333333] px-4 py-2">
-            <Terminal className="h-4 w-4 text-white" />
-            <span className="text-gray-300">Free subdomain service for developers</span>
-          </div>
-          
-          <h1 className="mb-6 text-5xl sm:text-6xl font-bold text-white">
+          <h1 className="mb-6 text-5xl sm:text-6xl font-bold text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.15)]">
             Get Your Free
             <br />
-            <span className="text-white">
+            <span className="text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.25)]">
               .is-a.software
             </span>
             <br />
@@ -28,13 +23,13 @@ export function Hero() {
           </p>
           
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Button asChild size="lg" className="group bg-[#000000] hover:bg-[#0C0C0C] text-white border border-[#333333]">
+            <Button asChild size="lg" className="group bg-[#000000] hover:bg-[#0C0C0C] text-white border border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all">
               <Link href="/dashboard">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-[#333333] text-gray-300 hover:bg-[#0C0C0C] hover:text-white">
+            <Button asChild size="lg" variant="outline" className="border-[#333333] text-gray-300 hover:bg-[#0C0C0C] hover:text-white hover:shadow-[0_0_15px_rgba(255,255,255,0.08)]">
               <Link href="/docs">
                 View Documentation
               </Link>
@@ -42,8 +37,8 @@ export function Hero() {
           </div>
           
           <div className="mt-8 flex items-center justify-center gap-2">
-            <div className="rounded-md bg-[#0C0C0C] border border-[#333333] px-4 py-2">
-              <code className="text-white">
+            <div className="rounded-md bg-gradient-to-r from-[#0a0a0a] to-[#0C0C0C] border border-[#333333] px-4 py-2 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+              <code className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                 <TypingAnimation 
                   texts={['example', 'yourproject', 'foo', 'yourapp']} 
                   className="text-white"
@@ -65,6 +60,10 @@ export function Hero() {
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
+        
+        {/* Subtle glow orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/[0.02] rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-white/[0.015] rounded-full blur-3xl"></div>
       </div>
     </div>
   );

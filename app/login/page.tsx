@@ -31,7 +31,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#000000] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a] flex flex-col">
       <Navbar currentPage="login" />
       {/* Main Content Area */}
       <div className="flex-1 flex items-center justify-center p-4">
@@ -47,11 +47,11 @@ export default function LoginPage() {
 
           {/* Logo */}
           <div className="flex items-center gap-2 mb-8">
-            <Terminal className="h-8 w-8 text-white" />
+            <Terminal className="h-8 w-8 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" />
             <span className="text-2xl font-bold text-white">is-a.software</span>
           </div>
 
-          <Card className="bg-[#0C0C0C] border-[#333333]">
+          <Card className="bg-gradient-to-br from-[#0C0C0C] via-[#0a0a0a] to-black border-[#333333] shadow-[0_0_30px_rgba(255,255,255,0.05)]">
             <CardHeader className="text-center">
               <CardTitle className="text-white">
                 Welcome to is-a.software
@@ -71,7 +71,7 @@ export default function LoginPage() {
                 type="button"
                 onClick={handleGitHubSignIn}
                 disabled={loading}
-                className="w-full bg-[#000000] hover:bg-[#0C0C0C] text-white border border-[#333333] h-12 text-lg"
+                className="w-full bg-gradient-to-r from-black to-[#1a1a1a] hover:from-[#0a0a0a] hover:to-[#2a2a2a] text-white border border-[#333333] h-12 text-lg shadow-[0_0_20px_rgba(255,255,255,0.08)] hover:shadow-[0_0_30px_rgba(255,255,255,0.12)] transition-all"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">

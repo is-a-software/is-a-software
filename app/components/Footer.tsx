@@ -1,15 +1,14 @@
-import { Terminal, Github, Twitter, Mail, Linkedin } from "lucide-react";
+import { Github, Twitter, Mail, Linkedin } from "lucide-react";
 import { FaDiscord } from "react-icons/fa";
 import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="border-t border-[#333333] bg-[#000000]">
+    <footer className="border-t border-[#333333] bg-gradient-to-b from-black to-[#0a0a0a]">
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
             <div className="mb-4 flex items-center gap-2">
-              <Terminal className="h-6 w-6 text-white" />
               <span className="text-white font-semibold">is-a.software</span>
             </div>
             <p className="mb-4 max-w-sm text-gray-400">

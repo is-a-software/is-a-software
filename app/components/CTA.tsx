@@ -58,7 +58,7 @@ export function CTA() {
   };
 
   return (
-    <div className="bg-[#000000] py-24">
+    <div className="bg-gradient-to-b from-[#1a1a1a] via-black to-black py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="mb-4 text-white">Ready to Get Started?</h2>
@@ -75,7 +75,7 @@ export function CTA() {
                   value={subdomain}
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
-                  className="h-12 pr-40 bg-[#0C0C0C] border-[#333333] text-white placeholder:text-gray-500 focus:border-white focus:ring-white"
+                  className="h-12 pr-40 bg-gradient-to-r from-[#0a0a0a] to-[#0C0C0C] border-[#333333] text-white placeholder:text-gray-500 focus:border-white focus:ring-white"
                   maxLength={63}
                   minLength={3}
                 />
@@ -87,7 +87,7 @@ export function CTA() {
                 size="lg" 
                 onClick={handleCheck}
                 disabled={checking || !subdomain.trim()}
-                className="h-12 bg-[#000000] hover:bg-[#0C0C0C] text-white border border-[#333333] disabled:opacity-50"
+                className="h-12 bg-gradient-to-r from-black to-[#1a1a1a] hover:from-[#0a0a0a] hover:to-[#2a2a2a] text-white border border-[#333333] disabled:opacity-50 shadow-[0_0_15px_rgba(255,255,255,0.08)] hover:shadow-[0_0_25px_rgba(255,255,255,0.12)] transition-all"
               >
                 {checking ? (
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
@@ -100,7 +100,7 @@ export function CTA() {
             
             {/* Error Message */}
             {error && (
-              <div className="mt-4 p-4 rounded-lg border border-[#333333] bg-[#0C0C0C]">
+              <div className="mt-4 p-4 rounded-lg border border-[#333333] bg-gradient-to-br from-[#0C0C0C] to-[#050505]">
                 <div className="flex items-center gap-3 text-red-400">
                   <XCircle className="h-5 w-5 flex-shrink-0" />
                   <div className="text-left">
@@ -115,10 +115,10 @@ export function CTA() {
             {checkResult && (
               <div className={`mt-4 p-4 rounded-lg border transition-all duration-200 ${
                 checkResult.available 
-                  ? 'border-[#333333] bg-[#0C0C0C]' 
+                  ? 'border-[#333333] bg-gradient-to-br from-[#0C0C0C] to-[#050505]' 
                   : checkResult.reserved 
-                  ? 'border-[#333333] bg-[#0C0C0C]'
-                  : 'border-[#333333] bg-[#0C0C0C]'
+                  ? 'border-[#333333] bg-gradient-to-br from-[#0C0C0C] to-[#050505]'
+                  : 'border-[#333333] bg-gradient-to-br from-[#0C0C0C] to-[#050505]'
               }`}>
                 {checkResult.available ? (
                   <div className="flex items-center gap-3 text-white">

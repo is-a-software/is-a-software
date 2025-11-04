@@ -13,51 +13,51 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className="min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a]">
       <Navbar currentPage="privacy" />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.15)] mb-4">
             Privacy Policy
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             Your privacy is important to us. This policy explains how we collect, use, and protect your information.
           </p>
-          <Badge variant="outline" className="mt-4">
+          <Badge variant="outline" className="mt-4 bg-[#1a1a1a] border-[#333333] text-gray-300">
             Last updated: October 20, 2025
           </Badge>
         </div>
 
         {/* Quick Summary */}
-        <Card className="mb-8 border-blue-200 bg-blue-50/50 dark:border-blue-800 dark:bg-blue-950/50">
+        <Card className="mb-8 border-[#333333] bg-gradient-to-br from-[#0C0C0C] to-[#050505] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
-              <Eye className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Eye className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Quick Summary
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div className="flex items-start gap-2">
-                <Shield className="h-4 w-4 mt-0.5 text-green-600" />
+                <Shield className="h-4 w-4 mt-0.5 text-green-500 drop-shadow-[0_0_6px_rgba(34,197,94,0.4)]" />
                 <div>
-                  <strong>Minimal Collection</strong>
-                  <p className="text-slate-600 dark:text-slate-400">Only GitHub username, email, and domain preferences</p>
+                  <strong className="text-white">Minimal Collection</strong>
+                  <p className="text-gray-400">Only GitHub username, email, and domain preferences</p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
-                <Database className="h-4 w-4 mt-0.5 text-blue-600" />
+                <Database className="h-4 w-4 mt-0.5 drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]" />
                 <div>
-                  <strong>Transparent Storage</strong>
-                  <p className="text-slate-600 dark:text-slate-400">Domain records stored in public GitHub repository</p>
+                  <strong className="text-white">Transparent Storage</strong>
+                  <p className="text-gray-400">Domain records stored in public GitHub repository</p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
-                <Users className="h-4 w-4 mt-0.5 text-purple-600" />
+                <Users className="h-4 w-4 mt-0.5 drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]" />
                 <div>
-                  <strong>No Sharing</strong>
-                  <p className="text-slate-600 dark:text-slate-400">We never sell or share your personal data</p>
+                  <strong className="text-white">No Sharing</strong>
+                  <p className="text-gray-400">We never sell or share your personal data</p>
                 </div>
               </div>
             </div>
@@ -65,39 +65,39 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Information We Collect */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Database className="h-5 w-5 text-blue-600" />
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Database className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Information We Collect
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
-              <h3 className="font-semibold text-lg mb-3">Account Information</h3>
-              <p className="text-slate-700 dark:text-slate-300 mb-3">
+              <h3 className="font-semibold text-lg mb-3 text-white">Account Information</h3>
+              <p className="text-gray-400 mb-3">
                 When you sign in with GitHub, we collect:
               </p>
-              <ul className="space-y-2 text-slate-600 dark:text-slate-400">
-                <li>• <strong>GitHub username:</strong> Used for authentication and domain ownership verification</li>
-                <li>• <strong>Email address:</strong> For account communication and security notifications</li>
-                <li>• <strong>GitHub profile information:</strong> Public profile data as provided by GitHub OAuth</li>
+              <ul className="space-y-2 text-gray-400">
+                <li>• <strong className="text-white">GitHub username:</strong> Used for authentication and domain ownership verification</li>
+                <li>• <strong className="text-white">Email address:</strong> For account communication and security notifications</li>
+                <li>• <strong className="text-white">GitHub profile information:</strong> Public profile data as provided by GitHub OAuth</li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold text-lg mb-3">Domain Configuration</h3>
-              <ul className="space-y-2 text-slate-600 dark:text-slate-400">
-                <li>• <strong>Subdomain names:</strong> The subdomains you register (e.g., &quot;myproject.is-a.software&quot;)</li>
-                <li>• <strong>DNS records:</strong> IP addresses, CNAME targets, and TXT records you configure</li>
+              <h3 className="font-semibold text-lg mb-3 text-white">Domain Configuration</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>• <strong className="text-white">Subdomain names:</strong> The subdomains you register (e.g., &quot;myproject.is-a.software&quot;)</li>
+                <li>• <strong className="text-white">DNS records:</strong> IP addresses, CNAME targets, and TXT records you configure</li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-semibold text-lg mb-3">Usage Information</h3>
-              <ul className="space-y-2 text-slate-600 dark:text-slate-400">
-                <li>• <strong>Activity logs:</strong> Domain creation, modification, and deletion activities</li>
-                <li>• <strong>API usage:</strong> Rate limiting and abuse prevention data</li>
+              <h3 className="font-semibold text-lg mb-3 text-white">Usage Information</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>• <strong className="text-white">Activity logs:</strong> Domain creation, modification, and deletion activities</li>
+                <li>• <strong className="text-white">API usage:</strong> Rate limiting and abuse prevention data</li>
                 <li>• <strong>Authentication tokens:</strong> Temporarily cached for performance (expires within 1 hour)</li>
               </ul>
             </div>
@@ -105,18 +105,18 @@ export default function PrivacyPage() {
         </Card>
 
         {/* How We Use Your Information */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5 text-green-600" />
+            <CardTitle className="flex items-center gap-2 text-white">
+              <FileText className="h-5 w-5 text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
               How We Use Your Information
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h3 className="font-semibold mb-3">Service Provision</h3>
-                <ul className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
+                <h3 className="font-semibold mb-3 text-white">Service Provision</h3>
+                <ul className="space-y-1 text-sm text-gray-400">
                   <li>• Authenticate your account</li>
                   <li>• Manage subdomain allocations</li>
                   <li>• Configure DNS records</li>
@@ -125,8 +125,8 @@ export default function PrivacyPage() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold mb-3">Platform Security</h3>
-                <ul className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
+                <h3 className="font-semibold mb-3 text-white">Platform Security</h3>
+                <ul className="space-y-1 text-sm text-gray-400">
                   <li>• Prevent abuse and spam</li>
                   <li>• Enforce rate limits</li>
                   <li>• Verify domain ownership</li>
@@ -139,41 +139,41 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Data Storage and Security */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-purple-600" />
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Shield className="h-5 w-5 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]" />
               Data Storage & Security
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <h3 className="font-semibold mb-2">Where Your Data Lives</h3>
-              <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 space-y-3">
+              <h3 className="font-semibold mb-2 text-white">Where Your Data Lives</h3>
+              <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0C0C0C] rounded-lg p-4 space-y-3 border border-[#333333]">
                 <div className="flex items-start gap-3">
-                  <Badge variant="secondary">GitHub</Badge>
+                  <Badge variant="secondary" className="bg-[#0C0C0C] border-[#333333] text-gray-300">GitHub</Badge>
                   <div>
-                    <p className="font-medium">Domain Configuration</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                    <p className="font-medium text-white">Domain Configuration</p>
+                    <p className="text-sm text-gray-400">
                       Domain records are stored as JSON files in our public GitHub repository. 
                       This ensures transparency and allows community verification.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Badge variant="secondary">Firebase</Badge>
+                  <Badge variant="secondary" className="bg-[#0C0C0C] border-[#333333] text-gray-300">Firebase</Badge>
                   <div>
-                    <p className="font-medium">Authentication</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                    <p className="font-medium text-white">Authentication</p>
+                    <p className="text-sm text-gray-400">
                       Authentication tokens are managed by Firebase Auth with industry-standard security measures.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Badge variant="secondary">Memory Cache</Badge>
+                  <Badge variant="secondary" className="bg-[#0C0C0C] border-[#333333] text-gray-300">Memory Cache</Badge>
                   <div>
-                    <p className="font-medium">Temporary Data</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                    <p className="font-medium text-white">Temporary Data</p>
+                    <p className="text-sm text-gray-400">
                       Performance caches are stored temporarily in memory and automatically expire.
                     </p>
                   </div>
@@ -182,28 +182,28 @@ export default function PrivacyPage() {
             </div>
 
             <div>
-              <h3 className="font-semibold mb-2">Security Measures</h3>
-              <ul className="space-y-1 text-slate-600 dark:text-slate-400">
-                <li>• <strong>Encryption:</strong> All data transmitted over HTTPS</li>
-                <li>• <strong>Authentication:</strong> GitHub OAuth with token validation</li>
-                <li>• <strong>Authorization:</strong> Users can only access their own domains</li>
-                <li>• <strong>Rate Limiting:</strong> Protection against abuse and spam</li>
-                <li>• <strong>Input Validation:</strong> All DNS records validated before storage</li>
+              <h3 className="font-semibold mb-2 text-white">Security Measures</h3>
+              <ul className="space-y-1 text-gray-400">
+                <li>• <strong className="text-white">Encryption:</strong> All data transmitted over HTTPS</li>
+                <li>• <strong className="text-white">Authentication:</strong> GitHub OAuth with token validation</li>
+                <li>• <strong className="text-white">Authorization:</strong> Users can only access their own domains</li>
+                <li>• <strong className="text-white">Rate Limiting:</strong> Protection against abuse and spam</li>
+                <li>• <strong className="text-white">Input Validation:</strong> All DNS records validated before storage</li>
               </ul>
             </div>
           </CardContent>
         </Card>
 
         {/* Third-Party Services */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-orange-600" />
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Users className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Third-Party Services
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="mb-4 text-slate-700 dark:text-slate-300">
+            <p className="mb-4 text-gray-400">
               We integrate with the following trusted services to provide our platform:
             </p>
             <div className="space-y-4">
@@ -227,23 +227,23 @@ export default function PrivacyPage() {
                   privacy: 'https://vercel.com/legal/privacy-policy'
                 }
               ].map((item, index) => (
-                <div key={index} className="border rounded-lg p-4">
+                <div key={index} className="border border-[#333333] rounded-lg p-4 bg-gradient-to-br from-[#1a1a1a] to-[#0C0C0C] hover:shadow-[0_0_10px_rgba(255,255,255,0.05)] transition-shadow">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold">{item.service}</h4>
+                    <h4 className="font-semibold text-white">{item.service}</h4>
                     <Link 
                       href={item.privacy} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline text-sm"
+                      className="text-gray-300 hover:text-white hover:underline text-sm"
                     >
                       Privacy Policy →
                     </Link>
                   </div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
-                    <strong>Purpose:</strong> {item.purpose}
+                  <p className="text-sm text-gray-400 mb-1">
+                    <strong className="text-white">Purpose:</strong> {item.purpose}
                   </p>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
-                    <strong>Data Shared:</strong> {item.data}
+                  <p className="text-sm text-gray-400">
+                    <strong className="text-white">Data Shared:</strong> {item.data}
                   </p>
                 </div>
               ))}
@@ -252,31 +252,31 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Your Rights */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Eye className="h-5 w-5 text-indigo-600" />
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Eye className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Your Privacy Rights
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h3 className="font-semibold mb-3">Access & Control</h3>
-                <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                  <li>• <strong>View your data:</strong> Access all your domain configurations in the dashboard</li>
-                  <li>• <strong>Export data:</strong> Download your domain records as JSON</li>
-                  <li>• <strong>Update information:</strong> Modify DNS records anytime</li>
-                  <li>• <strong>Delete domains:</strong> Remove domains you no longer need</li>
+                <h3 className="font-semibold mb-3 text-white">Access & Control</h3>
+                <ul className="space-y-2 text-sm text-gray-400">
+                  <li>• <strong className="text-white">View your data:</strong> Access all your domain configurations in the dashboard</li>
+                  <li>• <strong className="text-white">Export data:</strong> Download your domain records as JSON</li>
+                  <li>• <strong className="text-white">Update information:</strong> Modify DNS records anytime</li>
+                  <li>• <strong className="text-white">Delete domains:</strong> Remove domains you no longer need</li>
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold mb-3">Data Deletion</h3>
-                <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                  <li>• <strong>Account deletion:</strong> Contact us to delete your account</li>
-                  <li>• <strong>Data removal:</strong> We&apos;ll remove all personal data within 30 days</li>
-                  <li>• <strong>Domain records:</strong> Publicly visible records remain for service integrity</li>
-                  <li>• <strong>Cache expiration:</strong> Cached data expires automatically</li>
+                <h3 className="font-semibold mb-3 text-white">Data Deletion</h3>
+                <ul className="space-y-2 text-sm text-gray-400">
+                  <li>• <strong className="text-white">Account deletion:</strong> Contact us to delete your account</li>
+                  <li>• <strong className="text-white">Data removal:</strong> We&apos;ll remove all personal data within 30 days</li>
+                  <li>• <strong className="text-white">Domain records:</strong> Publicly visible records remain for service integrity</li>
+                  <li>• <strong className="text-white">Cache expiration:</strong> Cached data expires automatically</li>
                 </ul>
               </div>
             </div>
@@ -284,44 +284,47 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Cookies and Tracking */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle>Cookies & Tracking</CardTitle>
+            <CardTitle className="text-white">Cookies & Tracking</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-slate-700 dark:text-slate-300 mb-4">
+            <p className="text-gray-400 mb-4">
               We use minimal tracking to provide and improve our service:
             </p>
             <div className="space-y-3">
               <div>
-                <Badge variant="outline" className="mr-2">Essential</Badge>
-                <strong>Authentication Cookies:</strong> Required for login and session management
+                <Badge variant="outline" className="mr-2 bg-[#1a1a1a] border-[#333333] text-gray-300">Essential</Badge>
+                <strong className="text-white">Authentication Cookies:</strong>
+                <span className="text-gray-400"> Required for login and session management</span>
               </div>
               <div>
-                <Badge variant="outline" className="mr-2">Performance</Badge>
-                <strong>Caching:</strong> Temporary data storage to improve response times
+                <Badge variant="outline" className="mr-2 bg-[#1a1a1a] border-[#333333] text-gray-300">Performance</Badge>
+                <strong className="text-white">Caching:</strong>
+                <span className="text-gray-400"> Temporary data storage to improve response times</span>
               </div>
               <div>
-                <Badge variant="outline" className="mr-2">Security</Badge>
-                <strong>Rate Limiting:</strong> Protection against abuse and spam attempts
+                <Badge variant="outline" className="mr-2 bg-[#1a1a1a] border-[#333333] text-gray-300">Security</Badge>
+                <strong className="text-white">Rate Limiting:</strong>
+                <span className="text-gray-400"> Protection against abuse and spam attempts</span>
               </div>
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-4">
+            <p className="text-sm text-gray-400 mt-4">
               We do not use advertising cookies, third-party trackers, or analytics that identify individual users.
             </p>
           </CardContent>
         </Card>
 
         {/* Changes to Privacy Policy */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle>Policy Updates</CardTitle>
+            <CardTitle className="text-white">Policy Updates</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-slate-700 dark:text-slate-300 mb-4">
+            <p className="text-gray-400 mb-4">
               We may update this privacy policy from time to time. When we do:
             </p>
-            <ul className="space-y-1 text-slate-600 dark:text-slate-400">
+            <ul className="space-y-1 text-gray-400">
               <li>• We&apos;ll update the &quot;Last updated&quot; date at the top of this page</li>
               <li>• For significant changes, we&apos;ll notify users via email or dashboard announcement</li>
               <li>• The updated policy will be effective immediately upon posting</li>
@@ -331,28 +334,28 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Contact Information */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Mail className="h-5 w-5 text-blue-600" />
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Mail className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Contact Us
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-slate-700 dark:text-slate-300 mb-4">
+            <p className="text-gray-400 mb-4">
               Have questions about this privacy policy or how we handle your data? We&apos;re here to help:
             </p>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-2">General Questions</h4>
-                <ul className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
-                  <li>• <Link href="https://github.com/is-a-software/is-a-software/discussions" className="text-blue-600 hover:underline">GitHub Discussions</Link></li>
-                  <li>• <Link href="https://github.com/is-a-software/is-a-software/issues" className="text-blue-600 hover:underline">GitHub Issues</Link></li>
+                <h4 className="font-semibold mb-2 text-white">General Questions</h4>
+                <ul className="space-y-1 text-sm text-gray-400">
+                  <li>• <Link href="https://github.com/is-a-software/is-a-software/discussions" className="text-gray-300 hover:text-white hover:underline">GitHub Discussions</Link></li>
+                  <li>• <Link href="https://github.com/is-a-software/is-a-software/issues" className="text-gray-300 hover:text-white hover:underline">GitHub Issues</Link></li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">Privacy Concerns</h4>
-                <ul className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
+                <h4 className="font-semibold mb-2 text-white">Privacy Concerns</h4>
+                <ul className="space-y-1 text-sm text-gray-400">
                   <li>• Open a privacy-related issue on GitHub</li>
                   <li>• Tag your issue with &quot;privacy&quot; label</li>
                   <li>• We&apos;ll respond within 48 hours</li>
@@ -363,11 +366,11 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Footer */}
-        <div className="text-center text-sm text-slate-500 dark:text-slate-400">
+        <div className="text-center text-sm text-gray-400">
           <p>
             This privacy policy is part of our commitment to transparency. 
             View the source of this page on{' '}
-            <Link href="https://github.com/is-a-software/is-a-software" className="text-blue-600 hover:underline">
+            <Link href="https://github.com/is-a-software/is-a-software" className="text-gray-300 hover:text-white hover:underline">
               GitHub
             </Link>
             .

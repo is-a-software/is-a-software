@@ -221,7 +221,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#000000] flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
           <p className="text-gray-400">Loading...</p>
@@ -235,7 +235,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#000000]">
+    <div className="min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a]">
       <Navbar currentPage="dashboard" />
 
       <main className="max-w-7xl mx-auto px-6 py-8">
@@ -271,7 +271,7 @@ export default function DashboardPage() {
       
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ open, domain: null, deleting: false })}>
-        <AlertDialogContent className="bg-[#0C0C0C] border-[#333333]">
+        <AlertDialogContent className="bg-gradient-to-br from-[#0C0C0C] to-black border-[#333333]">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-white">Delete Subdomain</AlertDialogTitle>
             <AlertDialogDescription className="text-gray-400">

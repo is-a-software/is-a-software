@@ -14,33 +14,33 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className="min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a]">
       <Navbar currentPage="about" />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.15)] mb-6">
             About is-a.software
           </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
             Empowering developers worldwide with free, reliable subdomain services for showcasing their amazing projects.
           </p>
         </div>
 
         {/* Mission Section */}
-        <Card className="mb-12">
+        <Card className="mb-12 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-2xl">
-              <Heart className="h-6 w-6 text-red-500" />
+            <CardTitle className="flex items-center gap-2 text-2xl text-white">
+              <Heart className="h-6 w-6 text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
               Our Mission
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p className="text-lg text-gray-400 leading-relaxed">
               We believe every developer deserves an easy way to showcase their work online. Whether you&apos;re building your first portfolio, 
               launching an innovative project, or contributing to open source, having a professional web presence shouldn&apos;t be a barrier.
             </p>
-            <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p className="text-lg text-gray-400 leading-relaxed">
               is-a.software provides free subdomains that you can use to bring your projects to life, making web development more 
               accessible and enjoyable for everyone.
             </p>
@@ -49,67 +49,67 @@ export default function AboutPage() {
 
         {/* What We Offer */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <Card>
+          <Card className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_15px_rgba(255,255,255,0.02)]">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Globe className="h-5 w-5 text-blue-500" />
+              <CardTitle className="flex items-center gap-2 text-white">
+                <Globe className="h-5 w-5 text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]" />
                 Perfect For
               </CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
                 <li className="flex items-center gap-2">
-                  <Badge variant="secondary">Portfolio</Badge>
-                  <span>Personal developer portfolios</span>
+                  <Badge variant="secondary" className="bg-[#1a1a1a] border-[#333333] text-gray-300">Portfolio</Badge>
+                  <span className="text-gray-400">Personal developer portfolios</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Badge variant="secondary">Demo</Badge>
-                  <span>Project demonstrations</span>
+                  <Badge variant="secondary" className="bg-[#1a1a1a] border-[#333333] text-gray-300">Demo</Badge>
+                  <span className="text-gray-400">Project demonstrations</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Badge variant="secondary">Open Source</Badge>
-                  <span>Open source project sites</span>
+                  <Badge variant="secondary" className="bg-[#1a1a1a] border-[#333333] text-gray-300">Open Source</Badge>
+                  <span className="text-gray-400">Open source project sites</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Badge variant="secondary">Learning</Badge>
-                  <span>Educational experiments</span>
+                  <Badge variant="secondary" className="bg-[#1a1a1a] border-[#333333] text-gray-300">Learning</Badge>
+                  <span className="text-gray-400">Educational experiments</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Badge variant="secondary">Startup</Badge>
-                  <span>Early-stage projects</span>
+                  <Badge variant="secondary" className="bg-[#1a1a1a] border-[#333333] text-gray-300">Startup</Badge>
+                  <span className="text-gray-400">Early-stage projects</span>
                 </li>
               </ul>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_15px_rgba(255,255,255,0.02)]">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Zap className="h-5 w-5 text-yellow-500" />
+              <CardTitle className="flex items-center gap-2 text-white">
+                <Zap className="h-5 w-5 text-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.4)]" />
                 Features
               </CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span>Free subdomain allocation</span>
+                  <div className="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_6px_rgba(34,197,94,0.6)]"></div>
+                  <span className="text-gray-400">Free subdomain allocation</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span>GitHub OAuth authentication</span>
+                  <div className="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_6px_rgba(34,197,94,0.6)]"></div>
+                  <span className="text-gray-400">GitHub OAuth authentication</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span>Easy DNS record management</span>
+                  <div className="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_6px_rgba(34,197,94,0.6)]"></div>
+                  <span className="text-gray-400">Easy DNS record management</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span>Support for A, AAAA, CNAME, TXT records</span>
+                  <div className="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_6px_rgba(34,197,94,0.6)]"></div>
+                  <span className="text-gray-400">Support for A, AAAA, CNAME, TXT records</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span>Real-time activity tracking</span>
+                  <div className="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_6px_rgba(34,197,94,0.6)]"></div>
+                  <span className="text-gray-400">Real-time activity tracking</span>
                 </li>
               </ul>
             </CardContent>
@@ -117,10 +117,10 @@ export default function AboutPage() {
         </div>
 
         {/* How It Works */}
-        <Card className="mb-12">
+        <Card className="mb-12 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-2xl">
-              <Users className="h-6 w-6 text-green-500" />
+            <CardTitle className="flex items-center gap-2 text-2xl text-white">
+              <Users className="h-6 w-6 text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
               How It Works
             </CardTitle>
           </CardHeader>
@@ -133,11 +133,11 @@ export default function AboutPage() {
                 { step: '4', title: 'Deploy', desc: 'Launch your project to the world' }
               ].map((item, index) => (
                 <div key={index} className="text-center">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full flex items-center justify-center font-bold text-lg mx-auto mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border-2 border-[#333333] text-white rounded-full flex items-center justify-center font-bold text-lg mx-auto mb-4 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
                     {item.step}
                   </div>
-                  <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm">{item.desc}</p>
+                  <h3 className="font-semibold text-lg mb-2 text-white">{item.title}</h3>
+                  <p className="text-gray-400 text-sm">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -145,21 +145,21 @@ export default function AboutPage() {
         </Card>
 
         {/* Technical Details */}
-        <Card className="mb-12">
+        <Card className="mb-12 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-2xl">
-              <Shield className="h-6 w-6 text-purple-500" />
+            <CardTitle className="flex items-center gap-2 text-2xl text-white">
+              <Shield className="h-6 w-6 text-purple-500 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]" />
               Technical Foundation
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-slate-700 dark:text-slate-300">
+            <p className="text-gray-400">
               is-a.software is built with modern web technologies to ensure reliability, security, and performance:
             </p>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-2">Frontend</h4>
-                <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                <h4 className="font-semibold mb-2 text-white">Frontend</h4>
+                <ul className="text-sm text-gray-400 space-y-1">
                   <li>• Next.js 15 with TypeScript</li>
                   <li>• Tailwind CSS for styling</li>
                   <li>• Shadcn/ui components</li>
@@ -167,8 +167,8 @@ export default function AboutPage() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">Backend</h4>
-                <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                <h4 className="font-semibold mb-2 text-white">Backend</h4>
+                <ul className="text-sm text-gray-400 space-y-1">
                   <li>• Edge Runtime for performance</li>
                   <li>• Firebase Authentication</li>
                   <li>• GitHub API integration</li>
@@ -180,20 +180,20 @@ export default function AboutPage() {
         </Card>
 
         {/* Community & Open Source */}
-        <Card className="mb-12">
+        <Card className="mb-12 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-2xl">
-              <Github className="h-6 w-6" />
+            <CardTitle className="flex items-center gap-2 text-2xl text-white">
+              <Github className="h-6 w-6 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Open Source & Community
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-slate-700 dark:text-slate-300">
+            <p className="text-gray-400">
               We believe in transparency and community collaboration. is-a.software is completely open source, 
               and we welcome contributions from developers around the world.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button asChild variant="outline">
+              <Button asChild variant="outline" className="border-[#333333] text-gray-300 hover:bg-[#0C0C0C] hover:text-white shadow-[0_0_10px_rgba(255,255,255,0.05)]">
                 <Link href="https://github.com/is-a-software/is-a-software" target="_blank" rel="noopener noreferrer">
                   <Github className="w-4 h-4 mr-2" />
                   View Source Code

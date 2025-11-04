@@ -78,31 +78,31 @@ export default function DocsPage() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className="min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a]">
       <Navbar currentPage="docs" />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.15)] mb-4">
             Documentation
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             Easy steps to get your free .is-a.software subdomain working.
           </p>
-          <Badge variant="outline" className="mt-4">
-            <FileText className="w-4 h-4 mr-2" />
+          <Badge variant="outline" className="mt-4 bg-[#1a1a1a] border-[#333333] text-gray-300">
+            <FileText className="w-4 h-4 mr-2 drop-shadow-[0_0_6px_rgba(255,255,255,0.2)]" />
             User Guide
           </Badge>
         </div>
           
         {/* Step-by-Step Guide */}
-        <Card className="mb-12">
+        <Card className="mb-12 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardContent className='mt-8'>
             <div className="space-y-6">
               {steps.map((step, index) => (
-                <div key={index} className="flex gap-4 p-6 border rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                <div key={index} className="flex gap-4 p-6 border border-[#333333] rounded-lg bg-gradient-to-br from-[#0C0C0C] to-[#050505] hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-shadow">
                   <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                    <div className="w-10 h-10 bg-gradient-to-br from-[#1a1a1a] to-[#0C0C0C] border border-[#333333] text-white rounded-full flex items-center justify-center font-bold text-lg shadow-[0_0_10px_rgba(255,255,255,0.1)]">
                       {step.number}
                     </div>
                   </div>
@@ -110,11 +110,11 @@ export default function DocsPage() {
                     <h3 className="text-xl font-semibold text-white mb-2">
                       Step {step.number}: {step.title}
                     </h3>
-                    <p className="text-gray-300 leading-relaxed mb-4">
+                    <p className="text-gray-400 leading-relaxed mb-4">
                       {step.link ? (
                         <>
                           Go to{' '}
-                          <Link href={step.link} className="text-purple-400 hover:text-purple-300 underline">
+                          <Link href={step.link} className="text-gray-200 hover:text-white underline">
                             is-a.software dashboard
                           </Link>
                           , sign in with GitHub, and choose your subdomain name like &apos;myproject&apos;. This will create myproject.is-a.software for you.
@@ -130,12 +130,12 @@ export default function DocsPage() {
                           alt={`Step ${step.number} illustration`}
                           width={800}
                           height={400}
-                          className="rounded-lg border border-gray-600"
+                          className="rounded-lg border border-[#333333]"
                         />
                       </div>
                     )}
                     {step.note && (
-                      <div className="mt-4 p-4 bg-yellow-600/20 border border-yellow-500/30 rounded-lg">
+                      <div className="mt-4 p-4 bg-gradient-to-r from-[#1a1a1a] to-[#0C0C0C] border border-yellow-500/30 rounded-lg">
                         <p className="text-yellow-200 text-sm leading-relaxed">
                           {step.note}
                         </p>
@@ -149,21 +149,21 @@ export default function DocsPage() {
         </Card>
 
         {/* DNS Record Types */}
-        <Card className="mb-12">
+        <Card className="mb-12 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5 text-blue-500" />
+            <CardTitle className="flex items-center gap-2 text-white">
+              <FileText className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Types of DNS Records You Can Use
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
               {recordTypes.map((record, index) => (
-                <div key={index} className="border rounded-lg p-4 bg-slate-50 dark:bg-slate-800/50">
-                  <h3 className="text-lg font-semibold mb-2">{record.type}</h3>
-                  <p className="text-muted-foreground text-sm mb-3">{record.description}</p>
-                  <div className="bg-muted p-2 rounded">
-                    <code className="text-green-600 dark:text-green-400 text-xs">{record.example}</code>
+                <div key={index} className="border border-[#333333] rounded-lg p-4 bg-gradient-to-br from-[#1a1a1a] to-[#0C0C0C] hover:shadow-[0_0_10px_rgba(255,255,255,0.05)] transition-shadow">
+                  <h3 className="text-lg font-semibold mb-2 text-white">{record.type}</h3>
+                  <p className="text-gray-400 text-sm mb-3">{record.description}</p>
+                  <div className="bg-[#0C0C0C] p-2 rounded border border-[#333333]">
+                    <code className="text-green-400 text-xs">{record.example}</code>
                   </div>
                 </div>
               ))}
@@ -172,10 +172,10 @@ export default function DocsPage() {
         </Card>
 
         {/* Community & Support */}
-        <Card>
+        <Card className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-blue-500" />
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Users className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Community & Support
             </CardTitle>
           </CardHeader>
@@ -185,19 +185,19 @@ export default function DocsPage() {
                 href="https://discord.com/invite/AeAjegXn6D" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="border border-indigo-200 dark:border-indigo-500/30 rounded-lg p-4 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors group"
+                className="border border-[#333333] rounded-lg p-4 bg-gradient-to-br from-[#1a1a1a] to-[#0C0C0C] hover:shadow-[0_0_15px_rgba(255,255,255,0.08)] transition-all group"
               >
-                <h3 className="font-semibold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">Discord Community</h3>
-                <p className="text-muted-foreground text-sm">Join our Discord server for real-time support and discussions</p>
+                <h3 className="font-semibold mb-2 text-white group-hover:text-gray-200">Discord Community</h3>
+                <p className="text-gray-400 text-sm">Join our Discord server for real-time support and discussions</p>
               </a>
               <a 
                 href="https://github.com/is-a-software/is-a-software/issues" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="border rounded-lg p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group"
+                className="border border-[#333333] rounded-lg p-4 bg-gradient-to-br from-[#1a1a1a] to-[#0C0C0C] hover:shadow-[0_0_15px_rgba(255,255,255,0.08)] transition-all group"
               >
-                <h3 className="font-semibold mb-2 group-hover:text-slate-600 dark:group-hover:text-slate-300">Issue Tracker</h3>
-                <p className="text-muted-foreground text-sm">Report bugs, request features, or ask questions on GitHub</p>
+                <h3 className="font-semibold mb-2 text-white group-hover:text-gray-200">Issue Tracker</h3>
+                <p className="text-gray-400 text-sm">Report bugs, request features, or ask questions on GitHub</p>
               </a>
             </div>
           </CardContent>

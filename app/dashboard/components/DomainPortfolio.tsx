@@ -92,7 +92,7 @@ export function DomainPortfolio({
                   <Globe className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <h3 className="text-lg font-medium text-white mb-2">Ready to go live?</h3>
                   <p className="text-sm mb-4">Create your first subdomain to get started with is-a.software</p>
-                  <Button asChild className="bg-[#000000] hover:bg-[#0C0C0C] text-white border border-[#333333]">
+                  <Button asChild className="bg-gradient-to-r from-black to-[#1a1a1a] hover:from-[#0a0a0a] hover:to-[#2a2a2a] text-white border border-[#333333] shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_25px_rgba(255,255,255,0.08)] transition-all">
                     <Link href="/dashboard/subdomains/new">
                       <Plus className="h-4 w-4 mr-2" />
                       Create My First Domain
@@ -107,7 +107,7 @@ export function DomainPortfolio({
                 const isActive = activeMap[hostname];
 
                 return (
-                  <Card key={d.domain} className="bg-[#0C0C0C] border-[#333333] hover:border-[#555555] transition-colors">
+                  <Card key={d.domain} className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] hover:border-[#555555] transition-colors shadow-[0_0_15px_rgba(255,255,255,0.02)] hover:shadow-[0_0_25px_rgba(255,255,255,0.04)]">
                     <CardContent className="p-4">
                       <div className="space-y-3">
                         <div className="flex items-start justify-between">

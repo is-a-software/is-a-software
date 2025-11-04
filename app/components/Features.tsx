@@ -36,7 +36,7 @@ const features = [
 
 export function Features() {
   return (
-    <div id="features" className="bg-[#000000] py-24">
+    <div id="features" className="bg-gradient-to-b from-[#1a1a1a] via-black to-black py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="mb-4 text-white">Why Choose is-a.software?</h2>
@@ -47,10 +47,10 @@ export function Features() {
         
         <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
-            <Card key={feature.title} className="bg-[#0C0C0C] border-[#333333] transition-all hover:shadow-lg hover:bg-[#040404] hover:border-[#555555]">
+            <Card key={feature.title} className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] transition-all hover:shadow-lg hover:shadow-white/[0.05] hover:bg-gradient-to-br hover:from-[#1a1a1a] hover:to-[#0a0a0a] hover:border-[#555555]">
               <CardContent className="p-6">
-                <div className="mb-4 inline-flex rounded-lg bg-[#1A1A1A] border border-[#333333] p-3">
-                  <feature.icon className="h-6 w-6 text-white" />
+                <div className="mb-4 inline-flex rounded-lg bg-gradient-to-br from-[#1A1A1A] to-[#0a0a0a] border border-[#333333] p-3 shadow-[0_0_15px_rgba(255,255,255,0.03)]">
+                  <feature.icon className="h-6 w-6 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]" />
                 </div>
                 <h3 className="mb-2 text-white">{feature.title}</h3>
                 <p className="text-gray-400">{feature.description}</p>
