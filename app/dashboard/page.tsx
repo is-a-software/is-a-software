@@ -141,12 +141,18 @@ export default function DashboardPage() {
       const promises = domains.map(async (domain) => {
         const hostname = `${domain.domain}.is-a.software`;
         try {
-          await fetch(`https://${hostname}`, { 
-            method: 'HEAD', 
-            mode: 'no-cors',
-            cache: 'no-store'
+          const authHeaders = await getAuthHeaders();
+          const response = await fetch(`/api/domain-status?subdomain=${encodeURIComponent(domain.domain)}`, {
+            cache: 'no-store',
+            headers: authHeaders
           });
-          newActiveMap[hostname] = true;
+          
+          if (response.ok) {
+            const data = await response.json();
+            newActiveMap[hostname] = data.status === 'active';
+          } else {
+            newActiveMap[hostname] = false;
+          }
         } catch {
           newActiveMap[hostname] = false;
         }
@@ -160,8 +166,13 @@ export default function DashboardPage() {
     } finally {
       setRefreshing(false);
     }
-  }, [domains, refreshing]);
+  }, [domains, refreshing, getAuthHeaders]);
 
+  useEffect(() => {
+    if (domains.length > 0 && Object.keys(activeMap).length === 0) {
+      refreshDomainStatuses();
+    }
+  }, [domains, activeMap, refreshDomainStatuses]);
 
 
   const handleEditDomain = (domain: { domain: string; record: Record<string, string> }) => {

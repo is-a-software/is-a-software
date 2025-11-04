@@ -15,19 +15,19 @@ export function Footer() {
               Free subdomain service for developers. Share your projects with the world using a memorable domain.
             </p>
             <div className="flex gap-4">
-              <Link href="https://github.com/is-a-software/is-a-software" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-colors hover:text-white">
+              <Link href="https://github.com/is-a-software/is-a-software" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]">
                 <Github className="h-5 w-5" />
               </Link>
-              <Link href="https://x.com/oyepriyansh" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-colors hover:text-white">
+              <Link href="https://x.com/oyepriyansh" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-blue-400 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">
                 <Twitter className="h-5 w-5" />
               </Link>
-              <Link href="https://linkedin.com/u/priyanshprajapat" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-colors hover:text-white">
+              <Link href="https://linkedin.com/u/priyanshprajapat" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-blue-500 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">
                 <Linkedin className="h-5 w-5" />
               </Link>
-              <Link href="https://discord.com/invite/AeAjegXn6D" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-colors hover:text-white">
+              <Link href="https://discord.com/invite/AeAjegXn6D" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-[#5865F2] hover:drop-shadow-[0_0_8px_rgba(88,101,242,0.6)]">
                 <FaDiscord className="h-5 w-5" />
               </Link>
-              <Link href="mailto:admin@is-a.software" className="text-gray-500 transition-colors hover:text-white">
+              <Link href="mailto:admin@is-a.software" className="text-gray-500 transition-all hover:text-green-400 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]">
                 <Mail className="h-5 w-5" />
               </Link>
             </div>
@@ -72,17 +72,19 @@ export function Footer() {
         </div>
         
         <div className="mt-12 border-t border-[#333333] pt-8">
-          <p className="text-center text-gray-400">
-            © 2025 is-a.software. Built with ❤️ for developers by{" "}
-            <Link 
-              href="https://oyepriyansh.github.io" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-white hover:text-gray-300 transition-colors"
-            >
-              Priyansh Prajapat
-            </Link>.
-          </p>
+          <div className="text-center text-gray-400 space-y-2">
+            <p>© {new Date().getFullYear()} is-a.software | All Rights Reserved</p>
+            <p>Built with ❤️  by{" "}
+              <Link 
+                href="https://oyepriyansh.github.io" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-gray-300 transition-colors"
+              >
+                Priyansh Prajapat
+              </Link>.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

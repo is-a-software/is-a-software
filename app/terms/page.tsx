@@ -31,8 +31,8 @@ export default function TermsPage() {
         </div>
 
         {/* Important Notice */}
-        <Alert className="mb-8 border-yellow-500/30 bg-gradient-to-r from-[#1a1a1a] to-[#0C0C0C]">
-          <AlertTriangle className="h-4 w-4 text-yellow-500" />
+        <Alert className="mb-8 border-yellow-500/40 bg-gradient-to-r from-[#1a1a1a] to-[#0C0C0C] shadow-[0_0_20px_rgba(234,179,8,0.15)]">
+          <AlertTriangle className="h-4 w-4 text-yellow-400 drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
           <AlertDescription className="text-yellow-200">
             <strong>Important:</strong> By using is-a.software, you agree to these terms. 
             If you disagree with any part of these terms, please do not use our service.
@@ -40,10 +40,10 @@ export default function TermsPage() {
         </Alert>
 
         {/* Service Description */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-blue-500/30 shadow-[0_0_25px_rgba(59,130,246,0.15)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
-              <Globe className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
+              <Globe className="h-5 w-5 text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
               Service Description
             </CardTitle>
           </CardHeader>
@@ -67,10 +67,10 @@ export default function TermsPage() {
         </Card>
 
         {/* Acceptable Use */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-green-500/30 shadow-[0_0_25px_rgba(34,197,94,0.15)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
-              <Shield className="h-5 w-5 text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
+              <Shield className="h-5 w-5 text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
               Acceptable Use Policy
             </CardTitle>
             <CardDescription className="text-gray-400">

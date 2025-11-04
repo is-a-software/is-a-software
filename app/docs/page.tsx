@@ -57,7 +57,7 @@ export default function DocsPage() {
     {
       type: "CNAME",
       description: "Connect your subdomain to another website (best for most websites)",
-      example: "your-project.vercel.app"
+      example: "71ce80-some-dns-record.com"
     },
     {
       type: "A Record",
@@ -72,7 +72,7 @@ export default function DocsPage() {
     {
       type: "TXT Record",
       description: "Add verification codes or configuration text",
-      example: "verification-token-here"
+      example: "some-random-token-like-178297bff11ec47679bc"
     }
   ];
 
@@ -89,8 +89,8 @@ export default function DocsPage() {
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             Easy steps to get your free .is-a.software subdomain working.
           </p>
-          <Badge variant="outline" className="mt-4 bg-[#1a1a1a] border-[#333333] text-gray-300">
-            <FileText className="w-4 h-4 mr-2 drop-shadow-[0_0_6px_rgba(255,255,255,0.2)]" />
+          <Badge variant="outline" className="mt-4 bg-[#1a1a1a] border-blue-500/30 text-blue-400">
+            <FileText className="w-4 h-4 mr-2 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
             User Guide
           </Badge>
         </div>
@@ -102,7 +102,7 @@ export default function DocsPage() {
               {steps.map((step, index) => (
                 <div key={index} className="flex gap-4 p-6 border border-[#333333] rounded-lg bg-gradient-to-br from-[#0C0C0C] to-[#050505] hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-shadow">
                   <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-gradient-to-br from-[#1a1a1a] to-[#0C0C0C] border border-[#333333] text-white rounded-full flex items-center justify-center font-bold text-lg shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-400/30 text-purple-400 rounded-full flex items-center justify-center font-bold text-lg shadow-[0_0_15px_rgba(168,85,247,0.3)]">
                       {step.number}
                     </div>
                   </div>
@@ -153,7 +153,7 @@ export default function DocsPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
               <FileText className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
-              Types of DNS Records You Can Use
+              Types of DNS Records You Can Use (your record value will be different)
             </CardTitle>
           </CardHeader>
           <CardContent>

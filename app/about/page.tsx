@@ -28,10 +28,10 @@ export default function AboutPage() {
         </div>
 
         {/* Mission Section */}
-        <Card className="mb-12 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+        <Card className="mb-12 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-red-500/30 shadow-[0_0_25px_rgba(239,68,68,0.15)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl text-white">
-              <Heart className="h-6 w-6 text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
+              <Heart className="h-6 w-6 text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.6)]" />
               Our Mission
             </CardTitle>
           </CardHeader>
@@ -49,10 +49,10 @@ export default function AboutPage() {
 
         {/* What We Offer */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <Card className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_15px_rgba(255,255,255,0.02)]">
+          <Card className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.15)]">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <Globe className="h-5 w-5 text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]" />
+                <Globe className="h-5 w-5 text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
                 Perfect For
               </CardTitle>
             </CardHeader>
@@ -82,10 +82,10 @@ export default function AboutPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_15px_rgba(255,255,255,0.02)]">
+          <Card className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-yellow-500/30 shadow-[0_0_20px_rgba(234,179,8,0.15)]">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
-                <Zap className="h-5 w-5 text-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.4)]" />
+                <Zap className="h-5 w-5 text-yellow-400 drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
                 Features
               </CardTitle>
             </CardHeader>

@@ -23,7 +23,7 @@ export function Navbar({ currentPage = "home" }: NavbarProps) {
   const { user, logout } = useAuth();
 
   return (
-    <header className="bg-gradient-to-r from-[#0a0a0a] via-[#0C0C0C] to-[#0a0a0a] backdrop-blur-md border-b border-[#333333] sticky top-0 z-50 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+    <header className="bg-gradient-to-r from-[#0a0a0a] via-[#0C0C0C] to-[#0a0a0a] backdrop-blur-md border-b border-[#333333] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

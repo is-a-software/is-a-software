@@ -6,31 +6,43 @@ const features = [
     icon: Zap,
     title: "Instant Setup",
     description: "Get your subdomain configured in minutes. No complex setup or waiting periods required.",
+    color: "from-yellow-400 to-orange-500",
+    glow: "rgba(251,191,36,0.4)",
   },
   {
     icon: Shield,
     title: "Free Forever",
     description: "Completely free with no hidden costs. We believe in supporting the developer community.",
+    color: "from-green-400 to-emerald-500",
+    glow: "rgba(34,197,94,0.4)",
   },
   {
     icon: Globe,
     title: "Custom DNS",
     description: "Point your subdomain to any IP address or CNAME. Full control over your DNS configuration.",
+    color: "from-blue-400 to-cyan-500",
+    glow: "rgba(59,130,246,0.4)",
   },
   {
     icon: Code,
     title: "Developer Friendly",
     description: "Built by developers, for developers. Simple API and documentation to get you started.",
+    color: "from-purple-400 to-pink-500",
+    glow: "rgba(168,85,247,0.4)",
   },
   {
     icon: Rocket,
     title: "Fast & Reliable",
     description: "Lightning-fast DNS propagation with 99.9% uptime. Your projects deserve the best.",
+    color: "from-red-400 to-rose-500",
+    glow: "rgba(239,68,68,0.4)",
   },
   {
     icon: HeartHandshake,
     title: "Community Driven",
     description: "Join a growing community of developers using .is-a.software for their projects.",
+    color: "from-pink-400 to-fuchsia-500",
+    glow: "rgba(236,72,153,0.4)",
   },
 ];
 
@@ -49,8 +61,8 @@ export function Features() {
           {features.map((feature) => (
             <Card key={feature.title} className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] transition-all hover:shadow-lg hover:shadow-white/[0.05] hover:bg-gradient-to-br hover:from-[#1a1a1a] hover:to-[#0a0a0a] hover:border-[#555555]">
               <CardContent className="p-6">
-                <div className="mb-4 inline-flex rounded-lg bg-gradient-to-br from-[#1A1A1A] to-[#0a0a0a] border border-[#333333] p-3 shadow-[0_0_15px_rgba(255,255,255,0.03)]">
-                  <feature.icon className="h-6 w-6 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]" />
+                <div className={`mb-4 inline-flex rounded-lg bg-gradient-to-br ${feature.color} p-3 shadow-[0_0_20px_${feature.glow}]`}>
+                  <feature.icon className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mb-2 text-white">{feature.title}</h3>
                 <p className="text-gray-400">{feature.description}</p>

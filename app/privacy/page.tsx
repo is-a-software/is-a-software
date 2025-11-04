@@ -30,31 +30,31 @@ export default function PrivacyPage() {
         </div>
 
         {/* Quick Summary */}
-        <Card className="mb-8 border-[#333333] bg-gradient-to-br from-[#0C0C0C] to-[#050505] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+        <Card className="mb-8 border-purple-500/30 bg-gradient-to-br from-[#0C0C0C] to-[#050505] shadow-[0_0_25px_rgba(168,85,247,0.15)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
-              <Eye className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
+              <Eye className="h-5 w-5 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
               Quick Summary
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div className="flex items-start gap-2">
-                <Shield className="h-4 w-4 mt-0.5 text-green-500 drop-shadow-[0_0_6px_rgba(34,197,94,0.4)]" />
+                <Shield className="h-4 w-4 mt-0.5 text-green-400 drop-shadow-[0_0_6px_rgba(34,197,94,0.6)]" />
                 <div>
                   <strong className="text-white">Minimal Collection</strong>
                   <p className="text-gray-400">Only GitHub username, email, and domain preferences</p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
-                <Database className="h-4 w-4 mt-0.5 drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]" />
+                <Database className="h-4 w-4 mt-0.5 text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.6)]" />
                 <div>
                   <strong className="text-white">Transparent Storage</strong>
                   <p className="text-gray-400">Domain records stored in public GitHub repository</p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
-                <Users className="h-4 w-4 mt-0.5 drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]" />
+                <Users className="h-4 w-4 mt-0.5 text-cyan-400 drop-shadow-[0_0_6px_rgba(34,211,238,0.6)]" />
                 <div>
                   <strong className="text-white">No Sharing</strong>
                   <p className="text-gray-400">We never sell or share your personal data</p>
@@ -65,10 +65,10 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Information We Collect */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-cyan-500/30 shadow-[0_0_25px_rgba(34,211,238,0.15)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
-              <Database className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
+              <Database className="h-5 w-5 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
               Information We Collect
             </CardTitle>
           </CardHeader>

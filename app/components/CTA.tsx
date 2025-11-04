@@ -63,7 +63,7 @@ export function CTA() {
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="mb-4 text-white">Ready to Get Started?</h2>
           <p className="mb-10 text-gray-400">
-            Join thousands of developers already using .is-a.software for their projects.
+            Join many  developers already using .is-a.software for their projects.
           </p>
           
           <div className="mx-auto max-w-md">
@@ -75,7 +75,7 @@ export function CTA() {
                   value={subdomain}
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
-                  className="h-12 pr-40 bg-gradient-to-r from-[#0a0a0a] to-[#0C0C0C] border-[#333333] text-white placeholder:text-gray-500 focus:border-white focus:ring-white"
+                  className="h-12 pr-40 bg-gradient-to-r from-[#0a0a0a] to-[#0C0C0C] border-purple-500/30 text-white placeholder:text-gray-500 focus:border-purple-400 focus:ring-purple-400 focus:shadow-[0_0_20px_rgba(168,85,247,0.3)]"
                   maxLength={63}
                   minLength={3}
                 />
@@ -87,10 +87,10 @@ export function CTA() {
                 size="lg" 
                 onClick={handleCheck}
                 disabled={checking || !subdomain.trim()}
-                className="h-12 bg-gradient-to-r from-black to-[#1a1a1a] hover:from-[#0a0a0a] hover:to-[#2a2a2a] text-white border border-[#333333] disabled:opacity-50 shadow-[0_0_15px_rgba(255,255,255,0.08)] hover:shadow-[0_0_25px_rgba(255,255,255,0.12)] transition-all"
+                className="h-12 bg-blue-400 hover:bg-blue-300 text-black border-0 disabled:opacity-50 shadow-[0_0_15px_rgba(96,165,250,0.3)] hover:shadow-[0_0_25px_rgba(96,165,250,0.5)] transition-all"
               >
                 {checking ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black mr-2"></div>
                 ) : (
                   <Search className="mr-2 h-4 w-4" />
                 )}
@@ -115,18 +115,18 @@ export function CTA() {
             {checkResult && (
               <div className={`mt-4 p-4 rounded-lg border transition-all duration-200 ${
                 checkResult.available 
-                  ? 'border-[#333333] bg-gradient-to-br from-[#0C0C0C] to-[#050505]' 
+                  ? 'border-green-500/30 bg-gradient-to-br from-green-950/30 to-[#050505] shadow-[0_0_20px_rgba(34,197,94,0.2)]' 
                   : checkResult.reserved 
-                  ? 'border-[#333333] bg-gradient-to-br from-[#0C0C0C] to-[#050505]'
-                  : 'border-[#333333] bg-gradient-to-br from-[#0C0C0C] to-[#050505]'
+                  ? 'border-red-500/30 bg-gradient-to-br from-red-950/30 to-[#050505] shadow-[0_0_20px_rgba(239,68,68,0.2)]'
+                  : 'border-yellow-500/30 bg-gradient-to-br from-yellow-950/30 to-[#050505] shadow-[0_0_20px_rgba(234,179,8,0.2)]'
               }`}>
                 {checkResult.available ? (
-                  <div className="flex items-center gap-3 text-white">
-                    <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                  <div className="flex items-center gap-3 text-green-400">
+                    <CheckCircle className="h-5 w-5 flex-shrink-0 drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
                     <div className="text-left">
                       <p className="font-medium">🎉 {subdomain}.is-a.software is available!</p>
                       <p className="text-sm text-gray-400 mt-1">
-                        <Link href="/login" className="text-white hover:text-gray-300 underline inline-flex items-center gap-1">
+                        <Link href="/login" className="text-green-400 hover:text-green-300 underline inline-flex items-center gap-1">
                           Sign in to claim it now →
                         </Link>
                       </p>
@@ -134,14 +134,14 @@ export function CTA() {
                   </div>
                 ) : checkResult.reserved ? (
                   <div className="flex items-center gap-3 text-red-400">
-                    <XCircle className="h-5 w-5 flex-shrink-0" />
+                    <XCircle className="h-5 w-5 flex-shrink-0 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
                     <div className="text-left">
                       <p className="font-medium">❌ {checkResult.message}</p>
                       <p className="text-sm text-gray-400 mt-1">Reserved keywords cannot be used. Try a different name.</p>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-3 text-white">
+                  <div className="flex items-center gap-3 text-yellow-400">
                     <div className="text-left flex-1">
                       <p className="font-medium">👤 {subdomain}.is-a.software is taken</p>
                       {checkResult.owner?.github && (

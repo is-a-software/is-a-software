@@ -11,7 +11,7 @@ export function Hero() {
           <h1 className="mb-6 text-5xl sm:text-6xl font-bold text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.15)]">
             Get Your Free
             <br />
-            <span className="text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.25)]">
+            <span className="bg-gradient-to-r from-gray-400 via-gray-200 to-white bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
               .is-a.software
             </span>
             <br />
@@ -23,7 +23,7 @@ export function Hero() {
           </p>
           
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Button asChild size="lg" className="group bg-[#000000] hover:bg-[#0C0C0C] text-white border border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all">
+            <Button asChild size="lg" className="group bg-blue-400 hover:bg-blue-300 text-black border-0 shadow-[0_0_20px_rgba(96,165,250,0.4)] hover:shadow-[0_0_30px_rgba(96,165,250,0.6)] transition-all">
               <Link href="/dashboard">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -41,7 +41,7 @@ export function Hero() {
               <code className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
                 <TypingAnimation 
                   texts={['example', 'yourproject', 'foo', 'yourapp']} 
-                  className="text-white"
+                  className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
                 />
                 .is-a.software
               </code>
@@ -62,8 +62,9 @@ export function Hero() {
         </svg>
         
         {/* Subtle glow orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/[0.02] rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-white/[0.015] rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/[0.08] rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/[0.06] rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-cyan-500/[0.05] rounded-full blur-3xl"></div>
       </div>
     </div>
   );
