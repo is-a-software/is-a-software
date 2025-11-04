@@ -31,7 +31,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1c1c1c] to-[#111111] flex flex-col">
+    <div className="min-h-screen bg-[#000000] flex flex-col">
       <Navbar currentPage="login" />
       {/* Main Content Area */}
       <div className="flex-1 flex items-center justify-center p-4">
@@ -39,7 +39,7 @@ export default function LoginPage() {
           {/* Back to home link */}
           <Link 
             href="/" 
-            className="inline-flex items-center gap-2 text-gray-400 hover:text-purple-400 transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Home
@@ -47,16 +47,16 @@ export default function LoginPage() {
 
           {/* Logo */}
           <div className="flex items-center gap-2 mb-8">
-            <Terminal className="h-8 w-8 text-purple-400" />
+            <Terminal className="h-8 w-8 text-white" />
             <span className="text-2xl font-bold text-white">is-a.software</span>
           </div>
 
-          <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
+          <Card className="bg-[#0C0C0C] border-[#333333]">
             <CardHeader className="text-center">
               <CardTitle className="text-white">
                 Welcome to is-a.software
               </CardTitle>
-              <CardDescription className="text-gray-300">
+              <CardDescription className="text-gray-400">
                 Sign in with GitHub to get your free subdomain
               </CardDescription>
             </CardHeader>
@@ -71,7 +71,7 @@ export default function LoginPage() {
                 type="button"
                 onClick={handleGitHubSignIn}
                 disabled={loading}
-                className="w-full bg-gray-900 hover:bg-gray-800 text-white border-0 h-12 text-lg"
+                className="w-full bg-[#000000] hover:bg-[#0C0C0C] text-white border border-[#333333] h-12 text-lg"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
@@ -89,11 +89,11 @@ export default function LoginPage() {
               <div className="mt-6 text-center text-gray-400 text-sm">
                 <p>
                   By signing in, you agree to our{' '}
-                  <Link href="/terms" className="text-purple-400 hover:text-purple-300">
+                  <Link href="/terms" className="text-white hover:text-gray-300">
                     Terms of Service
                   </Link>
                   {' '}and{' '}
-                  <Link href="/privacy" className="text-purple-400 hover:text-purple-300">
+                  <Link href="/privacy" className="text-white hover:text-gray-300">
                     Privacy Policy
                   </Link>
                 </p>

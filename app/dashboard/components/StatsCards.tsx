@@ -20,7 +20,7 @@ export function StatsCards({
 }: StatsCardsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      <Card className="bg-black/30 backdrop-blur-sm border-gray-700 hover:border-gray-600 transition-colors">
+      <Card className="bg-[#0C0C0C] border-[#333333] hover:border-[#555555] transition-colors">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -29,14 +29,14 @@ export function StatsCards({
                 {stats ? stats.total : (domainsLoading ? '—' : domainsCount)}
               </p>
             </div>
-            <div className="p-2 bg-purple-500/20 rounded-lg">
-              <Globe className="h-6 w-6 text-purple-400" />
+            <div className="p-2 bg-[#1A1A1A] border border-[#333333] rounded-lg">
+              <Globe className="h-6 w-6 text-white" />
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-black/30 backdrop-blur-sm border-gray-700 hover:border-gray-600 transition-colors">
+      <Card className="bg-[#0C0C0C] border-[#333333] hover:border-[#555555] transition-colors">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -45,7 +45,7 @@ export function StatsCards({
                 {stats ? stats.active : (domainsLoading ? '—' : activeCount)}
               </p>
             </div>
-            <div className="p-2 bg-green-500/20 rounded-lg">
+            <div className="p-2 bg-[#1A1A1A] border border-[#333333] rounded-lg">
               <CheckCircle className="h-6 w-6 text-green-400" />
             </div>
           </div>

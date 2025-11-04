@@ -23,14 +23,14 @@ export function Navbar({ currentPage = "home" }: NavbarProps) {
   const { user, logout } = useAuth();
 
   return (
-    <header className="bg-black/30 backdrop-blur-md border-b border-gray-700 sticky top-0 z-50">
+    <header className="bg-[#0C0C0C] border-b border-[#333333] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Terminal className="h-8 w-8 text-purple-400" />
+            <Terminal className="h-8 w-8 text-white" />
             <Link
               href="/"
-              className="text-xl font-bold text-white hover:text-purple-400 transition-colors"
+              className="text-xl font-bold text-white hover:text-gray-300 transition-colors"
             >
               is-a.software
             </Link>
@@ -42,8 +42,8 @@ export function Navbar({ currentPage = "home" }: NavbarProps) {
               href="/"
               className={`px-3 py-2 transition-colors duration-200 ${
                 currentPage === "home"
-                  ? "text-purple-300 font-bold"
-                  : "text-gray-300 hover:text-white"
+                  ? "text-white font-bold"
+                  : "text-gray-400 hover:text-white"
               }`}
             >
               Home
@@ -53,8 +53,8 @@ export function Navbar({ currentPage = "home" }: NavbarProps) {
               href="/dashboard"
               className={`px-3 py-2 transition-colors duration-200 ${
                 currentPage === "dashboard"
-                  ? "text-purple-300 font-bold"
-                  : "text-gray-300 hover:text-white"
+                  ? "text-white font-bold"
+                  : "text-gray-400 hover:text-white"
               }`}
             >
               Dashboard
@@ -63,8 +63,8 @@ export function Navbar({ currentPage = "home" }: NavbarProps) {
               href="/endpoint"
               className={`px-3 py-2 transition-colors duration-200 ${
                 currentPage === "api"
-                  ? "text-purple-300 font-bold"
-                  : "text-gray-300 hover:text-white"
+                  ? "text-white font-bold"
+                  : "text-gray-400 hover:text-white"
               }`}
             >
               API
@@ -83,7 +83,7 @@ export function Navbar({ currentPage = "home" }: NavbarProps) {
                       alt="Profile"
                       width={32}
                       height={32}
-                      className="rounded-full border border-gray-600"
+                      className="rounded-full border border-[#333333]"
                     />
                   )}
                 </div>
@@ -91,7 +91,7 @@ export function Navbar({ currentPage = "home" }: NavbarProps) {
                   variant="outline"
                   size="sm"
                   onClick={logout}
-                  className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
+                  className="border-[#333333] text-gray-300 hover:bg-[#0C0C0C] hover:text-white"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
                   Logout
@@ -102,7 +102,7 @@ export function Navbar({ currentPage = "home" }: NavbarProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
+                  className="border-[#333333] text-gray-300 hover:bg-[#0C0C0C] hover:text-white"
                 >
                   Login
                 </Button>

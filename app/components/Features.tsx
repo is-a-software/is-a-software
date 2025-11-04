@@ -36,24 +36,24 @@ const features = [
 
 export function Features() {
   return (
-    <div id="features" className="bg-gradient-to-br from-[#1c1c1c] to-[#111111] py-24">
+    <div id="features" className="bg-[#000000] py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="mb-4 text-white">Why Choose is-a.software?</h2>
-          <p className="text-gray-300">
+          <p className="text-gray-400">
             Everything you need to share your projects with the world, all in one place.
           </p>
         </div>
         
         <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
-            <Card key={feature.title} className="bg-black/30 backdrop-blur-sm border-gray-700 transition-all hover:shadow-lg hover:bg-black/50 hover:border-purple-500/30">
+            <Card key={feature.title} className="bg-[#0C0C0C] border-[#333333] transition-all hover:shadow-lg hover:bg-[#040404] hover:border-[#555555]">
               <CardContent className="p-6">
-                <div className="mb-4 inline-flex rounded-lg bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-sm border border-purple-500/20 p-3">
-                  <feature.icon className="h-6 w-6 text-purple-400" />
+                <div className="mb-4 inline-flex rounded-lg bg-[#1A1A1A] border border-[#333333] p-3">
+                  <feature.icon className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mb-2 text-white">{feature.title}</h3>
-                <p className="text-gray-300">{feature.description}</p>
+                <p className="text-gray-400">{feature.description}</p>
               </CardContent>
             </Card>
           ))}

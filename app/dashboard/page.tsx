@@ -221,10 +221,10 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#1c1c1c] to-[#111111] flex items-center justify-center">
+      <div className="min-h-screen bg-[#000000] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto mb-4"></div>
-          <p className="text-gray-300">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading...</p>
         </div>
       </div>
     );
@@ -235,7 +235,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1c1c1c] to-[#111111]">
+    <div className="min-h-screen bg-[#000000]">
       <Navbar currentPage="dashboard" />
 
       <main className="max-w-7xl mx-auto px-6 py-8">
@@ -271,10 +271,10 @@ export default function DashboardPage() {
       
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ open, domain: null, deleting: false })}>
-        <AlertDialogContent className="bg-gray-900 border-gray-700">
+        <AlertDialogContent className="bg-[#0C0C0C] border-[#333333]">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-white">Delete Subdomain</AlertDialogTitle>
-            <AlertDialogDescription className="text-gray-300">
+            <AlertDialogDescription className="text-gray-400">
               Are you sure you want to delete <span className="font-mono text-red-400">{deleteDialog.domain?.domain}.is-a.software</span>?
               <br />
               <span className="text-red-400 font-medium mt-2 block">This action cannot be undone.</span>

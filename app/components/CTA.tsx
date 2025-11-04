@@ -58,11 +58,11 @@ export function CTA() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-[#1c1c1c] to-[#111111] py-24">
+    <div className="bg-[#000000] py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="mb-4 text-white">Ready to Get Started?</h2>
-          <p className="mb-10 text-gray-300">
+          <p className="mb-10 text-gray-400">
             Join thousands of developers already using .is-a.software for their projects.
           </p>
           
@@ -75,11 +75,11 @@ export function CTA() {
                   value={subdomain}
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
-                  className="h-12 pr-40 bg-black/30 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
+                  className="h-12 pr-40 bg-[#0C0C0C] border-[#333333] text-white placeholder:text-gray-500 focus:border-white focus:ring-white"
                   maxLength={63}
                   minLength={3}
                 />
-                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                   .is-a.software
                 </div>
               </div>
@@ -87,7 +87,7 @@ export function CTA() {
                 size="lg" 
                 onClick={handleCheck}
                 disabled={checking || !subdomain.trim()}
-                className="h-12 bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-700 hover:to-purple-700 text-white border-0 disabled:opacity-50"
+                className="h-12 bg-[#000000] hover:bg-[#0C0C0C] text-white border border-[#333333] disabled:opacity-50"
               >
                 {checking ? (
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
@@ -100,12 +100,12 @@ export function CTA() {
             
             {/* Error Message */}
             {error && (
-              <div className="mt-4 p-4 rounded-lg border border-red-500/20 bg-red-500/10">
+              <div className="mt-4 p-4 rounded-lg border border-[#333333] bg-[#0C0C0C]">
                 <div className="flex items-center gap-3 text-red-400">
                   <XCircle className="h-5 w-5 flex-shrink-0" />
                   <div className="text-left">
                     <p className="font-medium">{error}</p>
-                    <p className="text-sm text-gray-300 mt-1">Please check your connection and try again</p>
+                    <p className="text-sm text-gray-400 mt-1">Please check your connection and try again</p>
                   </div>
                 </div>
               </div>
@@ -115,18 +115,18 @@ export function CTA() {
             {checkResult && (
               <div className={`mt-4 p-4 rounded-lg border transition-all duration-200 ${
                 checkResult.available 
-                  ? 'border-green-500/20 bg-green-500/10' 
+                  ? 'border-[#333333] bg-[#0C0C0C]' 
                   : checkResult.reserved 
-                  ? 'border-red-500/20 bg-red-500/10'
-                  : 'border-yellow-500/20 bg-yellow-500/10'
+                  ? 'border-[#333333] bg-[#0C0C0C]'
+                  : 'border-[#333333] bg-[#0C0C0C]'
               }`}>
                 {checkResult.available ? (
-                  <div className="flex items-center gap-3 text-green-400">
+                  <div className="flex items-center gap-3 text-white">
                     <CheckCircle className="h-5 w-5 flex-shrink-0" />
                     <div className="text-left">
                       <p className="font-medium">🎉 {subdomain}.is-a.software is available!</p>
-                      <p className="text-sm text-gray-300 mt-1">
-                        <Link href="/login" className="text-green-400 hover:text-green-300 underline inline-flex items-center gap-1">
+                      <p className="text-sm text-gray-400 mt-1">
+                        <Link href="/login" className="text-white hover:text-gray-300 underline inline-flex items-center gap-1">
                           Sign in to claim it now →
                         </Link>
                       </p>
@@ -137,11 +137,11 @@ export function CTA() {
                     <XCircle className="h-5 w-5 flex-shrink-0" />
                     <div className="text-left">
                       <p className="font-medium">❌ {checkResult.message}</p>
-                      <p className="text-sm text-gray-300 mt-1">Reserved keywords cannot be used. Try a different name.</p>
+                      <p className="text-sm text-gray-400 mt-1">Reserved keywords cannot be used. Try a different name.</p>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-3 text-yellow-400">
+                  <div className="flex items-center gap-3 text-white">
                     <div className="text-left flex-1">
                       <p className="font-medium">👤 {subdomain}.is-a.software is taken</p>
                       {checkResult.owner?.github && (
@@ -156,19 +156,19 @@ export function CTA() {
                               (e.target as HTMLImageElement).src = '/fallback-avatar.png';
                             }}
                           />
-                          <span className="text-sm text-gray-300">Owned by</span>
+                          <span className="text-sm text-gray-400">Owned by</span>
                           <a 
                             href={checkResult.owner.profileUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-yellow-400 hover:text-yellow-300 underline text-sm flex items-center gap-1"
+                            className="text-white hover:text-gray-300 underline text-sm flex items-center gap-1"
                           >
                             {checkResult.owner.github}
                             <ExternalLink className="h-3 w-3" />
                           </a>
                         </div>
                       )}
-                      <p className="text-sm text-gray-300 mt-1">Try a different subdomain name.</p>
+                      <p className="text-sm text-gray-400 mt-1">Try a different subdomain name.</p>
                     </div>
                   </div>
                 )}
@@ -182,7 +182,7 @@ export function CTA() {
             )}
           </div>
           
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-gray-300">
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-gray-400">
             
             
           </div>

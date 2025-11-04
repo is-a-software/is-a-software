@@ -92,7 +92,7 @@ export function DomainPortfolio({
                   <Globe className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <h3 className="text-lg font-medium text-white mb-2">Ready to go live?</h3>
                   <p className="text-sm mb-4">Create your first subdomain to get started with is-a.software</p>
-                  <Button asChild className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+                  <Button asChild className="bg-[#000000] hover:bg-[#0C0C0C] text-white border border-[#333333]">
                     <Link href="/dashboard/subdomains/new">
                       <Plus className="h-4 w-4 mr-2" />
                       Create My First Domain
@@ -107,7 +107,7 @@ export function DomainPortfolio({
                 const isActive = activeMap[hostname];
 
                 return (
-                  <Card key={d.domain} className="bg-black/20 border-gray-800 hover:border-gray-700 transition-colors">
+                  <Card key={d.domain} className="bg-[#0C0C0C] border-[#333333] hover:border-[#555555] transition-colors">
                     <CardContent className="p-4">
                       <div className="space-y-3">
                         <div className="flex items-start justify-between">
