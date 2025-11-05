@@ -417,7 +417,7 @@ export default function NewSubdomainPage() {
                 <Button type="button" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white" onClick={() => router.push('/dashboard')}>Cancel</Button>
                 <Button 
                   type="submit" 
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0" 
+                  className="bg-blue-400 hover:bg-blue-300 text-black border-0" 
                   disabled={
                     submitting || 
                     !!valueError || 

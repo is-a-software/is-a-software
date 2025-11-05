@@ -375,7 +375,7 @@ export default function EditSubdomainPage() {
                   <Button
                     type="submit"
                     disabled={submitting || !!valueError || !value.trim()}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                    className="bg-blue-400 hover:bg-blue-300 text-black border-0"
                   >
                     {submitting ? (
                       <>

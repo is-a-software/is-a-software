@@ -92,7 +92,7 @@ export function DomainPortfolio({
                   <Globe className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <h3 className="text-lg font-medium text-white mb-2">Ready to go live?</h3>
                   <p className="text-sm mb-4">Create your first subdomain to get started with is-a.software</p>
-                  <Button asChild className="bg-gradient-to-r from-black to-[#1a1a1a] hover:from-[#0a0a0a] hover:to-[#2a2a2a] text-white border border-[#333333] shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_25px_rgba(255,255,255,0.08)] transition-all">
+                  <Button asChild className="bg-blue-400 hover:bg-blue-300 text-black border-0 shadow-none transition-colors">
                     <Link href="/dashboard/subdomains/new">
                       <Plus className="h-4 w-4 mr-2" />
                       Create My First Domain
