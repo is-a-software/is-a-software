@@ -8,23 +8,36 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app
 import { Footer } from '@/app/components/Footer';
 import { Navbar } from '@/app/components/Navbar';
 import { useAuth } from '@/app/contexts/AuthContext';
-import { Terminal, ArrowLeft, Github } from 'lucide-react';
+import { ArrowLeft, Github } from 'lucide-react';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<React.ReactNode | null>(null);
   const { signInWithGitHub } = useAuth();
   const router = useRouter();
 
   const handleGitHubSignIn = async () => {
     setLoading(true);
-    setError('');
+    setError(null);
     try {
       await signInWithGitHub();
+      // Redirect to dashboard after successful popup sign-in
       router.push('/dashboard');
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'GitHub sign-in failed';
-      setError(message);
+    } catch (e: unknown) {
+      // Map firebase 'user-disabled' error to a friendly message with mailto link
+      const err = e as { code?: string; message?: string } | Error;
+      const errObj = err as { code?: string; message?: string };
+      if (errObj.code === 'auth/user-disabled' || (typeof errObj.message === 'string' && errObj.message.includes('auth/user-disabled'))) {
+        setError(
+          <span>
+            Your account has been suspended. If you believe this is a mistake email us at{' '}
+            <a href="mailto:admin@is-a.software" className="text-white underline">admin@is-a.software</a>
+          </span>
+        );
+      } else {
+        const message = e instanceof Error ? e.message : 'GitHub sign-in failed';
+        setError(message);
+      }
     } finally {
       setLoading(false);
     }
@@ -47,7 +60,6 @@ export default function LoginPage() {
 
           {/* Logo */}
           <div className="flex items-center gap-2 mb-8">
-            <Terminal className="h-8 w-8 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" />
             <span className="text-2xl font-bold text-white">is-a.software</span>
           </div>
 
