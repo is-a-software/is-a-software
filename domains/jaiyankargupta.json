@@ -3,6 +3,7 @@
     "github": "jaiyankargupta"
   },
   "record": {
-    "CNAME": "jaiyankargupta.vercel.app"
-  }
+    "CNAME": "cname.vercel-dns.com"
+  },
+  "proxy": false
 }
