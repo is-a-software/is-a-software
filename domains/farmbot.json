@@ -3,6 +3,7 @@
     "github": "DogIcing"
   },
   "record": {
-    "CNAME": "farmbot-discord.vercel.app"
-  }
+    "CNAME": "a0e0f6efdfd0ecea.vercel-dns-017.com"
+  },
+  "proxy": false
 }
