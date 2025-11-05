@@ -3,7 +3,7 @@
     "github": "DogIcing"
   },
   "record": {
-    "CNAME": "a0e0f6efdfd0ecea.vercel-dns-017.com"
+    "TXT": "vc-domain-verify=farmbot.is-a.software,0910d2d9f8813ac88463"
   },
   "proxy": false
 }
