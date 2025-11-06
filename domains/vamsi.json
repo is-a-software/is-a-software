@@ -3,7 +3,7 @@
     "github": "keemapao"
   },
   "record": {
-    "CNAME": "vamsi-krishna-one.vercel.app"
+    "TXT": "vamsi-krishna-one.vercel.app"
   },
   "proxy": false
 }
