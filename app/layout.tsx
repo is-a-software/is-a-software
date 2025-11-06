@@ -3,6 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Inter, Poppins } from 'next/font/google';
+import { SponsorWidget } from "./components/SponsorWidget";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -103,6 +104,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${poppins.variable} font-poppins antialiased bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a] text-white`}>
         <AuthProvider>
           {children}
+          <SponsorWidget />
         </AuthProvider>
         {analytics && <GoogleAnalytics gaId={analytics} />}
       </body>
