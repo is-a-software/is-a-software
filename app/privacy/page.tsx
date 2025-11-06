@@ -15,39 +15,39 @@ export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a]">
       <Navbar currentPage="privacy" />
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-4xl">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.15)] mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.15)] mb-3 sm:mb-4">
             Privacy Policy
           </h1>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto px-4 sm:px-0 leading-relaxed">
             Your privacy is important to us. This policy explains how we collect, use, and protect your information.
           </p>
-          <Badge variant="outline" className="mt-4 bg-[#1a1a1a] border-[#333333] text-gray-300">
+          <Badge variant="outline" className="mt-3 sm:mt-4 bg-[#1a1a1a] border-[#333333] text-gray-300 text-xs sm:text-sm">
             Last updated: October 20, 2025
           </Badge>
         </div>
 
         {/* Quick Summary */}
-        <Card className="mb-8 border-purple-500/30 bg-gradient-to-br from-[#0C0C0C] to-[#050505] shadow-[0_0_25px_rgba(168,85,247,0.15)]">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Eye className="h-5 w-5 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
+        <Card className="mb-6 sm:mb-8 border-purple-500/30 bg-gradient-to-br from-[#0C0C0C] to-[#050505] shadow-[0_0_25px_rgba(168,85,247,0.15)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
+            <CardTitle className="flex items-center gap-2 text-white text-base sm:text-lg">
+              <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
               Quick Summary
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-3 gap-4 text-sm">
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm">
               <div className="flex items-start gap-2">
-                <Shield className="h-4 w-4 mt-0.5 text-green-400 drop-shadow-[0_0_6px_rgba(34,197,94,0.6)]" />
+                <Shield className="h-3 w-3 sm:h-4 sm:w-4 mt-0.5 text-green-400 drop-shadow-[0_0_6px_rgba(34,197,94,0.6)] shrink-0" />
                 <div>
                   <strong className="text-white">Minimal Collection</strong>
-                  <p className="text-gray-400">Only GitHub username, email, and domain preferences</p>
+                  <p className="text-gray-400 leading-relaxed">Only GitHub username, email, and domain preferences</p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
-                <Database className="h-4 w-4 mt-0.5 text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.6)]" />
+                <Database className="h-3 w-3 sm:h-4 sm:w-4 mt-0.5 text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.6)] shrink-0" />
                 <div>
                   <strong className="text-white">Transparent Storage</strong>
                   <p className="text-gray-400">Domain records stored in public GitHub repository</p>
@@ -65,8 +65,8 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Information We Collect */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-cyan-500/30 shadow-[0_0_25px_rgba(34,211,238,0.15)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-cyan-500/30 shadow-[0_0_25px_rgba(34,211,238,0.15)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center gap-2 text-white">
               <Database className="h-5 w-5 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
               Information We Collect
@@ -105,14 +105,14 @@ export default function PrivacyPage() {
         </Card>
 
         {/* How We Use Your Information */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center gap-2 text-white">
               <FileText className="h-5 w-5 text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
               How We Use Your Information
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h3 className="font-semibold mb-3 text-white">Service Provision</h3>
@@ -139,8 +139,8 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Data Storage and Security */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center gap-2 text-white">
               <Shield className="h-5 w-5 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]" />
               Data Storage & Security
@@ -195,14 +195,14 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Third-Party Services */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center gap-2 text-white">
               <Users className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Third-Party Services
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
             <p className="mb-4 text-gray-400">
               We integrate with the following trusted services to provide our platform:
             </p>
@@ -252,8 +252,8 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Your Rights */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center gap-2 text-white">
               <Eye className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Your Privacy Rights
@@ -284,11 +284,11 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Cookies and Tracking */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="text-white">Cookies & Tracking</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
             <p className="text-gray-400 mb-4">
               We use minimal tracking to provide and improve our service:
             </p>
@@ -316,11 +316,11 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Changes to Privacy Policy */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="text-white">Policy Updates</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
             <p className="text-gray-400 mb-4">
               We may update this privacy policy from time to time. When we do:
             </p>
@@ -334,14 +334,14 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Contact Information */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center gap-2 text-white">
               <Mail className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Contact Us
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
             <p className="text-gray-400 mb-4">
               Have questions about this privacy policy or how we handle your data? We&apos;re here to help:
             </p>

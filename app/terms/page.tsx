@@ -16,38 +16,38 @@ export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a]">
       <Navbar currentPage="terms" />
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-4xl">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.15)] mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.15)] mb-3 sm:mb-4">
             Terms of Service
           </h1>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto px-4 sm:px-0 leading-relaxed">
             Please read these terms carefully before using is-a.software subdomain service.
           </p>
-          <Badge variant="outline" className="mt-4 bg-[#1a1a1a] border-[#333333] text-gray-300">
+          <Badge variant="outline" className="mt-3 sm:mt-4 bg-[#1a1a1a] border-[#333333] text-gray-300 text-xs sm:text-sm">
             Last updated: October 20, 2025
           </Badge>
         </div>
 
         {/* Important Notice */}
-        <Alert className="mb-8 border-yellow-500/40 bg-gradient-to-r from-[#1a1a1a] to-[#0C0C0C] shadow-[0_0_20px_rgba(234,179,8,0.15)]">
-          <AlertTriangle className="h-4 w-4 text-yellow-400 drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
-          <AlertDescription className="text-yellow-200">
+        <Alert className="mb-6 sm:mb-8 border-yellow-500/40 bg-gradient-to-r from-[#1a1a1a] to-[#0C0C0C] shadow-[0_0_20px_rgba(234,179,8,0.15)]">
+          <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-400 drop-shadow-[0_0_8px_rgba(234,179,8,0.6)] shrink-0 mt-0.5" />
+          <AlertDescription className="text-yellow-200 text-sm sm:text-base leading-relaxed">
             <strong>Important:</strong> By using is-a.software, you agree to these terms. 
             If you disagree with any part of these terms, please do not use our service.
           </AlertDescription>
         </Alert>
 
         {/* Service Description */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-blue-500/30 shadow-[0_0_25px_rgba(59,130,246,0.15)]">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Globe className="h-5 w-5 text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-blue-500/30 shadow-[0_0_25px_rgba(59,130,246,0.15)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
+            <CardTitle className="flex items-center gap-2 text-white text-base sm:text-lg">
+              <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
               Service Description
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
             <p className="text-gray-400">
               is-a.software provides free subdomain allocation services under the &quot;is-a.software&quot; domain. 
               Our service allows developers and creators to register subdomains for their projects, 
@@ -67,8 +67,8 @@ export default function TermsPage() {
         </Card>
 
         {/* Acceptable Use */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-green-500/30 shadow-[0_0_25px_rgba(34,197,94,0.15)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-green-500/30 shadow-[0_0_25px_rgba(34,197,94,0.15)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center gap-2 text-white">
               <Shield className="h-5 w-5 text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
               Acceptable Use Policy
@@ -77,7 +77,7 @@ export default function TermsPage() {
               Guidelines for appropriate use of our subdomain service
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6 pb-4 sm:pb-6">
             <div>
               <h3 className="font-semibold text-lg mb-3 text-green-400">✅ Allowed Uses</h3>
               <div className="grid md:grid-cols-2 gap-4">
@@ -147,14 +147,14 @@ export default function TermsPage() {
         </Card>
 
         {/* User Responsibilities */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center gap-2 text-white">
               <Users className="h-5 w-5 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]" />
               User Responsibilities
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h3 className="font-semibold mb-3 text-white">Account Security</h3>
@@ -186,14 +186,14 @@ export default function TermsPage() {
         </Card>
 
         {/* Service Availability */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center gap-2 text-white">
               <AlertTriangle className="h-5 w-5 text-orange-500" />
               Service Availability & Limitations
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
             <div>
               <h3 className="font-semibold mb-2 text-white">Service Level</h3>
               <p className="text-gray-400 mb-3">
@@ -234,14 +234,14 @@ export default function TermsPage() {
         </Card>
 
         {/* Intellectual Property */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center gap-2 text-white">
               <FileText className="h-5 w-5 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
               Intellectual Property
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
             <div>
               <h3 className="font-semibold mb-2 text-white">Your Content</h3>
               <p className="text-gray-400 mb-3">
@@ -271,8 +271,8 @@ export default function TermsPage() {
         </Card>
 
         {/* Privacy and Data */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="text-white">Privacy & Data Handling</CardTitle>
           </CardHeader>
           <CardContent>
@@ -296,14 +296,14 @@ export default function TermsPage() {
         </Card>
 
         {/* Termination */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center gap-2 text-white">
               <Gavel className="h-5 w-5 text-red-500" />
               Account Termination
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
             <div>
               <h3 className="font-semibold mb-2 text-white">Voluntary Termination</h3>
               <p className="text-gray-400 mb-2">
@@ -339,11 +339,11 @@ export default function TermsPage() {
         </Card>
 
         {/* Limitation of Liability */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="text-white">Limitation of Liability</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
             <p className="text-gray-400">
               is-a.software is provided free of charge, and our liability is limited accordingly:
             </p>
@@ -376,8 +376,8 @@ export default function TermsPage() {
         </Card>
 
         {/* Changes to Terms */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="text-white">Changes to These Terms</CardTitle>
           </CardHeader>
           <CardContent>
@@ -394,8 +394,8 @@ export default function TermsPage() {
         </Card>
 
         {/* Governing Law */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="text-white">Governing Law & Dispute Resolution</CardTitle>
           </CardHeader>
           <CardContent>
@@ -421,8 +421,8 @@ export default function TermsPage() {
         </Card>
 
         {/* Contact Information */}
-        <Card className="mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-          <CardHeader>
+        <Card className="mb-6 sm:mb-8 bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="text-white">Contact Information</CardTitle>
           </CardHeader>
           <CardContent>
