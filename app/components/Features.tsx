@@ -48,24 +48,24 @@ const features = [
 
 export function Features() {
   return (
-    <div id="features" className="bg-gradient-to-b from-[#1a1a1a] via-black to-black py-24">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <div id="features" className="bg-gradient-to-b from-[#1a1a1a] via-black to-black py-12 sm:py-16 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="mb-4 text-white">Why Choose is-a.software?</h2>
-          <p className="text-gray-400">
+          <h2 className="mb-3 sm:mb-4 text-2xl sm:text-3xl lg:text-4xl font-bold text-white">Why Choose is-a.software?</h2>
+          <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
             Everything you need to share your projects with the world, all in one place.
           </p>
         </div>
         
-        <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto mt-8 sm:mt-12 lg:mt-16 grid max-w-5xl grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
             <Card key={feature.title} className="bg-gradient-to-br from-[#0C0C0C] to-[#050505] border-[#333333] transition-all hover:shadow-lg hover:shadow-white/[0.05] hover:bg-gradient-to-br hover:from-[#1a1a1a] hover:to-[#0a0a0a] hover:border-[#555555]">
-              <CardContent className="p-6">
-                <div className={`mb-4 inline-flex rounded-lg bg-gradient-to-br ${feature.color} p-3 shadow-[0_0_20px_${feature.glow}]`}>
-                  <feature.icon className="h-6 w-6 text-white" />
+              <CardContent className="p-4 sm:p-6">
+                <div className={`mb-3 sm:mb-4 inline-flex rounded-lg bg-gradient-to-br ${feature.color} p-2.5 sm:p-3 shadow-[0_0_20px_${feature.glow}]`}>
+                  <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <h3 className="mb-2 text-white">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
+                <h3 className="mb-2 text-base sm:text-lg font-semibold text-white">{feature.title}</h3>
+                <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">{feature.description}</p>
               </CardContent>
             </Card>
           ))}

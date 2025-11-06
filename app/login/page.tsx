@@ -47,34 +47,34 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-black via-[#0a0a0a] to-[#1a1a1a] flex flex-col">
       <Navbar currentPage="login" />
       {/* Main Content Area */}
-      <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+        <div className="w-full max-w-sm sm:max-w-md">
           {/* Back to home link */}
           <Link 
             href="/" 
-            className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-6 sm:mb-8 text-sm sm:text-base"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4" />
             Back to Home
           </Link>
 
           {/* Logo */}
-          <div className="flex items-center gap-2 mb-8">
-            <span className="text-2xl font-bold text-white">is-a.software</span>
+          <div className="flex items-center gap-2 mb-6 sm:mb-8">
+            <span className="text-xl sm:text-2xl font-bold text-white">is-a.software</span>
           </div>
 
           <Card className="bg-gradient-to-br from-[#0C0C0C] via-[#0a0a0a] to-black border-[#333333] shadow-[0_0_30px_rgba(255,255,255,0.05)]">
-            <CardHeader className="text-center">
-              <CardTitle className="text-white">
+            <CardHeader className="text-center px-4 sm:px-6 pt-4 sm:pt-6">
+              <CardTitle className="text-white text-lg sm:text-xl">
                 Welcome to is-a.software
               </CardTitle>
-              <CardDescription className="text-gray-400">
+              <CardDescription className="text-gray-400 text-sm sm:text-base">
                 Sign in with GitHub to get your free subdomain
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
               {error && (
-                <div className="mb-4 text-red-400 text-sm text-center">
+                <div className="mb-4 text-red-400 text-xs sm:text-sm text-center">
                   {error}
                 </div>
               )}
@@ -83,29 +83,29 @@ export default function LoginPage() {
                 type="button"
                 onClick={handleGitHubSignIn}
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-black to-[#1a1a1a] hover:from-[#0a0a0a] hover:to-[#2a2a2a] text-white border border-[#333333] h-12 text-lg shadow-[0_0_20px_rgba(255,255,255,0.08)] hover:shadow-[0_0_30px_rgba(255,255,255,0.12)] transition-all"
+                className="w-full bg-gradient-to-r from-black to-[#1a1a1a] hover:from-[#0a0a0a] hover:to-[#2a2a2a] text-white border border-[#333333] h-10 sm:h-12 text-sm sm:text-lg shadow-[0_0_20px_rgba(255,255,255,0.08)] hover:shadow-[0_0_30px_rgba(255,255,255,0.12)] transition-all"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    Signing in...
+                    <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-b-2 border-white"></div>
+                    <span className="text-xs sm:text-base">Signing in...</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <Github className="w-5 h-5" />
-                    Continue with GitHub
+                    <Github className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="text-xs sm:text-base">Continue with GitHub</span>
                   </div>
                 )}
               </Button>
 
-              <div className="mt-6 text-center text-gray-400 text-sm">
-                <p>
+              <div className="mt-4 sm:mt-6 text-center text-gray-400 text-xs sm:text-sm">
+                <p className="leading-relaxed">
                   By signing in, you agree to our{' '}
-                  <Link href="/terms" className="text-white hover:text-gray-300">
+                  <Link href="/terms" className="text-white hover:text-gray-300 underline">
                     Terms of Service
                   </Link>
                   {' '}and{' '}
-                  <Link href="/privacy" className="text-white hover:text-gray-300">
+                  <Link href="/privacy" className="text-white hover:text-gray-300 underline">
                     Privacy Policy
                   </Link>
                 </p>
@@ -113,7 +113,7 @@ export default function LoginPage() {
             </CardContent>
           </Card>
 
-          <div className="mt-8 text-center text-gray-400 text-sm">
+          <div className="mt-6 sm:mt-8 text-center text-gray-400 text-xs sm:text-sm">
             <p>Perfect for developers, side projects, and demos</p>
           </div>
         </div>
