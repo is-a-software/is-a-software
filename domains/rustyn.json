@@ -3,6 +3,7 @@
     "github": "jaiyankargupta"
   },
   "record": {
-    "CNAME": "bdf5b4de90acd440.vercel-dns-017.com."
-  }
+    "TXT": "vc-domain-verify=rustyn.is-a.software,a6ae18883f061fe80796"
+  },
+  "proxy": false
 }
