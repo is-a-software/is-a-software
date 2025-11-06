@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "vamsi-krishna-one.vercel.app"
-  }
+  },
+  "proxy": false
 }
