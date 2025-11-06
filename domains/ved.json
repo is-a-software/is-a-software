@@ -3,6 +3,7 @@
     "github": "VedantAnand17"
   },
   "record": {
-    "CNAME": "7c419eace12ad61e.vercel-dns-017.com."
-  }
+    "TXT": "vc-domain-verify=ved.is-a.software,b0f14eabc3f710dec8a6"
+  },
+  "proxy": false
 }
