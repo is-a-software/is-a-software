@@ -3,6 +3,7 @@
     "github": "kishoredhondhu"
   },
   "record": {
-    "CNAME": "kishore.com"
-  }
+    "CNAME": "kishoredhondhu.github.io."
+  },
+  "proxy": false
 }
