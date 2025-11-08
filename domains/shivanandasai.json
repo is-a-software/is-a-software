@@ -3,6 +3,7 @@
     "github": "ssk090"
   },
   "record": {
-    "CNAME": "cname.vercel-dns-017.com."
-  }
+    "CNAME": "www.shivanandasai.xyz"
+  },
+  "proxy": false
 }
