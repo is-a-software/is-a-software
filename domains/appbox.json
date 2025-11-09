@@ -3,6 +3,7 @@
     "github": "techbot11"
   },
   "record": {
-    "TXT": "hellotest"
-  }
+    "CNAME": "ankursanghvi.in"
+  },
+  "proxy": false
 }
