@@ -3,6 +3,7 @@
     "github": "HakkanShah"
   },
   "record": {
-    "CNAME": "0e386641946f51e9.vercel-dns-017.com."
-  }
+    "TXT": "vc-domain-verify=mockhick.is-a.software,87c4f3ae1ae2cc23bbf9"
+  },
+  "proxy": false
 }
