@@ -3,6 +3,7 @@
     "github": "Snowclik"
   },
   "record": {
-    "TXT": "_vercel"
-  }
+    "CNAME": "snowcliklearn.vercel.app"
+  },
+  "proxy": false
 }
