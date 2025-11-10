@@ -3,6 +3,7 @@
     "github": "pratikdas018"
   },
   "record": {
-    "CNAME": "f06887da24b7b775.vercel-dns-017.com."
-  }
+    "TXT": "vc-domain-verify=pratik.is-a.software,e0caaa0917e53428b248"
+  },
+  "proxy": false
 }
