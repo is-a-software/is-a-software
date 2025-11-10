@@ -128,10 +128,10 @@ export function DomainPortfolio({
                               )}
                             </p>
                           </div>
-                          <div className="flex items-center gap-1 ml-2">
+                          {/* <div className="flex items-center gap-1 ml-2">
                             <div className={`w-2 h-2 rounded-full ${isActive ? 'bg-green-400' : 'bg-gray-500'}`} />
                             <span className="text-xs text-gray-400">{isActive ? 'Active' : 'Inactive'}</span>
-                          </div>
+                          </div> */}
                         </div>
 
                         {d.owner?.github && (
