@@ -29,7 +29,6 @@ export default function DashboardPage() {
   const [domains, setDomains] = useState<Array<{ domain: string; owner: { github: string }; record: Record<string, string> }>>([]);
   const [domainsLoading, setDomainsLoading] = useState(true);
   const [domainsError, setDomainsError] = useState('');
-  const [activeMap, setActiveMap] = useState<Record<string, boolean>>({});
   const [activity, setActivity] = useState<Array<{ domain: string; message: string; author: string; date: string; html_url: string }>>([]);
   const [activityError, setActivityError] = useState('');
   const [stats, setStats] = useState<{ total: number; active: number; pending: number } | null>(null);
@@ -86,29 +85,7 @@ export default function DashboardPage() {
     return () => { aborted = true; };
   }, [user, githubLogin, getAuthHeaders]);
 
-  useEffect(() => {
-    if (!user || !githubLogin) return;
-    const login = githubLogin.toLowerCase(); 
-    let aborted = false;
-    async function load() {
-      setActivityError('');
-      try {
-        const authHeaders = await getAuthHeaders();
-        const res = await fetch(`/api/activity?owner=${encodeURIComponent(login)}`, { 
-          cache: 'no-store',
-          headers: authHeaders
-        });
-        if (!res.ok) throw new Error(await res.text());
-        const items: Array<{ domain: string; message: string; author: string; date: string; html_url: string }> = await res.json();
-        if (!aborted) setActivity(items || []);
-      } catch (e) {
-        const message = e instanceof Error ? e.message : 'Failed to load activity';
-        if (!aborted) setActivityError(message);
-      }
-    }
-    load();
-    return () => { aborted = true; };
-  }, [user, githubLogin, getAuthHeaders]);
+  // Activity loading disabled to reduce CPU usage
 
   useEffect(() => {
     if (!user || !githubLogin) return;
@@ -132,49 +109,7 @@ export default function DashboardPage() {
     return () => { aborted = true; };
   }, [user, githubLogin, getAuthHeaders]);
 
-  const refreshDomainStatuses = useCallback(async () => {
-    if (!domains.length || refreshing) return;
-    
-    setRefreshing(true);
-    const newActiveMap: Record<string, boolean> = {};
-    
-    try {
-      const promises = domains.map(async (domain) => {
-        const hostname = `${domain.domain}.is-a.software`;
-        try {
-          const authHeaders = await getAuthHeaders();
-          const response = await fetch(`/api/domain-status?subdomain=${encodeURIComponent(domain.domain)}`, {
-            cache: 'no-store',
-            headers: authHeaders
-          });
-          
-          if (response.ok) {
-            const data = await response.json();
-            newActiveMap[hostname] = data.status === 'active';
-          } else {
-            newActiveMap[hostname] = false;
-          }
-        } catch {
-          newActiveMap[hostname] = false;
-        }
-      });
-      
-      await Promise.all(promises);
-      setActiveMap(newActiveMap);
-      setLastRefresh(new Date());
-    } catch (e) {
-      console.error('Error checking domain statuses:', e);
-    } finally {
-      setRefreshing(false);
-    }
-  }, [domains, refreshing, getAuthHeaders]);
-
-  useEffect(() => {
-    if (domains.length > 0 && !hasInitiallyCheckedRef.current) {
-      hasInitiallyCheckedRef.current = true;
-      refreshDomainStatuses();
-    }
-  }, [domains]);
+  // Domain status checking temporarily disabled to reduce CPU usage
 
 
   const handleEditDomain = (domain: { domain: string; record: Record<string, string> }) => {
@@ -258,7 +193,7 @@ export default function DashboardPage() {
           stats={stats}
           domainsLoading={domainsLoading}
           domainsCount={domains.length}
-          activeCount={Object.values(activeMap).filter(Boolean).length}
+          activeCount={0}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
@@ -270,10 +205,10 @@ export default function DashboardPage() {
           domains={domains}
           domainsLoading={domainsLoading}
           domainsError={domainsError}
-          activeMap={activeMap}
-          refreshing={refreshing}
-          lastRefresh={lastRefresh}
-          onRefresh={refreshDomainStatuses}
+          activeMap={{}}
+          refreshing={false}
+          lastRefresh={null}
+          onRefresh={() => {}}
           onEdit={handleEditDomain}
           onDelete={handleDeleteDomain}
         />
