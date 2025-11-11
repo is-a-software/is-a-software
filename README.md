@@ -1,7 +1,7 @@
 <div align="center">
   <h1>is-a.software</h1>
   <p>Get your free .is-a.software subdomain for developers. Perfect for side projects, demos, and showcasing your work to the world.</p>
-  <a href="https://is-a.software/about">About</a> | <a href="https://is-a.software/terms">Terms of Service</a> | <a href="https://is-a.software/privacy">Privacy Policy</a>
+  <a href="https://is-a.software/docs">Documentation</a> |  <a href="https://is-a.software/about">About</a> | <a href="https://is-a.software/terms">Terms of Service</a> | <a href="https://is-a.software/privacy">Privacy Policy</a>
   <br/><br/>
   <p>
     <a href="#"><img src="https://img.shields.io/github/stars/is-a-software/is-a-software?style=for-the-badge" alt="GitHub Stars"></a>
@@ -43,7 +43,7 @@ You can get your free subdomain using either of the following methods:
     "github": "your-username"
   },
   "record": {
-    "CNAME": "your-username.github.io"
+    "CNAME": "some-custom-dnsrecord-3t438fe.com"
   }
 }
 ```
