@@ -129,21 +129,21 @@ function validateRecordValue(type, value) {
     return errors;
 }
 
-async function validateSubdomainAndRecords(filename, content) {
+function validateSubdomainAndRecords(filename, content) {
     const subdomain = path.basename(filename, '.json').toLowerCase();
     
     let data;
     try {
         data = JSON.parse(content);
     } catch (e) {
-        await fail(`Invalid JSON: ${e.message}`);
+        throw new Error(`Invalid JSON: ${e.message}`);
     }
     
     // Validate subdomain name (allow underscores for TXT records)
     const recordTypes = data.record ? Object.keys(data.record) : [];
     const subdomainErrors = validateSubdomainName(subdomain, recordTypes);
     if (subdomainErrors.length > 0) {
-        await fail(`Invalid subdomain name: ${subdomainErrors.join(', ')}`);
+        throw new Error(`Invalid subdomain name: ${subdomainErrors.join(', ')}`);
     }
     
     // Validate DNS record values
@@ -151,7 +151,7 @@ async function validateSubdomainAndRecords(filename, content) {
         for (const [recordType, recordValue] of Object.entries(data.record)) {
             const validationErrors = validateRecordValue(recordType, recordValue);
             if (validationErrors.length > 0) {
-                await fail(`Invalid ${recordType} record: ${validationErrors.join(', ')}`);
+                throw new Error(`Invalid ${recordType} record: ${validationErrors.join(', ')}`);
             }
         }
     }
@@ -298,11 +298,28 @@ async function run() {
 					console.log('✅ Vercel subdomain addition authorized (ownership already verified)');
 				} else {
 					// For regular domains, validate subdomain name and DNS records
+					// Fetch the file content from the PR head commit
+					const { data: fileData } = await octokit.rest.repos.getContent({
+						owner: context.repo.owner,
+						repo: context.repo.repo,
+						path: file.filename,
+						ref: prHeadSha,
+					});
+
+					if (!fileData || Array.isArray(fileData) || !fileData.content) {
+						await fail("Unable to retrieve file content from the pull request.");
+					}
+
 					const content = Buffer.from(
-						file.content,
-						file.encoding || "base64"
+						fileData.content,
+						fileData.encoding || "base64"
 					).toString("utf8");
-					await validateSubdomainAndRecords(file.filename, content);
+					
+					try {
+						validateSubdomainAndRecords(file.filename, content);
+					} catch (error) {
+						await fail(error.message);
+					}
 					
 					// Validate the file owner matches PR author
 					const newOwner = await getOwner(file.filename, prHeadSha);
@@ -330,11 +347,28 @@ async function run() {
 					}
 				} else {
 					// For regular domains, validate subdomain name and DNS records
+					// Fetch the file content from the PR head commit
+					const { data: fileData } = await octokit.rest.repos.getContent({
+						owner: context.repo.owner,
+						repo: context.repo.repo,
+						path: file.filename,
+						ref: prHeadSha,
+					});
+
+					if (!fileData || Array.isArray(fileData) || !fileData.content) {
+						await fail("Unable to retrieve file content from the pull request.");
+					}
+
 					const content = Buffer.from(
-						file.content,
-						file.encoding || "base64"
+						fileData.content,
+						fileData.encoding || "base64"
 					).toString("utf8");
-					await validateSubdomainAndRecords(file.filename, content);
+					
+					try {
+						validateSubdomainAndRecords(file.filename, content);
+					} catch (error) {
+						await fail(error.message);
+					}
 					
 					// Check file ownership
 					const oldOwner = await getOwner(file.filename, prBaseSha);
