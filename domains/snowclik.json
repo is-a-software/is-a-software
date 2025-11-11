@@ -3,6 +3,7 @@
     "github": "Snowclik"
   },
   "record": {
+    "CNAME": "777e3af2e79a4a37.vercel-dns-017.com.",
     "TXT": "vc-domain-verify=snowclik.is-a.software,c74e5090645693701f1e"
   },
   "proxy": false
