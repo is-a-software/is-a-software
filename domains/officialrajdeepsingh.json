@@ -4,5 +4,6 @@
   },
   "record": {
     "TXT": "subdomain-owner-verification=3f72d096c42ba2369d96e5baf9bdaa6c"
-  }
+  },
+  "proxy": false
 }
