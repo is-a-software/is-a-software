@@ -3,6 +3,7 @@
     "github": "casebooks"
   },
   "record": {
-    "TXT": "www.notion.so/casebook/Casebook-Repository-159ad762e12080acabb2e57ea9450130?pvs=4"
-  }
+    "CNAME": "casebooks.netlify.app"
+  },
+  "proxy": false
 }
