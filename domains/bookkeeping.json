@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "bookkeeping.zgrum.com"
-  }
+  },
+  "proxy": false
 }
