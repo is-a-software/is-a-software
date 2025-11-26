@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "nb-notes.vercel.app"
-  }
+  },
+  "proxy": false
 }
