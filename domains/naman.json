@@ -3,6 +3,7 @@
     "github": "naman-0804"
   },
   "record": {
-    "CNAME": "namansrivastava.is-a.dev"
-  }
+    "CNAME": "naman08portfolio.vercel.app"
+  },
+  "proxy": false
 }
