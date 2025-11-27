@@ -3,7 +3,7 @@
     "github": "naman-0804"
   },
   "record": {
-    "CNAME": "f51f6d4f8470a4ed.vercel-dns-017.com."
+    "TXT": "vc-domain-verify=naman.is-a.software,27ad2f5d54b5e11a8fa0"
   },
   "proxy": false
 }
