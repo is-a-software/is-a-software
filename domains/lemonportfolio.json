@@ -3,7 +3,7 @@
     "github": "l1203012"
   },
   "record": {
-    "CNAME": "eb72b4ac57d2a949.vercel-dns-017.com."
+    "TXT": "vc-domain-verify=lemonportfolio.is-a.software,6ebae76a3c051a889d2e"
   },
   "proxy": false
 }
