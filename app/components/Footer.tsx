@@ -21,7 +21,7 @@ export function Footer() {
               <Link href="https://x.com/priyanzsh_" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-blue-400 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">
                 <Twitter className="h-5 w-5" />
               </Link>
-              <Link href="https://linkedin.com/u/priyanshprajapat" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-blue-500 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">
+              <Link href="https://linkedin.com/in/priyanzsh" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-blue-500 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">
                 <Linkedin className="h-5 w-5" />
               </Link>
               <Link href="https://discord.com/invite/AeAjegXn6D" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-[#5865F2] hover:drop-shadow-[0_0_8px_rgba(88,101,242,0.6)]">
