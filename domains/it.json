@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "schizoverse.github.io"
-  }
+  },
+  "proxy": false
 }
