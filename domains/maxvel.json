@@ -3,6 +3,7 @@
     "github": "MAXVEL187"
   },
   "record": {
-    "CNAME": "Test.com"
-  }
+    "TXT": "vc-domain-verify=maxvel.is-a.software,b3b753bd61ddd808ed0f"
+  },
+  "proxy": false
 }
