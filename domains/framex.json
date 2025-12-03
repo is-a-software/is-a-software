@@ -3,6 +3,7 @@
     "github": "Kashan-2912"
   },
   "record": {
-    "CNAME": "lab7-awt-nextjs-server-actions.vercel.app"
-  }
+    "TXT": "vc-domain-verify=framex.is-a.software,ed9a41286fb2e98dfc94"
+  },
+  "proxy": false
 }
