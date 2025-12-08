@@ -3,7 +3,7 @@
     "github": "Stay-Toxicsec"
   },
   "record": {
-    "TXT": "vc-domain-verify=this.is-a.software,a720d3b96620cfab5dea"
+    "CNAME": "glistening-griffin-70d588.netlify.app"
   },
   "proxy": false
 }
