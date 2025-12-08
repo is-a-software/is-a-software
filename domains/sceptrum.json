@@ -3,7 +3,7 @@
     "github": "saditya93"
   },
   "record": {
-    "CNAME": "5a1478d46868516b.vercel-dns-017.com."
+    "TXT": "vc-domain-verify=sceptrum.is-a.software,f3afb6e39dcfc0bbbe05"
   },
   "proxy": false
 }
