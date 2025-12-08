@@ -3,6 +3,7 @@
     "github": "Stay-Toxicsec"
   },
   "record": {
-    "CNAME": "6b1138646e38d35f.vercel-dns-017.com"
-  }
+    "TXT": "vc-domain-verify=that.is-a.software,87678a3a42540258c9fb"
+  },
+  "proxy": false
 }
