@@ -3,6 +3,7 @@
     "github": "Stay-Toxicsec"
   },
   "record": {
-    "CNAME": "nextjs-ai-chatbot-five-sigma-ht8mhiwfjn.vercel.app"
-  }
+    "CNAME": "nextjs-ai-chatbot-stay-toxicsecs-projects.vercel.app"
+  },
+  "proxy": false
 }
