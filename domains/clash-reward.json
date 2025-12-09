@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "clash-reward-frontend.pages.dev"
-  }
+  },
+  "proxy": false
 }
