@@ -25,7 +25,7 @@ export function SponsorWidget() {
   };
 
   const openBuyMeACoffee = () => {
-    window.open('https://buymeacoffee.com/priyanzsh', '_blank');
+    window.open('https://buymeacoffee.com/priyazsh', '_blank');
   };
 
   const openPayPal = () => {
@@ -33,7 +33,7 @@ export function SponsorWidget() {
   };
 
   const openGitHubSponsors = () => {
-    window.open('https://github.com/sponsors/priyanzsh', '_blank');
+    window.open('https://github.com/sponsors/priyazsh', '_blank');
   };
 
   return (

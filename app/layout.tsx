@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | is-a.software"
   },
   description: "Get your free .is-a.software subdomain for developers. Perfect for side projects, demos, portfolios, and showcasing your work. Easy DNS management with GitHub authentication.",
-  authors: [{ name: "Priyansh Prajapat", url: "https://priyanzsh.github.io" }],
+  authors: [{ name: "Priyansh Prajapat", url: "https://priyazsh.github.io" }],
   creator: "Priyansh Prajapat",
   publisher: "Priyansh Prajapat",
   formatDetection: {
@@ -92,7 +92,7 @@ export default function RootLayout({
     },
     "creator": {
       "name": "Priyansh Prajapat",
-      "url": "https://priyanzsh.github.io"
+      "url": "https://priyazsh.github.io"
     }
   };
 
