@@ -18,7 +18,7 @@ export function Footer() {
               <Link href="https://github.com/is-a-software/is-a-software" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]">
                 <Github className="h-5 w-5" />
               </Link>
-              <Link href="https://x.com/priyazsh_" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-blue-400 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">
+              <Link href="https://x.com/priyazsh" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-blue-400 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">
                 <Twitter className="h-5 w-5" />
               </Link>
               <Link href="https://linkedin.com/in/priyazsh" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-all hover:text-blue-500 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">
