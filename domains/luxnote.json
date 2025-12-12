@@ -3,6 +3,7 @@
     "github": "truthwhisper"
   },
   "record": {
-    "CNAME": "truthwhisper.github.io"
-  }
+    "CNAME": "hashnode.network"
+  },
+  "proxy": false
 }
