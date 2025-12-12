@@ -3,7 +3,7 @@
     "github": "drsatanic"
   },
   "record": {
-    "TXT": "vc-domain-verify=_vercel.satanicbook.is-a.software,4ab6e1fe763b50c8f45c"
+    "TXT": "vc-domain-verify=satanicbook.is-a.software,4ab6e1fe763b50c8f45c"
   },
   "proxy": false
 }
