@@ -3,6 +3,7 @@
     "github": "Abhinavpatra"
   },
   "record": {
-    "CNAME": "    qr-beryl-two.vercel.app"
-  }
+    "CNAME": "qr-beryl-two.vercel.app"
+  },
+  "proxy": false
 }
