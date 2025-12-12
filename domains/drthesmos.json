@@ -3,6 +3,7 @@
     "github": "truthwhisper"
   },
   "record": {
-    "CNAME": "drsatanic.netlify.app"
-  }
+    "CNAME": "truthwhisper.vercel.app"
+  },
+  "proxy": false
 }
