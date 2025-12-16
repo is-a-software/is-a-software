@@ -3,6 +3,7 @@
     "github": "whosfrench0"
   },
   "record": {
-    "TXT": "vc-domain-verify=alaric.cafe.is-a.software,4d7a0d3e8c88747faac3"
-  }
+    "TXT": "_vercel.alaric.cafe/"
+  },
+  "proxy": false
 }
