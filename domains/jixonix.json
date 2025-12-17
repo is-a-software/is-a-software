@@ -3,6 +3,7 @@
     "github": "JessiV20"
   },
   "record": {
-    "CNAME": "jessiv20.github.io"
-  }
+    "TXT": "vc-domain-verify=jixonix.is-a.software,2d666adae8e339f5d835"
+  },
+  "proxy": false
 }
