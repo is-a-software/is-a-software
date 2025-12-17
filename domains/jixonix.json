@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "landing-services-y1eq.vercel.app"
-  }
+  },
+  "proxy": false
 }
