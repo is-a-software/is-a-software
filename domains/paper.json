@@ -3,6 +3,7 @@
     "github": "xtoazt"
   },
   "record": {
-    "CNAME": "whqle.github.io"
-  }
+    "CNAME": "xtoazt.github.io"
+  },
+  "proxy": false
 }
