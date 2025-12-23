@@ -3,6 +3,7 @@
     "github": "aryanshrai03"
   },
   "record": {
-    "CNAME": "352a381ddded8543.vercel-dns-017.com."
-  }
+    "TXT": "vc-domain-verify=codex.is-a.software,747cfd5428fdd303a2fb"
+  },
+  "proxy": false
 }
