@@ -3,6 +3,7 @@
     "github": "TLine797"
   },
   "record": {
-    "CNAME": "liquidmods.vercel.app"
-  }
+    "TXT": "vc-domain-verify=liquidmods.is-a.software,22768f5041e806165511"
+  },
+  "proxy": false
 }
