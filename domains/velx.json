@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "voidmenu.github.io"
-  }
+  },
+  "proxy": false
 }
