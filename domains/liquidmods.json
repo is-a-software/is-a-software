@@ -3,6 +3,7 @@
     "github": "TLine797"
   },
   "record": {
-    "CNAME": "tline797.github.io"
-  }
+    "TXT": "tline797.github.io"
+  },
+  "proxy": false
 }
