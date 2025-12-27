@@ -3,6 +3,7 @@
     "github": "Priyansxu"
   },
   "record": {
-    "CNAME": "bc69006b0de0cc58.vercel-dns-017.com"
+    "CNAME": "bc69006b0de0cc58.vercel-dns-017.com",
+    "TXT": "vc-domain-verify=vexel.is-a.software,85b42c4202dfb93f68f2"
   }
 }
