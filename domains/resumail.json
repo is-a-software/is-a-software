@@ -3,6 +3,7 @@
     "github": "Sid20rathi"
   },
   "record": {
-    "CNAME": "cf9425c71292a576.vercel-dns-017.com."
-  }
+    "TXT": "vc-domain-verify=resumail.is-a.software,d709cb5506e511d7ed22"
+  },
+  "proxy": false
 }
