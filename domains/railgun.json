@@ -3,7 +3,7 @@
     "github": "repyh"
   },
   "record": {
-    "CNAME": "8ccf86867e2eb008.vercel-dns-017.com."
+    "TXT": "vc-domain-verify=railgun.is-a.software,e031b7d92834f43e0079"
   },
   "proxy": false
 }
