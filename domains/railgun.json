@@ -3,6 +3,7 @@
     "github": "repyh"
   },
   "record": {
-    "CNAME": "railgun-website.vercel.app"
-  }
+    "CNAME": "8ccf86867e2eb008.vercel-dns-017.com."
+  },
+  "proxy": false
 }
