@@ -3,6 +3,7 @@
     "github": "salmaahmed2026"
   },
   "record": {
-    "CNAME": "thedailyinsider.netlify.app"
-  }
+    "TXT": "e8bad9745cff50a3f474c0ec243521fb"
+  },
+  "proxy": false
 }
