@@ -3,6 +3,7 @@
     "github": "salmaahmed2026"
   },
   "record": {
-    "AAAA": "2606:50c0:8000::153"
-  }
+    "CNAME": "salmaahmedeazab.github.io"
+  },
+  "proxy": false
 }
