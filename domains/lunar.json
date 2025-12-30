@@ -3,6 +3,7 @@
     "github": "sealgodreal"
   },
   "record": {
-    "CNAME": "lunar.netlify.app"
-  }
+    "CNAME": "sealgodreal.github.io"
+  },
+  "proxy": false
 }
