@@ -3,6 +3,7 @@
     "github": "devarshishimpi"
   },
   "record": {
-    "CNAME": "devarshi.dev"
-  }
+    "CNAME": "devarshi-dev.pages.dev"
+  },
+  "proxy": false
 }
