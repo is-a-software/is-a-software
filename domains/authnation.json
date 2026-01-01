@@ -1,9 +1,0 @@
-{
-  "owner": {
-    "github": "drsatanic"
-  },
-  "record": {
-    "CNAME": "awenation.vercel.app."
-  },
-  "proxy": false
-}
