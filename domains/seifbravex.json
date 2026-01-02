@@ -3,6 +3,7 @@
     "github": "SEIFPROGRAMER"
   },
   "record": {
-    "CNAME": "063c91c1d86ef70d.vercel-dns-017.com."
-  }
+    "TXT": "zoho-verification=zb82847403.zmverify.zoho.sa"
+  },
+  "proxy": false
 }
