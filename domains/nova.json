@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "novadev.biz"
-  }
+  },
+  "proxy": false
 }
