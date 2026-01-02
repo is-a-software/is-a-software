@@ -3,6 +3,7 @@
     "github": "Kashan-2912"
   },
   "record": {
-    "CNAME": "7c3cec1f532f0978.vercel-dns-017.com."
-  }
+    "TXT": "vc-domain-verify=objektify.is-a.software,5b1ebf2bbb6f2f81ab55"
+  },
+  "proxy": false
 }
