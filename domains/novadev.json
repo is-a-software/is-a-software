@@ -3,6 +3,7 @@
     "github": "nabil-devs"
   },
   "record": {
-    "CNAME": "novadev.biz"
-  }
+    "CNAME": "cname.vercel-dns-017.com."
+  },
+  "proxy": false
 }
