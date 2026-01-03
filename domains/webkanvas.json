@@ -3,6 +3,7 @@
     "github": "antoniokadid"
   },
   "record": {
-    "CNAME": "cloud.webkanvas.dev"
-  }
+    "CNAME": "webkanvas.dev"
+  },
+  "proxy": false
 }
