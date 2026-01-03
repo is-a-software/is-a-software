@@ -3,7 +3,7 @@
     "github": "Kashan-2912"
   },
   "record": {
-    "TXT": "vc-domain-verify=objektify.is-a.software,5b1ebf2bbb6f2f81ab55"
+    "TXT": "\"vc-domain-verify=objektify.is-a.software,5b1ebf2bbb6f2f81ab55\""
   },
   "proxy": false
 }
