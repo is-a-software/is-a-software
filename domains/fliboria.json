@@ -3,6 +3,7 @@
     "github": "Bhabishworgrg"
   },
   "record": {
-    "CNAME": "bhabishwor.codeberg.page"
-  }
+    "CNAME": "pages.bhabishwor.codeberg.page"
+  },
+  "proxy": false
 }
