@@ -24,6 +24,7 @@ Thumbs.db
 
 # testing
 /coverage
+domain-status.txt
 
 # next.js
 /.next/
