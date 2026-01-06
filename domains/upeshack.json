@@ -3,6 +3,7 @@
     "github": "Abhinav-kodes"
   },
   "record": {
-    "TXT": "https://hackathon-sage-ten.vercel.app/"
-  }
+    "CNAME": "0a0c67ffa2c7a1c9.vercel-dns-017.com."
+  },
+  "proxy": false
 }
