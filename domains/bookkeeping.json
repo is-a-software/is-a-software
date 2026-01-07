@@ -1,9 +1,0 @@
-{
-  "owner": {
-    "github": "zgrummedical"
-  },
-  "record": {
-    "CNAME": "bookkeeping.zgrum.com"
-  },
-  "proxy": false
-}
