@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "ghs.google.com"
-  }
+  },
+  "proxy": false
 }
