@@ -3,6 +3,7 @@
     "github": "Starlord87official"
   },
   "record": {
-    "CNAME": "rival-code-league.lovable.app"
-  }
+    "A": "76.76.21.21"
+  },
+  "proxy": false
 }
