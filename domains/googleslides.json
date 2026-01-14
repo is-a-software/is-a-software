@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "google.slides"
-  }
+  },
+  "proxy": false
 }
