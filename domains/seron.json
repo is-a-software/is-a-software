@@ -3,11 +3,20 @@
     "github": "Priyansxu"
   },
   "record": {
-    "CNAME": {
-      "@": "d67ced51f4050c5b.vercel-dns-017.com",
-      "clk._domainkey": "dkim1.p40rqtgxjcz3.clerk.services",
-      "clk2._domainkey": "dkim2.p40rqtgxjcz3.clerk.services"
-    }
+    "CNAME": [
+      {
+        "name": "@",
+        "value": "d67ced51f4050c5b.vercel-dns-017.com"
+      },
+      {
+        "name": "clk._domainkey",
+        "value": "dkim1.p40rqtgxjcz3.clerk.services"
+      },
+      {
+        "name": "clk2._domainkey",
+        "value": "dkim2.p40rqtgxjcz3.clerk.services"
+      }
+    ]
   },
   "proxy": false
 }
