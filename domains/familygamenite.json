@@ -3,6 +3,7 @@
     "github": "marc0manuel"
   },
   "record": {
-    "CNAME": "cellular-chickadee-9vwi68rdbi4ssfkpxm0ewdsh.herokudns.com"
-  }
+    "CNAME": "friendly-feud-c0e9a794e85c.herokuapp.com"
+  },
+  "proxy": false
 }
