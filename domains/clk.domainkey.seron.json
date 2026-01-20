@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "dkim1.gm1nbjhq4koi.clerk.services"
-  }
+  },
+  "proxy": false
 }
