@@ -3,9 +3,7 @@
     "github": "Nub-programmer"
   },
   "record": {
-    "CNAME": "6a7970bfbdd5cb8f.vercel-dns-017.com.",
-    "TXT": {
-      "_vercel": "vc-domain-verify=techflowbot.is-a.software,ad2538d5187723043043"
+    "CNAME": "6a7970bfbdd5cb8f.vercel-dns-017.com."
     }
   }
 }
