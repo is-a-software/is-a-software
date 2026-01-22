@@ -3,6 +3,7 @@
     "github": "Priyansxu"
   },
   "record": {
-    "CNAME": "mail.p40rqtgxjcz3.clerk.services"
-  }
+    "CNAME": "mail.aix2uedericq.clerk.services"
+  },
+  "proxy": false
 }
