@@ -4,5 +4,6 @@
   },
   "record": {
     "TXT": "vc-domain-verify=vexel.is-a.software,8366931d786c5360965f"
-  }
+  },
+  "proxy": false
 }
