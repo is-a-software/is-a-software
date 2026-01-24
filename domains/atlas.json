@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "atlass11.lovable.app"
-  }
+  },
+  "proxy": false
 }
