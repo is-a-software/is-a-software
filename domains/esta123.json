@@ -3,6 +3,7 @@
     "github": "Novza-1"
   },
   "record": {
-    "CNAME": "Bloxd.io"
-  }
+    "A": "172.67.68.39"
+  },
+  "proxy": false
 }
