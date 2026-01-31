@@ -3,6 +3,7 @@
     "github": "tutosrive"
   },
   "record": {
-    "CNAME": "dev2forge.github.io"
-  }
+    "CNAME": "dev2forge.pages.dev"
+  },
+  "proxy": false
 }
