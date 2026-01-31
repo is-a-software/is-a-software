@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "bloxd.io"
-  }
+  },
+  "proxy": false
 }
