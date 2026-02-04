@@ -3,6 +3,7 @@
     "github": "TestCoper"
   },
   "record": {
-    "A": "188.121.108.23"
-  }
+    "A": "188.121.118.73"
+  },
+  "proxy": false
 }
