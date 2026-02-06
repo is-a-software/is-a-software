@@ -3,7 +3,7 @@
     "github": "drmmpro"
   },
   "record": {
-    "A": "45.129.95.255"
+    "AAAA": "2007:470:7030::10"
   },
   "proxy": false
 }
