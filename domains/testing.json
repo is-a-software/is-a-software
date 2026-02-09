@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "hacker7766.github.io"
-  }
+  },
+  "proxy": false
 }
