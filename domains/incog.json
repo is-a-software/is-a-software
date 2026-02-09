@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "website22-latest.onrender.com"
-  }
+  },
+  "proxy": false
 }
