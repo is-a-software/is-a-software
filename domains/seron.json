@@ -3,6 +3,7 @@
     "github": "Priyansxu"
   },
   "record": {
-    "CNAME": "d67ced51f4050c5b.vercel-dns-017.com"
-  }
+    "CNAME": "edge.redirect.pizza"
+  },
+  "proxy": false
 }
