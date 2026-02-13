@@ -3,6 +3,7 @@
     "github": "Crazygiscool"
   },
   "record": {
-    "CNAME": "stellar-graphs-606601.framer.app"
-  }
+    "CNAME": "grazearc.vercel.app"
+  },
+  "proxy": false
 }
