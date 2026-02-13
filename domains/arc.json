@@ -3,7 +3,7 @@
     "github": "Crazygiscool"
   },
   "record": {
-    "TXT": "vc-domain-verify=arc.is-a.software,3570aab648abdddbc2fc"
+    "CNAME": "cname.vercel-dns.com"
   },
   "proxy": false
 }
