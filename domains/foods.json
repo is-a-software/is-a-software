@@ -3,6 +3,7 @@
     "github": "govind-anjana"
   },
   "record": {
-    "CNAME": "mandir-foods.vercel.app"
-  }
+    "TXT": "vc-domain-verify=foods.is-a.software,918f7b474c77b652964a"
+  },
+  "proxy": false
 }
