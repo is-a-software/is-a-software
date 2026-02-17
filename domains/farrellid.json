@@ -3,6 +3,7 @@
     "github": "fidxteam"
   },
   "record": {
-    "CNAME": "7175fc2c8d03c6fc.vercel-dns-017.com."
-  }
+    "TXT": "vc-domain-verify=farrellid.is-a.software,662fa1e4195ac63dab81"
+  },
+  "proxy": false
 }
