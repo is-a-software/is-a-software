@@ -3,6 +3,7 @@
     "github": "divyanshudhruv"
   },
   "record": {
-    "CNAME": "percept-network.vercel.app"
-  }
+    "CNAME": "percept-network.is-a.software"
+  },
+  "proxy": false
 }
