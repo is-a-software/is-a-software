@@ -3,6 +3,7 @@
     "github": "thetmyoekhaing"
   },
   "record": {
-    "CNAME": "e0e2afa528997a99.vercel-dns-017.com."
-  }
+    "TXT": "vc-domain-verify=su.is-a.software,4173c3b3b5ae7f0388e2"
+  },
+  "proxy": false
 }
