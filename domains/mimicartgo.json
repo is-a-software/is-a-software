@@ -3,6 +3,7 @@
     "github": "sparten0906"
   },
   "record": {
-    "A": "185.158.133.1"
-  }
+    "TXT": "lovable_verify=18093a8f21ec6efdcc6abe8be987a4324754e1a6fea1b00ae09af012dfdb8f87"
+  },
+  "proxy": false
 }
