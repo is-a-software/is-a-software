@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "zia-bot.netlify.app"
-  }
+  },
+  "proxy": false
 }
