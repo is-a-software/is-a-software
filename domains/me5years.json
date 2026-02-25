@@ -3,6 +3,7 @@
     "github": "ilya-ui"
   },
   "record": {
-    "CNAME": "ilya.alwaysdata.net"
-  }
+    "CNAME": "ilya-ui.github.io"
+  },
+  "proxy": false
 }
