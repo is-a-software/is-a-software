@@ -3,6 +3,7 @@
     "github": "MarckRamon"
   },
   "record": {
-    "TXT": "vc-domain-verify=lume.is-a.software,7773627b2ba9b7e6e174"
-  }
+    "CNAME": "5d766ed0a1d29819.vercel-dns-017.com."
+  },
+  "proxy": false
 }
