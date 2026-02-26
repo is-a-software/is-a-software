@@ -3,7 +3,7 @@
     "github": "jaivalgpandya-webpaging"
   },
   "record": {
-    "CNAME": "iylwpgwy.up.railway.app"
+    "TXT": "railway-verify=75aeea661ae42df226c33ce40bf50d8a5c9c6a8a214d591a1c09d17e3848af1d"
   },
   "proxy": false
 }
