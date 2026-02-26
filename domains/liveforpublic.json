@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "lazsj0xh.up.railway.app"
-  }
+  },
+  "proxy": false
 }
