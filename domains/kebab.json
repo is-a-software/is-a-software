@@ -3,7 +3,7 @@
     "github": "ethembeldagli"
   },
   "record": {
-    "TXT": "vc-domain-verify=kebab.is-a.software,6dfea897aa7f603edbf3"
+    "CNAME": "f85ed751d9a8ea9f.vercel-dns-017.com."
   },
   "proxy": false
 }
