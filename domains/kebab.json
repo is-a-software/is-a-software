@@ -3,6 +3,7 @@
     "github": "ethembeldagli"
   },
   "record": {
-    "CNAME": "kebab-website-3jj.pages.dev"
-  }
+    "TXT": "kebab-website-3jj.pages.dev"
+  },
+  "proxy": false
 }
