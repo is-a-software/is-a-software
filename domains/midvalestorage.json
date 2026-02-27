@@ -3,6 +3,7 @@
     "github": "darkhorse68"
   },
   "record": {
-    "CNAME": "midvalestorage.lovable.app"
-  }
+    "A": "185.158.133.1"
+  },
+  "proxy": false
 }
