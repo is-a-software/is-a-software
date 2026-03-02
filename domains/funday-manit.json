@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "fundaymanit.vercel.app"
-  }
+  },
+  "proxy": false
 }
