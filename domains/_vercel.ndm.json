@@ -1,9 +1,0 @@
-{
-  "owner": {
-    "github": "micoms"
-  },
-  "record": {
-    "TXT": "vc-domain-verify=ndm.is-a.software,50b79866b42d656e6363"
-  },
-  "proxy": false
-}
