@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "manishprakkash"
-  }
+  },
+  "proxy": false
 }
