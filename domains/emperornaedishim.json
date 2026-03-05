@@ -3,6 +3,7 @@
     "github": "DinoNaedYT"
   },
   "record": {
-    "CNAME": "8c3f739554925f78.vercel-dns-017.com."
-  }
+    "TXT": "vc-domain-verify=emperornaedishim.is-a.software,8023c39cef85ddb81ede"
+  },
+  "proxy": false
 }
