@@ -3,6 +3,7 @@
     "github": "sbr69"
   },
   "record": {
-    "CNAME": "chanda-dedo"
-  }
+    "TXT": "vc-domain-verify=chanda-dedo.is-a.software,676e4eca4d4606224562"
+  },
+  "proxy": false
 }
