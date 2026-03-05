@@ -3,6 +3,7 @@
     "github": "drmmpro"
   },
   "record": {
-    "AAAA": "2001:470:7030::30"
-  }
+    "CNAME": "proemo.myaddr.dev"
+  },
+  "proxy": false
 }
