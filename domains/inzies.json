@@ -3,7 +3,7 @@
     "github": "wizreet"
   },
   "record": {
-    "CNAME": "cbc3eee4cdfc43f9.vercel-dns-017.com."
+    "TXT": "vc-domain-verify=inzies.is-a.software,c2a96906e625084df173"
   },
   "proxy": false
 }
