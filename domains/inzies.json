@@ -3,6 +3,7 @@
     "github": "wizreet"
   },
   "record": {
-    "CNAME": "wizreet.github.io"
-  }
+    "CNAME": "cbc3eee4cdfc43f9.vercel-dns-017.com."
+  },
+  "proxy": false
 }
