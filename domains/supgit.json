@@ -1,9 +1,0 @@
-{
-  "owner": {
-    "github": "thomasboom"
-  },
-  "record": {
-    "TXT": "vc-domain-verify=supgit.is-a.software,b9af9c2bf4d3ec8a2d40"
-  },
-  "proxy": false
-}
