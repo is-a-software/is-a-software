@@ -1,0 +1,10 @@
+{
+  "owner": {
+    "github": "thomasboom"
+  },
+  "record": {
+    "CNAME": "b345fde8c10576cf.vercel-dns-017.com.",
+    "TXT": "vc-domain-verify=supgit.is-a.software,b9af9c2bf4d3ec8a2d40"
+  },
+  "proxy": false
+}
