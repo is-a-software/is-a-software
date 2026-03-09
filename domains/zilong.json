@@ -4,7 +4,8 @@
   },
   "record": {
     "CNAME": "c685246fee6f1494.vercel-dns-017.com",
-    "TXT": "vc-domain-verify=zilong.is-a.software,2b53f40e9b8298ec55f2"
-   
+    "TXT": {
+      "_vercel": "vc-domain-verify=zilong.is-a.software,2b53f40e9b8298ec55f2"
+    }
   }
 }
