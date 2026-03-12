@@ -3,6 +3,7 @@
     "github": "Gojo-Satoru11"
   },
   "record": {
-    "CNAME": "index.html"
-  }
+    "CNAME": "gojo-satoru11.github.io"
+  },
+  "proxy": false
 }
