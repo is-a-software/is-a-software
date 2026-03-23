@@ -3,6 +3,7 @@
     "github": "bloxcraft-ubg"
   },
   "record": {
-    "CNAME": "bloxcraft-ubg.pages.dev"
-  }
+    "CNAME": "ported.pages.dev"
+  },
+  "proxy": false
 }
