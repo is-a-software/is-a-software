@@ -3,6 +3,7 @@
     "github": "oar707621"
   },
   "record": {
-    "CNAME": "Google.com"
-  }
+    "CNAME": "YouTube.com"
+  },
+  "proxy": false
 }
