@@ -3,6 +3,7 @@
     "github": "MULIYWKOLNIK"
   },
   "record": {
-    "CNAME": "financeaiapi"
-  }
+    "A": "34.178.94.30"
+  },
+  "proxy": false
 }
