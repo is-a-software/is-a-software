@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "vallai.netlify.app"
-  }
+  },
+  "proxy": false
 }
