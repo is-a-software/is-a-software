@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "ported.pages.dev"
-  }
+  },
+  "proxy": false
 }
