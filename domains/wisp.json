@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "wispproject.netlify.app"
-  }
+  },
+  "proxy": false
 }
