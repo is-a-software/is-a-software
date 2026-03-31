@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "ivery-language-center.pages.dev"
-  }
+  },
+  "proxy": false
 }
