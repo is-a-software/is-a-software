@@ -3,6 +3,7 @@
     "github": "papaL3xa"
   },
   "record": {
-    "CNAME": "papal3xa.github.io"
-  }
+    "CNAME": "71ce80-some-dns-record.com"
+  },
+  "proxy": false
 }
