@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "lateefah-al.github.io"
-  }
+  },
+  "proxy": false
 }
