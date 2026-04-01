@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "mind-emotion-moments.vercel.app"
-  }
+  },
+  "proxy": false
 }
