@@ -3,6 +3,7 @@
     "github": "TGS1-DOW"
   },
   "record": {
-    "CNAME": "Google.com"
-  }
+    "TXT": "google-site-verification=mHHWc48Lf2YXKRAdElJRch3pjMz_jJh1miVGHxcnZjk"
+  },
+  "proxy": false
 }
