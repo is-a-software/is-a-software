@@ -3,6 +3,7 @@
     "github": "ultrahubteam-dot"
   },
   "record": {
-    "CNAME": "eq0vv052.up.railway.app"
-  }
+    "TXT": "railway-verify=b4047d3b751741769cb834e6cca05b3d87506f37cd8cf7880bcec846f2ebae29"
+  },
+  "proxy": false
 }
