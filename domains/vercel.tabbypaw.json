@@ -3,6 +3,7 @@
     "github": "zhengjynicolas"
   },
   "record": {
-    "CNAME": "a541ba98df44d12c.vercel-dns-017.com."
-  }
+    "TXT": "vc-domain-verify=vercel.tabbypaw.is-a.software,0bd41584b073aa1fe332"
+  },
+  "proxy": false
 }
