@@ -3,6 +3,7 @@
     "github": "castprofishing"
   },
   "record": {
-    "A": "161.97.105.208"
-  }
+    "CNAME": "161.97.105.208"
+  },
+  "proxy": false
 }
