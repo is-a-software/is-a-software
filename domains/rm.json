@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "reminiscence-one.vercel.app"
-  }
+  },
+  "proxy": false
 }
