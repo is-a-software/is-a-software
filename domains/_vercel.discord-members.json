@@ -4,5 +4,6 @@
   },
   "record": {
     "TXT": "vc-domain-verify=discord-members.is-a.software,b14c6c839972fd8d8035"
-  }
+  },
+  "proxy": false
 }
