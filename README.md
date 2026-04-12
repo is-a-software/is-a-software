@@ -1,3 +1,8 @@
+> [!IMPORTANT]
+> ## Limit Reached
+> Due to Cloudflare's 200 subdomain limit being reached, we are unable to provide any more subdomains at this time. We are actively working to find a solution to this limit. <br>
+
+
 <div align="center">
   <h1>is-a.software</h1>
   <p>Get your free .is-a.software subdomain for developers. Perfect for side projects, demos, and showcasing your work to the world.</p>
