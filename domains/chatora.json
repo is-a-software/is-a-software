@@ -4,5 +4,6 @@
   },
   "record": {
     "CNAME": "chatoraai-htkg.onrender.com"
-  }
+  },
+  "proxy": false
 }
