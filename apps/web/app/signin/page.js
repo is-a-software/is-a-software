@@ -8,9 +8,11 @@ import Footer from '@/components/Footer';
 import { authApi } from '@/lib/api';
 import ErrorBanner from '@/components/ErrorBanner';
 import { setToken, setUser } from '@/lib/auth';
+import { useWaitlist } from '@/lib/waitlist';
 
 export default function SignIn() {
   const router = useRouter();
+  const { openWaitlist } = useWaitlist();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -36,7 +38,7 @@ setUser(data.userDto || { name: 'User', email: formData.email });
 
       router.push('/dashboard');
     } catch (err) {
-      setError(err.message);
+      openWaitlist();
     } finally {
       setIsLoading(false);
     }

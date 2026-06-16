@@ -7,11 +7,13 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ErrorBanner from '@/components/ErrorBanner';
 import { authApi } from '@/lib/api';
+import { useWaitlist } from '@/lib/waitlist';
 
 const SIGNUP_PENDING_KEY = 'pending_signup_verification';
 
 export default function SignUp() {
   const router = useRouter();
+  const { openWaitlist } = useWaitlist();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -59,7 +61,7 @@ export default function SignUp() {
       setMessage(result?.message || 'OTP sent. Redirecting to verification...');
       router.push('/signup/verify');
     } catch (err) {
-      setError(err.message);
+      openWaitlist();
     } finally {
       setIsLoading(false);
     }

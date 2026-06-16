@@ -1,4 +1,6 @@
 import "./globals.css";
+import { WaitlistProvider } from '@/lib/waitlist';
+import WaitlistModal from '@/components/WaitlistModal';
 
 export const metadata = {
   title: "is-a.software | Free subdomains for developers",
@@ -13,7 +15,10 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className="antialiased">
-        {children}
+        <WaitlistProvider>
+          {children}
+          <WaitlistModal />
+        </WaitlistProvider>
       </body>
     </html>
   );

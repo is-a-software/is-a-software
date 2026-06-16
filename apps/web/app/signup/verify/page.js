@@ -6,11 +6,13 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ErrorBanner from '@/components/ErrorBanner';
 import { authApi } from '@/lib/api';
+import { useWaitlist } from '@/lib/waitlist';
 
 const SIGNUP_PENDING_KEY = 'pending_signup_verification';
 
 export default function VerifySignupPage() {
   const router = useRouter();
+  const { openWaitlist } = useWaitlist();
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -86,7 +88,7 @@ export default function VerifySignupPage() {
         router.push('/signin');
       }, 1200);
     } catch (err) {
-      setError(err.message || 'OTP verification failed.');
+      openWaitlist();
     } finally {
       setIsLoading(false);
     }
@@ -114,7 +116,7 @@ export default function VerifySignupPage() {
       const devHint = result?.otpDev ? ` (Dev OTP: ${result.otpDev})` : '';
       setMessage((result?.message || 'OTP resent successfully.') + devHint);
     } catch (err) {
-      setError(err.message || 'Failed to resend OTP.');
+      openWaitlist();
     } finally {
       setIsResending(false);
     }
