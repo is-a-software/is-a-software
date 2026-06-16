@@ -24,10 +24,13 @@ import com.is.a.Software.repository.SocialRepository;
 import com.is.a.Software.repository.SubscriptionRepository;
 import com.is.a.Software.exception.DnsLimitExceededException;
 import com.is.a.Software.exception.InvalidRecordValueException;
+import com.is.a.Software.exception.RecordConflictException;
 import com.is.a.Software.exception.RecordNotFoundException;
 import com.is.a.Software.exception.SubscriptionRequiredException;
 import com.is.a.Software.service.CloudflareService;
 import com.is.a.Software.service.DnsService;
+
+import com.is.a.Software.entity.Enum.RecordType;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -142,6 +145,18 @@ public class DnsRecordsServiceImpl implements DnsService {
 
         if (count >= limit) {
             throw new DnsLimitExceededException(limit);
+        }
+
+        RecordType type = dto.getType();
+        if (type == RecordType.A || type == RecordType.AAAA || type == RecordType.CNAME) {
+            String name = dto.getName() == null ? "@" : dto.getName();
+            List<DnsRecords> existing = dnsRepo.findByDomainAndName(domain, name);
+            for (DnsRecords rec : existing) {
+                RecordType existingType = rec.getType();
+                if (existingType == RecordType.A || existingType == RecordType.AAAA || existingType == RecordType.CNAME) {
+                    throw new RecordConflictException(domain.getSubdomain(), name, type.name());
+                }
+            }
         }
 
         DnsRecords dns = modelmapper.map(dto, DnsRecords.class);

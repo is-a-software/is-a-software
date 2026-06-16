@@ -18,6 +18,7 @@ import com.is.a.Software.exception.DnsLimitExceededException;
 import com.is.a.Software.exception.DomainNotFound;
 import com.is.a.Software.exception.DuplicateUserException;
 import com.is.a.Software.exception.InvalidRecordValueException;
+import com.is.a.Software.exception.RecordConflictException;
 import com.is.a.Software.exception.RecordNotFoundException;
 import com.is.a.Software.exception.SubscriptionRequiredException;
 import com.is.a.Software.exception.UserNotFoundException;
@@ -114,6 +115,14 @@ public class GlobalExceptionHandling {
 		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
+
+	@ExceptionHandler(RecordConflictException.class)
+	public ResponseEntity<Map<String, Object>> handleRecordConflict(RecordConflictException ex) {
+		Map<String, Object> body = new HashMap<>();
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.CONFLICT.value());
+		return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+	}
 
 	@ExceptionHandler(CloudflareApiException.class)
 	public ResponseEntity<Map<String, Object>> handleCloudflareApi(CloudflareApiException ex) {

@@ -11,4 +11,5 @@ import com.is.a.Software.entity.User;
 public interface DnsRepository extends JpaRepository<DnsRecords, Integer> {
 	   int countByDomainUser(User user);
 	   List<DnsRecords> findByDomain(Domain domain);
+	   List<DnsRecords> findByDomainAndName(Domain domain, String name);
 }
