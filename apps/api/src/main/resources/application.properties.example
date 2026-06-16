@@ -1,0 +1,52 @@
+spring.application.name=Is-a.Software
+
+# Database
+spring.datasource.url=jdbc:mariadb://localhost:3306/isasoftware
+spring.datasource.username=root
+spring.datasource.password=your_db_password
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+
+# JPA
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+
+# Email (Gmail SMTP)
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=your_email@gmail.com
+spring.mail.password=your_app_password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# GitHub OAuth
+github.client.id=your_github_client_id
+github.client.secret=your_github_client_secret
+github.repo.owner=is-a-software
+github.repo.name=is-a-software
+
+# App URLs
+app.backend.url=http://localhost:8080
+app.frontend.url=http://localhost:3000
+
+# Razorpay
+razorpay.key.id=your_razorpay_key_id
+razorpay.key.secret=your_razorpay_key_secret
+razorpay.plan.premium.usd=
+razorpay.plan.premium.inr=plan_id
+razorpay.plan.premium.plus.usd=
+razorpay.plan.premium.plus.inr=plan_id
+razorpay.subscription.total.count=1
+
+# JWT (at least 32 characters for HS256)
+jwt.secret=your_jwt_signing_secret
+
+# Session
+server.servlet.session.timeout=30m
+server.servlet.session.cookie.http-only=true
+server.servlet.session.cookie.secure=false
+
+# Cloudflare
+CF_API_KEY=your_cloudflare_api_token
+CF_ZONE_ID=your_cloudflare_zone_id

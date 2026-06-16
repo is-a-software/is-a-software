@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.03) 2px,
+      rgba(255, 255, 255, 0.03) 4px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.02) 2px,
+      rgba(255, 255, 255, 0.02) 4px
+    ),
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 24%),
+    radial-gradient(circle at 50% -10%, rgba(226, 232, 240, 0.08), transparent 30%),
+    linear-gradient(180deg, #000000 0%, #0a0a0a 45%, #131313 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  color: #f8fafc;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise" /></filter></defs><rect width="100" height="100" fill="white" filter="url(%23noise)" opacity="0.03"/></svg>');
+  background-size: 100%, 100%, 200px 200px;
+  background-attachment: fixed;
+  z-index: 1;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent 80%);
+}
+
+.glass {
+  background: linear-gradient(180deg, rgba(18, 18, 18, 0.82), rgba(10, 10, 10, 0.66));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(18px);
+}
+
+.glass-sm {
+  background: rgba(18, 18, 18, 0.54);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(14px);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: linear-gradient(180deg, #f5f5f5 0%, #d4d4d4 100%);
+  color: #050505;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(248, 250, 252, 0.08);
+  transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #e5e5e5 100%);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(24, 24, 24, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  font-weight: 500;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(38, 38, 38, 0.78);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.input-glass {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(12, 12, 12, 0.78);
+  padding: 0.75rem 1rem;
+  color: #f8fafc;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.input-glass::placeholder {
+  color: #94a3b8;
+}
+
+.input-glass:focus {
+  outline: none;
+  border-color: rgba(212, 212, 212, 0.5);
+  box-shadow: 0 0 0 3px rgba(212, 212, 212, 0.12);
+}
+
+.divider {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.domain-suffix {
+  display: flex;
+  align-items: center;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(16, 16, 16, 0.72);
+  padding: 0.75rem 0.9rem;
+  color: #94a3b8;
+}
+
+.accent-ice {
+  color: #e5e7eb;
+}
+
+.accent-soft {
+  color: #d4d4d8;
+}
+
+.status-good {
+  color: #d4d4d4;
+}
+
+.status-bad {
+  color: #cfcfcf;
+}
+
+.status-pill {
+  background: rgba(245, 245, 245, 0.08);
+  color: #e5e5e5;
+}
+
+.danger-soft {
+  color: #d4d4d8;
+}
+
+.danger-soft:hover {
+  color: #f5f5f5;
+}
+

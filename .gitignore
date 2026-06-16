@@ -1,0 +1,70 @@
+# Secrets and credentials
+*.pem
+*.key
+*.cert
+apps/api/src/main/resources/application.properties
+
+# Allow the example config
+!apps/api/src/main/resources/application.properties.example
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
+
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build outputs
+target/
+build/
+dist/
+.next/
+out/
+.vercel
+*.tsbuildinfo
+*.js.map
+
+# IDE and editor
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+.springBeans
+.sts4-cache
+.apt_generated
+*.swp
+*.swo
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Testing
+coverage/
+
+# DB export
+/db_export.sql
