@@ -1,6 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import DomainChecker from '@/components/DomainChecker';
+import StatusCard from '@/components/StatusCard';
 import Features from '@/components/Features';
 import Footer from '@/components/Footer';
 
@@ -9,7 +9,7 @@ export default function Home() {
     <>
       <Navbar />
       <Hero />
-      <DomainChecker />
+      <StatusCard />
       <Features />
       <Footer />
     </>
