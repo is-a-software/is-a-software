@@ -1,6 +1,7 @@
 import "./globals.css";
 import { WaitlistProvider } from '@/lib/waitlist';
 import WaitlistModal from '@/components/WaitlistModal';
+import GAScript from '@/components/GoogleAnalytics';
 
 export const metadata = {
   title: "is-a.software | Free subdomains for developers",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
           {children}
           <WaitlistModal />
         </WaitlistProvider>
+        <GAScript />
       </body>
     </html>
   );
