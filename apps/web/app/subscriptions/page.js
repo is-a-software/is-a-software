@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ErrorBanner from '@/components/ErrorBanner';
@@ -19,7 +19,7 @@ const PLAN_KEYS = {
   PREMIUM_PLUS: 'PREMIUM_PLUS'
 };
 
-export default function SubscriptionsPage() {
+function SubscriptionsContent() {
   const searchParams = useSearchParams();
   const handleUnauthorized = useUnauthorizedRedirect();
   const { isAuthed, isCheckingAuth } = useRequireAuth();
@@ -292,9 +292,7 @@ export default function SubscriptionsPage() {
   }
 
   return (
-    <>
-      <Navbar />
-      <main className="relative min-h-screen overflow-hidden px-4 pt-24 pb-12 md:pb-14">
+    <main className="relative min-h-screen overflow-hidden px-4 pt-24 pb-12 md:pb-14">
         <div className="pointer-events-none absolute left-1/2 top-0 h-[20rem] w-[34rem] -translate-x-1/2 rounded-full blur-3xl opacity-35" style={{ background: 'radial-gradient(circle, rgba(148,163,184,0.22), rgba(0,0,0,0) 70%)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto space-y-6">
@@ -423,6 +421,16 @@ export default function SubscriptionsPage() {
           </p>
         </div>
       </main>
+  );
+}
+
+export default function SubscriptionsPage() {
+  return (
+    <>
+      <Navbar />
+      <Suspense fallback={<ProtectedPageLoader message="Loading..." />}>
+        <SubscriptionsContent />
+      </Suspense>
       <Footer />
     </>
   );
