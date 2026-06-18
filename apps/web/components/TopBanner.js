@@ -1,12 +1,21 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useWaitlist } from '@/lib/waitlist';
 
 export default function TopBanner() {
   const { openWaitlist } = useWaitlist();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   return (
-    <div className="w-full relative z-40 overflow-hidden">
+    <div
+      className="w-full relative z-40 overflow-hidden"
+      style={{
+        animation: mounted ? 'slideDown 400ms cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+      }}
+    >
       <div
         className="absolute top-0 left-0 right-0 h-px"
         style={{
@@ -24,7 +33,7 @@ export default function TopBanner() {
       >
         <div className="max-w-6xl mx-auto px-4 py-1.5 min-h-[36px] flex items-center justify-center flex-wrap gap-x-1.5 gap-y-0.5 text-xs sm:text-sm">
           <span className="inline-flex items-center gap-1 text-slate-400 whitespace-nowrap">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/70 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" style={{ animation: 'breathe 2.5s ease-in-out infinite' }} />
             Backend migration in progress.
           </span>
 
