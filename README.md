@@ -1,9 +1,8 @@
-<center>
-<h1>is-a.software</h1>
+<div align="center">
+  <h1>is-a.software</h1>
 
 
 Free `*.is-a.software` subdomains for developers.
-</center>
 <p>
   <img src="https://img.shields.io/badge/Java-21-%23ED8B00" alt="Java 21">
   <img src="https://img.shields.io/badge/Spring_Boot-4.0.3-%236DB33F" alt="Spring Boot 4.0.3">
@@ -12,6 +11,8 @@ Free `*.is-a.software` subdomains for developers.
   <img src="https://img.shields.io/badge/MySQL-8+-%234479A1" alt="MySQL 8+">
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License">
 </p>
+</div>
+
 
 ---
 
