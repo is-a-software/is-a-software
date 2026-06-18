@@ -1,6 +1,7 @@
 import "./globals.css";
 import { WaitlistProvider } from '@/lib/waitlist';
 import WaitlistModal from '@/components/WaitlistModal';
+import TopBanner from '@/components/TopBanner';
 import GAScript from '@/components/GoogleAnalytics';
 
 export const metadata = {
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="antialiased">
         <WaitlistProvider>
+          <TopBanner />
           {children}
           <WaitlistModal />
         </WaitlistProvider>
