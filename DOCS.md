@@ -40,8 +40,6 @@ Go to your hosting platform's settings and add your future subdomain as a custom
 
 The platform will give you a **DNS record value** to copy. This is usually one of:
 
-<image src="web/public/dns-create.png">
-
 - A **CNAME** target (e.g. `myproject.onrender.com`)
 - One or more **A record IP addresses** (e.g. `185.199.108.153`)
 - An **AAAA record IPv6 address**

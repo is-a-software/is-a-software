@@ -24,13 +24,13 @@ Claim a subdomain like `myproject.is-a.software` and point it to your website wi
 
 ```bash
 # Backend
-cd api
+cd server
 cp src/main/resources/application.properties.example src/main/resources/application.properties
 # edit application.properties with your DB credentials
 ./mvnw spring-boot:run
 
 # Frontend
-cd web
+cd client
 cp .env.local.example .env.local
 npm install
 npm run dev
@@ -40,7 +40,7 @@ npm run dev
 
 ```
 .
-├── api/              # Java 21 / Spring Boot 4.0.3 backend
+├── server/           # Java 21 / Spring Boot 4.0.3 backend
 │   ├── src/main/
 │   │   ├── java/.../controller/   # REST controllers
 │   │   ├── java/.../service/      # Business logic
@@ -49,7 +49,7 @@ npm run dev
 │   │   ├── java/.../security/     # JWT auth
 │   │   └── resources/             # Config
 │   └── pom.xml
-├── web/              # Next.js 16 / React 19 frontend
+├── client/           # Next.js 16 / React 19 frontend
 │   ├── app/          # App Router pages
 │   ├── components/   # React components
 │   ├── lib/          # API client & auth utilities

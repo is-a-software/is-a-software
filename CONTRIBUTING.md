@@ -29,7 +29,7 @@ cd is-a-software
 ### 2. Backend
 
 ```bash
-cd api
+cd server
 cp src/main/resources/application.properties.example src/main/resources/application.properties
 ```
 
@@ -63,7 +63,7 @@ The API runs on `http://localhost:8080`.
 ### 3. Frontend
 
 ```bash
-cd web
+cd client
 cp .env.local.example .env.local
 npm install
 ```
@@ -105,7 +105,7 @@ The app runs on `http://localhost:3000`.
 ## Tests
 
 ```bash
-cd api
+cd server
 ./mvnw test
 ```
 

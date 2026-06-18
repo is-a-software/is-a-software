@@ -5,12 +5,12 @@
 **is-a.software** provides free `*.is-a.software` subdomains to developers. Users register, claim a subdomain, and manage DNS records (A, AAAA, CNAME, TXT, MX, NS) through a web dashboard.
 
 **Monorepo structure:**
-- `api/` — Java 21 / Spring Boot 4.0.3 backend (Maven, MariaDB, JWT)
-- `web/` — Next.js 16 / React 19 frontend (Tailwind CSS v4, App Router)
+- `server/` — Java 21 / Spring Boot 4.0.3 backend (Maven, MariaDB, JWT)
+- `client/` — Next.js 16 / React 19 frontend (Tailwind CSS v4, App Router)
 
 ---
 
-## Backend (`api/`)
+## Backend (`server/`)
 
 ### Stack
 
@@ -104,7 +104,7 @@ User (1) ──→ Domain (*) ──→ DnsRecords (*)
 
 ---
 
-## Frontend (`web/`)
+## Frontend (`client/`)
 
 ### Stack
 
