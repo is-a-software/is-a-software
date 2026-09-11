@@ -1,12 +1,4 @@
 {
-  "owner": {
-    "username": "AkrielMrong",
-    "email": "marakworkshop@gmail.com"
-  },
-  "description": "Personal project for sunshinemrong",
-  "repo": "https://github.com/AkrielMrong/sunshinemrong",
-  "record": {
-    "A": ["76.76.21.21"],
-    "TXT": ["parked-sunshinemrong"]
-  }
+  "owner": {"username": "AkrielMrong", "email": "marakworkshop@gmail.com"},
+  "records": {"A": ["76.76.21.21"]}
 }
