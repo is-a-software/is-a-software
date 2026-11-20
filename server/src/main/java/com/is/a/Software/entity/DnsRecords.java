@@ -52,7 +52,7 @@ public class DnsRecords {
 	@Column(nullable=false)
     private String value;
 
-    @Column(nullable = false, columnDefinition = "BIGINT DEFAULT 300")
+    @Column(nullable = false)
     private Long ttl = 300L;
 
     @Column(name = "cloudflare_id", nullable = true)

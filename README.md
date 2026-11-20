@@ -8,7 +8,7 @@ Free `*.is-a.software` subdomains for developers.
   <img src="https://img.shields.io/badge/Spring_Boot-4.0.3-%236DB33F" alt="Spring Boot 4.0.3">
   <img src="https://img.shields.io/badge/Next.js-16-%23000000" alt="Next.js 16">
   <img src="https://img.shields.io/badge/React-19-%2358C4DC" alt="React 19">
-  <img src="https://img.shields.io/badge/MySQL-8+-%234479A1" alt="MySQL 8+">
+  <img src="https://img.shields.io/badge/PostgreSQL-16+-%234169E1" alt="PostgreSQL 16+">
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License">
 </p>
 </div>
@@ -46,7 +46,7 @@ npm run dev
 │   │   ├── java/.../service/      # Business logic
 │   │   ├── java/.../entity/       # JPA entities
 │   │   ├── java/.../repository/   # Data access
-│   │   ├── java/.../security/     # JWT auth
+│   │   ├── java/.../security/     # Central Auth sign-in + API tokens
 │   │   └── resources/             # Config
 │   └── pom.xml
 ├── client/           # Next.js 16 / React 19 frontend

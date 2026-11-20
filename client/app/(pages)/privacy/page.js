@@ -6,7 +6,7 @@ const sections = [
     title: 'Information We Collect',
     description: 'We collect only what is needed to operate the service and secure accounts.',
     points: [
-      'Account data such as email, username, and activity timestamps',
+      'Account data from your Google sign-in: name, email, and when you joined',
       'Domain and DNS configuration data for registered subdomains',
       'Usage data including IP, browser/device info, and feature activity',
       'Support communication and related metadata when you contact us'
@@ -23,11 +23,11 @@ const sections = [
     ]
   },
   {
-    title: 'Public Data & Transparency',
-    description: 'The project uses public infrastructure for transparent domain management.',
+    title: 'Public Data',
+    description: 'DNS is public by design.',
     content:
-      'Domain records are stored in a public GitHub repository for transparency. This means domain configurations and related ownership metadata may be publicly visible, including historical changes.',
-    note: 'If you need private DNS metadata, this service may not fit that use case.'
+      'The DNS records you create are published on the internet, so anyone can look them up. Who owns a subdomain is not published.',
+    note: 'Do not put anything secret in a DNS record.'
   },
   {
     title: 'Security & Retention',
@@ -36,7 +36,7 @@ const sections = [
       'We use HTTPS, authentication controls, and secure storage practices',
       'No internet system is 100% secure, so absolute security is not guaranteed',
       'Data is retained for operational and legal needs, then deleted on valid request when possible',
-      'Public repository history may retain prior changes after account deletion'
+      'DNS resolvers around the world may cache old records for a short time after you change them'
     ]
   },
   {
@@ -53,7 +53,7 @@ const sections = [
     title: 'Third Parties, Cookies, and Policy Changes',
     description: 'Integrated services and policy updates are handled with clear disclosure.',
     points: [
-      'GitHub and other integrated services have their own privacy policies',
+      'Sign-in uses Google, and DNS is served by Cloudflare; each has its own privacy policy',
       'We use session mechanisms and local storage for auth and functionality',
       'We may update this policy and will revise the effective date',
       'Continued use after updates constitutes acceptance of changes'

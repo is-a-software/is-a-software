@@ -1,5 +1,7 @@
 package com.is.a.Software.service;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -10,10 +12,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.is.a.Software.entity.DnsRecords;
 import com.is.a.Software.exception.CloudflareApiException;
+import com.is.a.Software.exception.ZoneCapacityException;
 
 @Service
 public class CloudflareService {
@@ -139,12 +143,17 @@ public class CloudflareService {
         }
 
         HttpEntity<?> request = new HttpEntity<>(authHeaders());
-        ResponseEntity<Map> response = restTemplate.exchange(
-            baseUrl + "/zones/" + zoneId + "/dns_records/" + cloudflareId,
-            HttpMethod.DELETE,
-            request,
-            Map.class
-        );
+        ResponseEntity<Map> response;
+        try {
+            response = restTemplate.exchange(
+                baseUrl + "/zones/" + zoneId + "/dns_records/" + cloudflareId,
+                HttpMethod.DELETE,
+                request,
+                Map.class
+            );
+        } catch (HttpClientErrorException.NotFound alreadyGone) {
+            return; // deleting is idempotent: a record that no longer exists is the desired state
+        }
 
         Map<String, Object> respBody = response.getBody();
         if (respBody == null || !Boolean.TRUE.equals(respBody.get("success"))) {
@@ -175,52 +184,43 @@ public class CloudflareService {
         executeDelete(cloudflareId);
     }
 
-    @SuppressWarnings("unchecked")
-    public int deleteRecordsBySubdomain(String subdomain) {
+    /** Cloudflare Free zones created after 2024-09-01 hold at most this many records. */
+    public static final int ZONE_RECORD_LIMIT = 200;
+
+    /** Refuses new records once the zone is full, with a clear error instead of a raw Cloudflare one. */
+    public void ensureZoneCapacity() {
+        if (countRecords("") >= ZONE_RECORD_LIMIT) {
+            throw new ZoneCapacityException();
+        }
+    }
+
+    /**
+     * True if Cloudflare already serves records at {@code <subdomain>.is-a.software} or below it.
+     * Protects live records that have no owner in this app's database from being claimed.
+     */
+    public boolean hasRecordsFor(String subdomain) {
         String fullName = subdomain + ".is-a.software";
-        String listUrl = baseUrl + "/zones/" + zoneId + "/dns_records?name=" + fullName + "&per_page=100";
-
-        HttpEntity<?> listRequest = new HttpEntity<>(authHeaders());
-        ResponseEntity<Map> listResponse = restTemplate.exchange(listUrl, HttpMethod.GET, listRequest, Map.class);
-
-        Map<String, Object> listBody = listResponse.getBody();
-        if (listBody == null || !Boolean.TRUE.equals(listBody.get("success"))) {
-            return 0;
-        }
-
-        List<Map<String, Object>> results = (List<Map<String, Object>>) listBody.get("result");
-        if (results == null || results.isEmpty()) {
-            return 0;
-        }
-
-        int deleted = 0;
-        for (Map<String, Object> record : results) {
-            String recordId = (String) record.get("id");
-            if (recordId == null) continue;
-
-            HttpEntity<?> deleteRequest = new HttpEntity<>(authHeaders());
-            ResponseEntity<Map> deleteResponse = restTemplate.exchange(
-                baseUrl + "/zones/" + zoneId + "/dns_records/" + recordId,
-                HttpMethod.DELETE, deleteRequest, Map.class
-            );
-
-            Map<String, Object> deleteBody = deleteResponse.getBody();
-            if (deleteBody != null && Boolean.TRUE.equals(deleteBody.get("success"))) {
-                deleted++;
-            }
-        }
-        return deleted;
+        return countRecords("&name.exact=" + encode(fullName)) > 0
+            || countRecords("&name.endswith=" + encode("." + fullName)) > 0;
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, Object> verifyToken() {
+    private int countRecords(String filter) {
         HttpEntity<?> request = new HttpEntity<>(authHeaders());
         ResponseEntity<Map> response = restTemplate.exchange(
-            baseUrl + "/user/tokens/verify",
-            HttpMethod.GET,
-            request,
-            Map.class
+            baseUrl + "/zones/" + zoneId + "/dns_records?per_page=1" + filter,
+            HttpMethod.GET, request, Map.class
         );
-        return response.getBody();
+        Map<String, Object> body = response.getBody();
+        if (body == null || !Boolean.TRUE.equals(body.get("success"))) {
+            throw new CloudflareApiException("Failed to list DNS records on Cloudflare",
+                response.getStatusCode().value(), List.of());
+        }
+        Map<String, Object> info = (Map<String, Object>) body.get("result_info");
+        return ((Number) info.get("total_count")).intValue();
+    }
+
+    private static String encode(String value) {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

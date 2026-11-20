@@ -13,7 +13,7 @@
 - **Java 21** (JDK)
 - **Maven** (or use the bundled `./mvnw` wrapper)
 - **Node.js 18+**
-- **MySQL 8+**
+- **PostgreSQL 16+**
 
 ---
 
@@ -33,7 +33,7 @@ cd server
 cp src/main/resources/application.properties.example src/main/resources/application.properties
 ```
 
-Create a MySQL database:
+Create a PostgreSQL database:
 
 ```sql
 CREATE DATABASE isasoftware;
@@ -43,14 +43,15 @@ Edit `application.properties` with your local credentials:
 
 | Key | What to set |
 |-----|-------------|
-| `spring.datasource.url` | `jdbc:mysql://localhost:3306/isasoftware` |
-| `spring.datasource.password` | Your MySQL password |
+| `spring.datasource.url` | `jdbc:postgresql://127.0.0.1:5432/isasoftware` |
+| `spring.datasource.password` | Your PostgreSQL password |
 | `jwt.secret` | Any string 32+ characters (HMAC-SHA256 key) |
 | `CF_API_KEY` | A Cloudflare API token with DNS edit permissions |
 | `CF_ZONE_ID` | Your Cloudflare zone ID |
-| `razorpay.key.*` | Razorpay test keys |
-| `github.client.*` | GitHub OAuth app credentials |
-| `spring.mail.*` | SMTP credentials (use [mailtrap](https://mailtrap.io) for development) |
+| `spring.security.oauth2.client.registration.central-auth.client-id` / `client-secret` | A Central Auth development registration (see below) |
+
+Sign-in goes through Central Auth (`auth.priyazsh.me`). Ask the maintainer for a development
+registration with redirect URI `http://localhost:8080/v1/api/auth/oauth2/callback/central-auth`.
 
 Tables are created automatically (`spring.jpa.hibernate.ddl-auto=update`).
 

@@ -1,7 +1,6 @@
 package com.is.a.Software.service.Impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.modelmapper.ModelMapper;
@@ -11,22 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.is.a.Software.dto.DnsRecordsDto;
 import com.is.a.Software.entity.DnsRecords;
 import com.is.a.Software.entity.Domain;
-import com.is.a.Software.entity.Social;
-import com.is.a.Software.entity.Subscription;
 import com.is.a.Software.entity.User;
-import com.is.a.Software.entity.Enum.SubscriptionStatus;
-import com.is.a.Software.entity.util.PlanLimit;
 import com.is.a.Software.exception.DomainNotFound;
 import com.is.a.Software.exception.UserNotFoundException;
 import com.is.a.Software.repository.DnsRepository;
 import com.is.a.Software.repository.DomainRepository;
-import com.is.a.Software.repository.SocialRepository;
-import com.is.a.Software.repository.SubscriptionRepository;
 import com.is.a.Software.exception.DnsLimitExceededException;
 import com.is.a.Software.exception.InvalidRecordValueException;
 import com.is.a.Software.exception.RecordConflictException;
 import com.is.a.Software.exception.RecordNotFoundException;
-import com.is.a.Software.exception.SubscriptionRequiredException;
 import com.is.a.Software.service.CloudflareService;
 import com.is.a.Software.service.DnsService;
 
@@ -39,19 +31,13 @@ public class DnsRecordsServiceImpl implements DnsService {
     private DomainRepository domainRepo;
     private DnsRepository dnsRepo;
     private ModelMapper modelmapper;
-    private SubscriptionRepository subRepo;
-    private SocialRepository socialRepo;
     private CloudflareService cloudflareService;
 
     public DnsRecordsServiceImpl(DomainRepository domainRepo, DnsRepository dnsRepo, ModelMapper modelmapper,
-                                 SubscriptionRepository subRepo, SocialRepository socialRepo,
                                  CloudflareService cloudflareService) {
-        super();
         this.domainRepo = domainRepo;
         this.dnsRepo = dnsRepo;
         this.modelmapper = modelmapper;
-        this.subRepo = subRepo;
-        this.socialRepo = socialRepo;
         this.cloudflareService = cloudflareService;
     }
 
@@ -130,21 +116,8 @@ public class DnsRecordsServiceImpl implements DnsService {
 
         User user = domain.getUser();
 
-        Subscription sub = subRepo
-                .findTopByUserAndStatusOrderByIdDesc(user, SubscriptionStatus.ACTIVE)
-                .orElseThrow(SubscriptionRequiredException::new);
-
-        int limit = PlanLimit.getDnsLimit(sub.getPlan());
-
-        Optional<Social> socialOpt = socialRepo.findByUser(user);
-        if (socialOpt.isPresent() && socialOpt.get().isBonusClaimed()) {
-            limit += 3;
-        }
-
-        int count = dnsRepo.countByDomainUser(user);
-
-        if (count >= limit) {
-            throw new DnsLimitExceededException(limit);
+        if (dnsRepo.countByDomainUser(user) >= RECORD_LIMIT_PER_USER) {
+            throw new DnsLimitExceededException(RECORD_LIMIT_PER_USER);
         }
 
         RecordType type = dto.getType();
@@ -158,6 +131,8 @@ public class DnsRecordsServiceImpl implements DnsService {
                 }
             }
         }
+
+        cloudflareService.ensureZoneCapacity();
 
         DnsRecords dns = modelmapper.map(dto, DnsRecords.class);
         dns.setDomain(domain);

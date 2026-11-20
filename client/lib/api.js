@@ -90,42 +90,21 @@ export const domainApi = {
     })
 };
 
-// Authentication endpoints
+// Authentication: sign-in is a redirect through Central Auth, handled by the backend.
+// Navigating here starts it; with a live Central Auth session it returns with no screen at all.
+const SIGN_IN_URL = `${API_BASE_URL}/auth/oauth2/authorization/central-auth`;
+
+export function startSignIn() {
+  if (typeof window !== 'undefined') window.location.assign(SIGN_IN_URL);
+}
+
 export const authApi = {
-  requestSignupOtp: async (name, email, password) =>
-    request('/auth/register/request-otp', {
+  // Trades the one-time code from /auth/callback for this app's token.
+  exchange: async (code) =>
+    request('/auth/exchange', {
       method: 'POST',
       token: null,
-      body: JSON.stringify({ name, email, password })
-    }),
-  verifySignupOtp: async (email, otp) =>
-    request('/auth/register/verify-otp', {
-      method: 'POST',
-      token: null,
-      body: JSON.stringify({ email, otp })
-    }),
-  login: async (email, password) =>
-    request('/auth/login', {
-      method: 'POST',
-      token: null,
-      body: JSON.stringify({ email, password })
-    }),
-  forgotPassword: async (email) =>
-    request('/auth/forgot-password', {
-      method: 'POST',
-      token: null,
-      body: JSON.stringify({ email })
-    }),
-  resetPassword: async (token, newPassword) =>
-    request('/auth/reset-password', {
-      method: 'POST',
-      token: null,
-      body: JSON.stringify({ token, newPassword })
-    }),
-  changePassword: async (currentPassword, newPassword) =>
-    request('/auth/change-password', {
-      method: 'POST',
-      body: JSON.stringify({ currentPassword, newPassword })
+      body: JSON.stringify({ code })
     })
 };
 
@@ -133,49 +112,9 @@ export const authApi = {
 export const userApi = {
   getMe: async () => request('/user/me', { method: 'GET' }),
   getLimits: async () => request('/user/limits', { method: 'GET' }),
-  getSubscription: async () => request('/user/subscription', { method: 'GET' }),
   updateProfile: async (payload) =>
     request('/user/profile', {
       method: 'PUT',
       body: JSON.stringify(payload)
-    }),
-  requestEmailUpdateOtp: async (newEmail, currentPassword) =>
-    request('/user/email/request-otp', {
-      method: 'POST',
-      body: JSON.stringify({ newEmail, currentPassword })
-    }),
-  verifyEmailUpdateOtp: async (newEmail, otp) =>
-    request('/user/email/verify-otp', {
-      method: 'POST',
-      body: JSON.stringify({ newEmail, otp })
-    })
-};
-
-// GitHub endpoints
-export const githubApi = {
-  startAuthUrl: (redirectUri, mode = 'connect') => {
-    const token = getToken();
-    return `${API_BASE_URL}/github/auth/start?redirect_uri=${encodeURIComponent(redirectUri)}&mode=${mode}&token=${token}`;
-  },
-  verifyStar: async (username) =>
-    request('/github/verify', {
-      method: 'POST',
-      body: JSON.stringify({ username })
-    }),
-  getStatus: async () =>
-    request('/github/status', { method: 'GET' })
-};
-
-// Premium/Subscription endpoint
-export const premiumApi = {
-  startCheckout: async (plan, currency) =>
-    request('/premium/checkout', {
-      method: 'POST',
-      body: JSON.stringify({ plan, currency })
-    }),
-  confirmCheckout: async ({ plan, currency, subscriptionId, paymentId, signature }) =>
-    request('/premium/checkout/confirm', {
-      method: 'POST',
-      body: JSON.stringify({ plan, currency, subscriptionId, paymentId, signature })
     })
 };

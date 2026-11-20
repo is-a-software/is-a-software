@@ -6,18 +6,14 @@ import { userApi } from '@/lib/api';
 
 const DEFAULT_LIMITS = {
   recordsUsed: 0,
-  recordLimit: 0,
-  githubBonus: false,
-  premium: false
+  recordLimit: 0
 };
 const LIMITS_CACHE_TTL_MS = 30_000;
 
 function normalizeLimits(data) {
   return {
     recordsUsed: data?.recordsUsed ?? 0,
-    recordLimit: data?.recordLimit ?? 0,
-    githubBonus: !!data?.githubBonus,
-    premium: !!data?.premium
+    recordLimit: data?.recordLimit ?? 0
   };
 }
 

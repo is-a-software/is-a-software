@@ -3,7 +3,6 @@
   import { useEffect, useMemo, useRef, useState } from 'react';
   import Link from 'next/link';
   import { Fragment } from 'react';
-  import { useRouter } from 'next/navigation';
   import Navbar from '@/components/Navbar';
   import Footer from '@/components/Footer';
   import ErrorBanner from '@/components/ErrorBanner';
@@ -11,8 +10,8 @@
   import RecordLimitSummary, { getLimitTone } from '@/components/RecordLimitSummary';
   import StatsGrid from '@/components/dashboard/StatsGrid';
   import DeleteConfirmModal from '@/components/dashboard/DeleteConfirmModal';
-  import { domainApi } from '@/lib/api';
-  import { logout } from '@/lib/auth';
+  import { domainApi, startSignIn } from '@/lib/api';
+  import { logout, takePendingClaim } from '@/lib/auth';
   import { useRequireAuth } from '@/lib/hooks/useRequireAuth';
   import { useAccountLimits } from '@/lib/hooks/useAccountLimits';
   import { useUnauthorizedRedirect } from '@/lib/hooks/useUnauthorizedRedirect';
@@ -41,11 +40,9 @@
     return `${recordName}.${domainLabel}.is-a.software`;
   }
 
-  const BASE_RECORD_TYPES = ['A', 'AAAA', 'CNAME', 'TXT'];
-  const PREMIUM_RECORD_TYPES = ['MX', 'NS'];
+  const RECORD_TYPES = ['A', 'AAAA', 'CNAME', 'TXT', 'MX', 'NS'];
 
   export default function Dashboard() {
-    const router = useRouter();
     const handleUnauthorized = useUnauthorizedRedirect();
     const { isAuthed, isCheckingAuth } = useRequireAuth();
 
@@ -100,10 +97,6 @@
       () => Object.fromEntries(domains.map((domain) => [String(domain.id), getDomainLabel(domain)])),
       [domains]
     );
-    const availableRecordTypes = useMemo(
-      () => (limits.premium ? [...BASE_RECORD_TYPES, ...PREMIUM_RECORD_TYPES] : BASE_RECORD_TYPES),
-      [limits.premium]
-    );
 
     const loadAllRecords = async (domainList) => {
       if (!domainList.length) {
@@ -151,7 +144,7 @@
       } catch (err) {
         if (err.status === 401) {
           logout();
-          router.replace('/signin');
+          startSignIn();
           return;
         }
         setError({ message: err.message || 'Failed to load dashboard data.', status: err.status });
@@ -163,15 +156,14 @@
     useEffect(() => {
       if (!isAuthed) return;
       loadDashboard();
+
+      // Arriving from the landing page's availability check: open the form with that name filled in.
+      const pendingClaim = takePendingClaim();
+      if (pendingClaim) {
+        setNewDomain(pendingClaim);
+        setShowNewDomain(true);
+      }
     }, [isAuthed]);
-
-    useEffect(() => {
-      if (limits.premium) return;
-
-      const fallbackType = (type) => (PREMIUM_RECORD_TYPES.includes(type) ? 'A' : type);
-      setRecordForm((prev) => (prev.type !== fallbackType(prev.type) ? { ...prev, type: fallbackType(prev.type) } : prev));
-      setEditForm((prev) => (prev.type !== fallbackType(prev.type) ? { ...prev, type: fallbackType(prev.type) } : prev));
-    }, [limits.premium]);
 
     const lastUpdated = useMemo(() => {
       const domainDates = domains
@@ -218,7 +210,7 @@
       } catch (err) {
         if (err.status === 401) {
           logout();
-          router.replace('/signin');
+          startSignIn();
           return;
         }
         setError({ message: err.message || 'Failed to create domain.', status: err.status });
@@ -259,7 +251,7 @@
       } catch (err) {
         if (err.status === 401) {
           logout();
-          router.replace('/signin');
+          startSignIn();
           return;
         }
         setError({ message: err.message || 'Failed to create DNS record.', status: err.status });
@@ -308,7 +300,7 @@
       } catch (err) {
         if (err.status === 401) {
           logout();
-          router.replace('/signin');
+          startSignIn();
           return;
         }
         setError({ message: err.message || 'Failed to update DNS record.', status: err.status });
@@ -327,7 +319,7 @@
       } catch (err) {
         if (err.status === 401) {
           logout();
-          router.replace('/signin');
+          startSignIn();
           return;
         }
         setError({ message: err.message || 'Failed to delete domain.', status: err.status });
@@ -348,7 +340,7 @@
       } catch (err) {
         if (err.status === 401) {
           logout();
-          router.replace('/signin');
+          startSignIn();
           return;
         }
         setError({ message: err.message || 'Failed to delete DNS record.', status: err.status });
@@ -550,13 +542,10 @@
                         value={recordForm.type}
                         onChange={(e) => setRecordForm((prev) => ({ ...prev, type: e.target.value }))}
                       >
-                        {availableRecordTypes.map((type) => (
+                        {RECORD_TYPES.map((type) => (
                           <option key={type} value={type}>{type}</option>
                         ))}
                       </select>
-                      {!limits.premium && (
-                        <p className="text-xs text-slate-500">MX and NS records are available on Premium.</p>
-                      )}
                     </div>
                     <div className="space-y-2 md:col-span-2">
                       <label className="block text-sm text-slate-200">Value</label>
@@ -669,7 +658,7 @@
                                       value={editForm.type}
                                       onChange={(e) => setEditForm((prev) => ({ ...prev, type: e.target.value }))}
                                     >
-                                      {availableRecordTypes.map((type) => (
+                                      {RECORD_TYPES.map((type) => (
                                         <option key={type} value={type}>{type}</option>
                                       ))}
                                     </select>

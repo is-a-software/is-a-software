@@ -8,14 +8,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
             <h3 className="text-white font-semibold">is-a.software</h3>
-            <p className="text-slate-400 text-sm">Your personal domain service for developers</p>
+            <p className="text-slate-400 text-sm">Free subdomains for developers</p>
           </div>
 
           <div className="space-y-4">
             <h4 className="text-white font-semibold text-sm">Product</h4>
             <ul className="space-y-2 text-slate-400 text-sm">
-              <li><Link href="/signup" className="hover:text-white transition-colors">Get Started</Link></li>
-              <li><Link href="/signin" className="hover:text-white transition-colors">Sign In</Link></li>
+              <li><Link href="/#check" className="hover:text-white transition-colors">Get Started</Link></li>
+              <li><Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link></li>
             </ul>
           </div>
 
@@ -24,8 +24,6 @@ export default function Footer() {
             <ul className="space-y-2 text-slate-400 text-sm">
               <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
               <li><Link href="/docs" className="hover:text-white transition-colors">Documentation</Link></li>
-              <li><a href="#" className="hover:text-white transition-colors">API</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
             </ul>
           </div>
 

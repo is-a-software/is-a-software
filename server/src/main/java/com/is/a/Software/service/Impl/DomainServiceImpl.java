@@ -1,112 +1,104 @@
 package com.is.a.Software.service.Impl;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.Locale;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.is.a.Software.dto.CreateDomainDto;
 import com.is.a.Software.dto.DomainDto;
+import com.is.a.Software.entity.DnsRecords;
 import com.is.a.Software.entity.Domain;
-import com.is.a.Software.entity.Subscription;
 import com.is.a.Software.entity.User;
-import com.is.a.Software.entity.Enum.SubscriptionStatus;
-import com.is.a.Software.entity.util.PlanLimit;
 import com.is.a.Software.exception.DomainNotFound;
+import com.is.a.Software.exception.InvalidRecordValueException;
 import com.is.a.Software.exception.UserNotFoundException;
 import com.is.a.Software.repository.DomainRepository;
-import com.is.a.Software.repository.SubscriptionRepository;
 import com.is.a.Software.repository.UserRepository;
+import com.is.a.Software.service.CloudflareService;
 import com.is.a.Software.service.DomainSerivce;
 
 @Service
 public class DomainServiceImpl implements DomainSerivce {
-	
 
-	
-	private DomainRepository domainRepo;
-	private ModelMapper modelmapper;
-	private UserRepository userRepo;
-	private SubscriptionRepository subRepo;
+	/** One DNS label of 3-63 lowercase letters, digits and inner hyphens (the rule the Terms page states). */
+	private static final Pattern SUBDOMAIN = Pattern.compile("^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$");
 
-	
-	
+	/** Names kept for the service itself or easily used to impersonate it. */
+	private static final Set<String> RESERVED = Set.of(
+			"www", "api", "app", "admin", "root", "auth", "login", "signin", "signup", "account", "dashboard",
+			"mail", "email", "smtp", "imap", "pop", "mx", "ns", "ns1", "ns2", "dns", "ftp", "status", "docs",
+			"help", "support", "security", "abuse", "autodiscover", "autoconfig");
 
+	private final DomainRepository domainRepo;
+	private final ModelMapper modelmapper;
+	private final UserRepository userRepo;
+	private final CloudflareService cloudflareService;
 
 	public DomainServiceImpl(DomainRepository domainRepo, ModelMapper modelmapper, UserRepository userRepo,
-			SubscriptionRepository subRepo) {
-		super();
+			CloudflareService cloudflareService) {
 		this.domainRepo = domainRepo;
 		this.modelmapper = modelmapper;
 		this.userRepo = userRepo;
-		this.subRepo = subRepo;
+		this.cloudflareService = cloudflareService;
 	}
-
 
 	@Override
 	public List<DomainDto> getUserDomains(String email) {
 		User user = userRepo.findByEmail(email).orElseThrow(() -> new UserNotFoundException("user not found exception"));
-		List<Domain>  domaindto = domainRepo.findByUser(user);
-		List<DomainDto> domainDto = domaindto.stream().map(d -> modelmapper.map(d, DomainDto.class) ).toList();
-		return domainDto;
+		return domainRepo.findByUser(user).stream().map(d -> modelmapper.map(d, DomainDto.class)).toList();
 	}
 
 	@Override
 	public DomainDto createDomain(CreateDomainDto createDomain, String email) {
+		User user = userRepo.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
+		String subdomain = normalize(createDomain.getSubdomain());
 
-	    User user = userRepo.findByEmail(email)
-	            .orElseThrow(() -> new RuntimeException("User not found"));
+		if (!checkAvailability(subdomain)) {
+			throw new RuntimeException("Subdomain is already taken");
+		}
 
-	    Subscription sub = subRepo
-	            .findTopByUserAndStatusOrderByIdDesc(user, SubscriptionStatus.ACTIVE).orElse(null);
-
-	    if (sub == null) {
-	        throw new RuntimeException("No active subscription");
-	    }
-
-	    int limit = PlanLimit.getDomainLimit(sub.getPlan());
-
-	    
-	    int count = domainRepo.countByUser(user);
-
-	    if (count >= limit) {
-	        throw new RuntimeException("Domain limit exceeded, upgrade plan");
-	    }
-
-	    Domain domain = modelmapper.map(createDomain, Domain.class);
-	    domain.setUser(user);
-
-	    Domain saved = domainRepo.save(domain);
-
-	    return modelmapper.map(saved, DomainDto.class);
+		Domain domain = new Domain();
+		domain.setSubdomain(subdomain);
+		domain.setUser(user);
+		return modelmapper.map(domainRepo.save(domain), DomainDto.class);
 	}
-
 
 	@Override
+	@Transactional
 	public void deleteDomain(String email, int domainId) {
 		Domain domain = domainRepo.findById(domainId).orElseThrow(() -> new DomainNotFound("Domain not exist"));
-		
-		if(!domain.getUser().getEmail().equals(email)) {
+
+		if (!domain.getUser().getEmail().equals(email)) {
 			throw new UserNotFoundException("User not Exist");
 		}
-		
-		domainRepo.delete(domain);
-		
-	}
 
+		// Remove the live records first, so a freed name never keeps serving the old owner's DNS.
+		for (DnsRecords record : domain.getDns()) {
+			cloudflareService.deleteRecord(record.getCloudflareId());
+		}
+		domainRepo.delete(domain);
+	}
 
 	@Override
 	public boolean checkAvailability(String subdomain) {
-	return !domainRepo.existsBySubdomain(subdomain);
+		String name = normalize(subdomain);
+		return !domainRepo.existsBySubdomain(name) && !cloudflareService.hasRecordsFor(name);
 	}
 
-
-
-
-
-
-
-
+	private static String normalize(String subdomain) {
+		String name = subdomain == null ? "" : subdomain.trim().toLowerCase(Locale.ROOT);
+		if (!SUBDOMAIN.matcher(name).matches()) {
+			throw new InvalidRecordValueException(
+					"Subdomain must be 3-63 lowercase letters, digits or hyphens, and cannot start or end with a hyphen.");
+		}
+		if (RESERVED.contains(name)) {
+			throw new InvalidRecordValueException("\"" + name + "\" is reserved. Please pick another name.");
+		}
+		return name;
+	}
 }

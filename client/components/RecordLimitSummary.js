@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-
 function getUsageRatio(recordsUsed, recordLimit) {
   if (!recordLimit) return 0;
   return recordsUsed / recordLimit;
@@ -15,7 +13,7 @@ export function getLimitTone(recordsUsed, recordLimit) {
 }
 
 export default function RecordLimitSummary({ limits, showActions = false, compact = false }) {
-  const { recordsUsed, recordLimit, premium, githubBonus } = limits;
+  const { recordsUsed, recordLimit } = limits;
   const tone = getLimitTone(recordsUsed, recordLimit);
   const ratioPct = recordLimit ? Math.min(100, Math.round((recordsUsed / recordLimit) * 100)) : 0;
 
@@ -50,19 +48,10 @@ export default function RecordLimitSummary({ limits, showActions = false, compac
         </p>
       )}
 
-      {showActions && (tone === 'warning' || tone === 'danger') && (
-        <div className="flex items-center gap-4 pt-1">
-          {!premium && (
-            <Link href="/subscriptions" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">
-              Upgrade Your Plan (Manage Subscription)
-            </Link>
-          )}
-          {!githubBonus && (
-            <Link href="/github" className="text-xs text-slate-400 hover:text-white transition-colors">
-              GitHub Star Bonus (+3) →
-            </Link>
-          )}
-        </div>
+      {showActions && tone === 'danger' && (
+        <p className="text-xs text-slate-400 pt-1">
+          Every account gets {recordLimit} records. Delete one to add another.
+        </p>
       )}
     </div>
   );

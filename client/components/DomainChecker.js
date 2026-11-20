@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { domainApi } from '@/lib/api';
+import { isAuthenticated as hasSession, savePendingClaim } from '@/lib/auth';
 
 export default function DomainChecker() {
   const [domain, setDomain] = useState('');
@@ -13,36 +14,9 @@ export default function DomainChecker() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
-  // ---------- AUTH CHECK FUNCTION ----------
-  // Ye function multiple jagah check karega (localStorage, sessionStorage, cookies)
-  const checkAuth = () => {
-    // --- YAHAN APNI TOKEN KEY LIKH DE ---
-    // Agar teri app 'token' ki jagah koi aur key use karti hai (jaise 'accessToken', 'auth', 'user' etc.)
-    // to neeche diye gaye array mein woh key daal de.
-    const possibleKeys = ['token', 'accessToken', 'authToken', 'jwt', 'userToken', 'auth', 'user'];
-    // ------------------------------------
-
-    // 1. Check localStorage
-    for (let key of possibleKeys) {
-      if (localStorage.getItem(key)) return true;
-    }
-    // 2. Check sessionStorage
-    for (let key of possibleKeys) {
-      if (sessionStorage.getItem(key)) return true;
-    }
-    // 3. Check cookies (agar httpOnly nahi hai to)
-    if (document.cookie && (
-      document.cookie.includes('session=') ||
-      document.cookie.includes('token=') ||
-      document.cookie.includes('auth=')
-    )) return true;
-    
-    return false;
-  };
-  // ---------------------------------------
 
   useEffect(() => {
-    setIsAuthenticated(checkAuth());
+    setIsAuthenticated(hasSession());
   }, []);
 
   const handleCheck = async (e) => {
@@ -65,17 +39,14 @@ export default function DomainChecker() {
     }
   };
 
+  // Remember the name through sign-in so the dashboard can offer it straight away.
   const handleContinue = () => {
-    // dubara check karo (safety ke liye)
-    if (checkAuth()) {
-      router.push('/dashboard');
-    } else {
-      router.push(`/signup?domain=${domain}`);
-    }
+    savePendingClaim(domain);
+    router.push(hasSession() ? '/dashboard' : '/signin');
   };
 
   return (
-    <section className="py-20 px-4">
+    <section id="check" className="py-20 px-4 scroll-mt-24">
       <div className="max-w-3xl mx-auto">
         <div className="glass rounded-3xl p-8 md:p-12 space-y-8">
           <div className="space-y-2 text-center">
@@ -130,7 +101,7 @@ export default function DomainChecker() {
                   onClick={handleContinue}
                   className="btn-primary w-full text-center"
                 >
-                  Continue
+                  {isAuthenticated ? 'Claim it in your dashboard' : 'Sign in to claim it'}
                 </button>
               </div>
             )}
@@ -149,22 +120,13 @@ export default function DomainChecker() {
             )}
           </form>
 
-          {/* Agar user login nahi hai to hi ye links dikhao */}
           {!isAuthenticated && (
-            <div className="pt-4 space-y-3 text-center text-sm">
-              <p className="text-slate-400">
-                Already have a domain?{' '}
-                <Link href="/signin" className="accent-ice hover:text-white transition-colors">
-                  Sign in
-                </Link>
-              </p>
-              <p className="text-slate-500">
-                New here?{' '}
-                <Link href="/signup" className="accent-ice hover:text-white transition-colors">
-                  Create an account
-                </Link>
-              </p>
-            </div>
+            <p className="pt-4 text-center text-sm text-slate-400">
+              Already have a subdomain?{' '}
+              <Link href="/signin" className="accent-ice hover:text-white transition-colors">
+                Sign in
+              </Link>
+            </p>
           )}
         </div>
       </div>
