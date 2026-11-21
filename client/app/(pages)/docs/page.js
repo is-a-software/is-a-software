@@ -15,12 +15,13 @@ const steps = [
   {
     title: 'Step 3: Register Your Subdomain',
     description:
-      "Go to is-a.software dashboard, sign in, and choose your subdomain name like 'myproject'. This will create myproject.is-a.software for you."
+      "Sign in with Google, open the dashboard and choose your subdomain name like 'myproject'. This creates myproject.is-a.software for you. Names are 3-63 lowercase letters, digits or hyphens."
   },
   {
     title: 'Step 4: Create DNS Record',
     description:
-      'In the is-a.software dashboard, choose the correct record type (CNAME if you got a domain name, or A Record if you got an IP address) and paste the value you copied from Step 2. Click submit to create your DNS record.'
+      'In the is-a.software dashboard, choose the correct record type (CNAME if you got a domain name, or A Record if you got an IP address) and paste the value you copied from Step 2. Click submit to create your DNS record.',
+    note: 'Every account gets 3 DNS records in total, across all of its subdomains. Need more? Add an NS record (or two) to hand the subdomain to a DNS host of your own, where you can create as many records as you like.'
   },
   {
     title: 'Step 5: Wait for DNS to Work',
@@ -49,6 +50,16 @@ const recordTypes = [
     type: 'TXT Record',
     description: 'Add verification codes or configuration text',
     value: 'some-random-token-like-178297bff11ec47679bc'
+  },
+  {
+    type: 'MX Record',
+    description: 'Receive email at your subdomain through a mail provider',
+    value: 'mx1.example-mail.com'
+  },
+  {
+    type: 'NS Record',
+    description: 'Hand the whole subdomain to another DNS provider',
+    value: 'ns1.example-dns.com'
   }
 ];
 

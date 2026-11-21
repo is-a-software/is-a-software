@@ -3,9 +3,11 @@
 *.key
 *.cert
 apps/api/src/main/resources/application.properties
+server/src/main/resources/application.properties
 
 # Allow the example config
 !apps/api/src/main/resources/application.properties.example
+!server/src/main/resources/application.properties.example
 
 # Environment files
 .env

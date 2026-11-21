@@ -1,153 +1,78 @@
-	package com.is.a.Software.service.Impl;
-	
-	import java.util.Random;
-	import com.is.a.Software.entity.util.PlanLimit;
-	
-	import org.modelmapper.ModelMapper;
-	import org.springframework.security.crypto.password.PasswordEncoder;
-	import org.springframework.stereotype.Service;
-	
-	import com.is.a.Software.dto.LimitDto;
-	import com.is.a.Software.dto.SubscriptionDto;
-	import com.is.a.Software.dto.UpdateUsernameDto;
-	import com.is.a.Software.dto.UserResponseDto;
-import com.is.a.Software.entity.Social;
+package com.is.a.Software.service.Impl;
+
+import java.util.Objects;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.is.a.Software.dto.LimitDto;
+import com.is.a.Software.dto.UpdateUsernameDto;
 import com.is.a.Software.entity.User;
-	import com.is.a.Software.entity.Enum.Plan;
-	import com.is.a.Software.entity.util.Mail;
-	import com.is.a.Software.exception.UserNotFoundException;
-	import com.is.a.Software.exception.WrongPasswordException;
-	import com.is.a.Software.repository.DnsRepository;
-import com.is.a.Software.repository.SocialRepository;
+import com.is.a.Software.entity.Enum.Role;
+import com.is.a.Software.entity.Enum.UserStatus;
+import com.is.a.Software.exception.UserNotFoundException;
+import com.is.a.Software.repository.DnsRepository;
 import com.is.a.Software.repository.UserRepository;
-	import com.is.a.Software.service.OtpService;
-	import com.is.a.Software.service.SubscriptionService;
-	import com.is.a.Software.service.UserService;
-	
-	@Service
-	public class UserServiceImpl implements UserService {
-	
-		private UserRepository userRepo;
-		private SubscriptionService subService;
-		private DnsRepository dnsRepo;
-		private PasswordEncoder passwordEncoder;
-		private Mail mail;
-		private OtpService otpService;
-		private ModelMapper modelmapper;
-		private SocialRepository socialRepo;
-	
-		
-		
-	
-public UserServiceImpl(UserRepository userRepo, SubscriptionService subService, DnsRepository dnsRepo,
-				PasswordEncoder passwordEncoder, Mail mail, OtpService otpService, ModelMapper modelmapper,
-				SocialRepository socialRepo) {
-			super();
-			this.userRepo = userRepo;
-			this.subService = subService;
-			this.dnsRepo = dnsRepo;
-			this.passwordEncoder = passwordEncoder;
-			this.mail = mail;
-			this.otpService = otpService;
-			this.modelmapper = modelmapper;
-			this.socialRepo = socialRepo;
-		}
+import com.is.a.Software.service.DnsService;
+import com.is.a.Software.service.UserService;
 
+@Service
+public class UserServiceImpl implements UserService {
 
-		
-		
-@Override
-public LimitDto getLimits(String email) {
-    User user = userRepo.findByEmail(email)
-            .orElseThrow(() -> new UserNotFoundException("User not found"));
+	private final UserRepository userRepo;
+	private final DnsRepository dnsRepo;
 
-    SubscriptionDto subDto = subService.getUserSubscription(email);
-    Plan currentPlan = subDto.getPlan();
-
-    int recordLimit = PlanLimit.getDnsLimit(currentPlan);
-    int used = dnsRepo.countByDomainUser(user);
-
-  
-    boolean bonusClaimed = false;
-    try {
-        Social social = socialRepo.findByUser(user).orElse(null);
-        if (social != null && social.isBonusClaimed()) {
-            bonusClaimed = true;
-            recordLimit += 3;
-        }
-    } catch (Exception e) {
-        
-    }
-
-    LimitDto dto = new LimitDto();
-    dto.setRecordsUsed(used);
-    dto.setRecordLimit(recordLimit);
-    dto.setGithubBonus(bonusClaimed);
-    dto.setPremium(currentPlan != Plan.FREE);
-    return dto;
-}
-		@Override
-		public UpdateUsernameDto updateUsername(String email, String name) {
-	
-			User user = userRepo.findByEmail(email).orElseThrow(() -> new UserNotFoundException("user not found"));
-	
-			user.setName(name);
-	
-			User updatedUser = userRepo.save(user);
-	
-			UpdateUsernameDto userdto = new UpdateUsernameDto();
-			userdto.setUpdatedName(updatedUser.getName());
-			userdto.setEmail(updatedUser.getEmail());
-	
-			return userdto;
-		}
-	
-		@Override
-		public void verifyPasswordAndSendOtp(String oldEmail, String email, String password) {
-	
-			User user = userRepo.findByEmail(oldEmail).orElseThrow(() -> new UserNotFoundException("user not found"));
-	
-			if (!passwordEncoder.matches(password, user.getPassword())) {
-				throw new WrongPasswordException("Wrong Password");
-			}
-	
-			if (userRepo.existsByEmail(email)) {
-				throw new RuntimeException("Email already exists");
-			}
-	
-			int otp = new Random().nextInt(900000) + 100000;
-	
-			otpService.saveEmailOtp(email, otp);
-	
-			mail.sendMail(email, otp);
-			System.out.print(otp + "tera otp");
-	
-		}
-	
-		@Override
-		public UserResponseDto updateEmailVerifyOtp(String oldEmail, String newEmail, int otp) {
-			Integer StoredOtp = otpService.getEmailOtp(newEmail);
-	
-			if (StoredOtp == null) {
-				throw new RuntimeException("Something Went Wrong Otp Not Generated");
-			}
-	
-			if (!StoredOtp.equals(otp)) {
-				throw new RuntimeException("Invalid Otp");
-			}
-	
-			User user = userRepo.findByEmail(oldEmail).orElseThrow(() -> new UserNotFoundException("User Not Found"));
-	
-			user.setEmail(newEmail);
-	
-			User updatedUser = userRepo.save(user);
-	
-			otpService.removeEmailOtp(newEmail);
-	
-			UserResponseDto responseDto = modelmapper.map(updatedUser, UserResponseDto.class);
-	
-			return responseDto;
-	
-		}
-	
+	public UserServiceImpl(UserRepository userRepo, DnsRepository dnsRepo) {
+		this.userRepo = userRepo;
+		this.dnsRepo = dnsRepo;
 	}
+
+	@Override
+	public LimitDto getLimits(String email) {
+		User user = userRepo.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
+		return new LimitDto(dnsRepo.countByDomainUser(user), DnsService.RECORD_LIMIT_PER_USER);
+	}
+
+	@Override
+	public UpdateUsernameDto updateUsername(String email, String name) {
+		User user = userRepo.findByEmail(email).orElseThrow(() -> new UserNotFoundException("user not found"));
+		user.setName(name);
+		User updated = userRepo.save(user);
+		return new UpdateUsernameDto(updated.getName(), updated.getEmail());
+	}
+
+	@Override
+	@Transactional
+	public User signInWithCentralAuth(String sub, String verifiedEmail, String name) {
+		Optional<User> linked = userRepo.findByCentralAuthSub(sub);
+		if (linked.isPresent()) {
+			User user = linked.get();
+			// Central Auth emails change only by an explicit account change; follow it if the address is free.
+			if (!user.getEmail().equalsIgnoreCase(verifiedEmail)
+					&& userRepo.findByEmailIgnoreCase(verifiedEmail).isEmpty()) {
+				user.setEmail(verifiedEmail);
+			}
+			return user;
+		}
+
+		Optional<User> byEmail = userRepo.findByEmailIgnoreCase(verifiedEmail);
+		if (byEmail.isPresent()) {
+			User existing = byEmail.get();
+			if (existing.getCentralAuthSub() != null && !Objects.equals(existing.getCentralAuthSub(), sub)) {
+				throw new IllegalStateException("email is already linked to another Central Auth account");
+			}
+			// First Central Auth sign-in of a migrated email/password account: link it so it keeps its domains.
+			existing.setCentralAuthSub(sub);
+			return existing;
+		}
+
+		User user = new User();
+		user.setCentralAuthSub(sub);
+		user.setEmail(verifiedEmail);
+		user.setName(name);
+		user.setRole(Role.USER);
+		user.setStatus(UserStatus.ACTIVE);
+		return userRepo.save(user);
+	}
+}

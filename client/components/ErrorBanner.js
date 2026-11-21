@@ -31,12 +31,6 @@ function getBannerStyle(type) {
         border: '1px solid rgba(251,146,60,0.2)',
         color: '#fb923c',
       };
-    case 'subscription':
-      return {
-        background: 'rgba(167,139,250,0.1)',
-        border: '1px solid rgba(167,139,250,0.2)',
-        color: '#c4b5fd',
-      };
     default:
       return {
         background: 'rgba(127,29,29,0.14)',
@@ -60,7 +54,6 @@ export default function ErrorBanner({ error, status }) {
   if (status === 502) bannerType = 'cloudflare';
   else if (status === 422) bannerType = 'validation';
   else if (status === 403) bannerType = 'limit';
-  else if (status === 402) bannerType = 'subscription';
 
   const style = getBannerStyle(bannerType);
 

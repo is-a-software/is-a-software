@@ -30,7 +30,7 @@ public class CustomerUserDetail implements UserDetails {
 
 	@Override
 	public @Nullable String getPassword() {
-		return user.getPassword();
+		return null; // no local passwords: sign-in is through Central Auth
 
 	}
 

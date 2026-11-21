@@ -11,32 +11,21 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import com.is.a.Software.dto.DuplicateUserExceptionResponse;
 import com.is.a.Software.exception.CloudflareApiException;
 import com.is.a.Software.exception.DnsLimitExceededException;
 import com.is.a.Software.exception.DomainNotFound;
-import com.is.a.Software.exception.DuplicateUserException;
 import com.is.a.Software.exception.InvalidRecordValueException;
 import com.is.a.Software.exception.RecordConflictException;
 import com.is.a.Software.exception.RecordNotFoundException;
-import com.is.a.Software.exception.SubscriptionRequiredException;
 import com.is.a.Software.exception.UserNotFoundException;
-import com.is.a.Software.exception.WrongPasswordException;
+import com.is.a.Software.exception.ZoneCapacityException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandling {
 
 
-	@ExceptionHandler(DuplicateUserException.class)
-	public ResponseEntity<DuplicateUserExceptionResponse> handleDuplicateUserException(DuplicateUserException ex) {
-		DuplicateUserExceptionResponse response = DuplicateUserExceptionResponse
-				.builder()
-				.message(ex.getMessage())
-				.httpstatus(HttpStatus.CONFLICT)
-				.build();
-		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-	}
 
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -79,13 +68,6 @@ public class GlobalExceptionHandling {
 	}
 
 
-	@ExceptionHandler(WrongPasswordException.class)
-	public ResponseEntity<Map<String, Object>> handleWrongPassword(WrongPasswordException ex) {
-		Map<String, Object> body = new HashMap<>();
-		body.put("message", ex.getMessage());
-		body.put("status", HttpStatus.UNAUTHORIZED.value());
-		return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
-	}
 
 
 	@ExceptionHandler(DnsLimitExceededException.class)
@@ -98,13 +80,6 @@ public class GlobalExceptionHandling {
 	}
 
 
-	@ExceptionHandler(SubscriptionRequiredException.class)
-	public ResponseEntity<Map<String, Object>> handleSubscriptionRequired(SubscriptionRequiredException ex) {
-		Map<String, Object> body = new HashMap<>();
-		body.put("message", ex.getMessage());
-		body.put("status", HttpStatus.PAYMENT_REQUIRED.value());
-		return new ResponseEntity<>(body, HttpStatus.PAYMENT_REQUIRED);
-	}
 
 
 	@ExceptionHandler(InvalidRecordValueException.class)
@@ -124,6 +99,14 @@ public class GlobalExceptionHandling {
 		return new ResponseEntity<>(body, HttpStatus.CONFLICT);
 	}
 
+	@ExceptionHandler(ZoneCapacityException.class)
+	public ResponseEntity<Map<String, Object>> handleZoneCapacity(ZoneCapacityException ex) {
+		Map<String, Object> body = new HashMap<>();
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.SERVICE_UNAVAILABLE.value());
+		return new ResponseEntity<>(body, HttpStatus.SERVICE_UNAVAILABLE);
+	}
+
 	@ExceptionHandler(CloudflareApiException.class)
 	public ResponseEntity<Map<String, Object>> handleCloudflareApi(CloudflareApiException ex) {
 		Map<String, Object> body = new HashMap<>();
@@ -141,6 +124,15 @@ public class GlobalExceptionHandling {
 		body.put("message", ex.getMessage() == null ? "Request failed" : ex.getMessage());
 		body.put("status", HttpStatus.BAD_REQUEST.value());
 		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+	}
+
+
+	@ExceptionHandler(NoResourceFoundException.class)
+	public ResponseEntity<Map<String, Object>> handleNoSuchEndpoint(NoResourceFoundException ex) {
+		Map<String, Object> body = new HashMap<>();
+		body.put("message", "Not found");
+		body.put("status", HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
 	}
 
 

@@ -8,8 +8,8 @@ const termsSections = [
       'is-a.software provides free subdomain allocation under the is-a.software domain for developers and creators to register subdomains, configure DNS records, and manage web presence.',
     points: [
       'Free subdomain registration (for example: yourproject.is-a.software)',
-      'DNS record management (A, AAAA, CNAME, TXT)',
-      'GitHub-based authentication and ownership verification',
+      'DNS record management (A, AAAA, CNAME, TXT, MX, NS), 3 records per account',
+      'Sign-in with Google and ownership tied to your account',
       'Web dashboard for domain management'
     ]
   },

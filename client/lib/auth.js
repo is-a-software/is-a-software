@@ -140,3 +140,25 @@ export function logout() {
   clearToken();
   clearUser();
 }
+
+const PENDING_CLAIM_KEY = 'is_a_software_pending_claim';
+
+/** Remembers a subdomain the visitor checked on the landing page, across the sign-in redirect. */
+export function savePendingClaim(subdomain) {
+  try {
+    sessionStorage.setItem(PENDING_CLAIM_KEY, subdomain);
+  } catch {
+    // storage unavailable: the visitor just types the name again
+  }
+}
+
+/** Returns the remembered subdomain once, then forgets it. */
+export function takePendingClaim() {
+  try {
+    const value = sessionStorage.getItem(PENDING_CLAIM_KEY);
+    sessionStorage.removeItem(PENDING_CLAIM_KEY);
+    return value || '';
+  } catch {
+    return '';
+  }
+}

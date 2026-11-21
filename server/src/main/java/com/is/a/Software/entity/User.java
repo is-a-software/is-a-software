@@ -23,65 +23,49 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="user_id",nullable=false)
-	
+	@Column(name = "user_id", nullable = false)
 	private int id;
-	@Column(name="user_name")
+
+	/**
+	 * Central Auth user ID (the ID token's {@code sub}). Null only for accounts migrated from
+	 * email/password sign-up that have not signed in through Central Auth yet; they are linked by
+	 * verified email on their first sign-in.
+	 */
+	@Column(name = "central_auth_sub", unique = true)
+	private String centralAuthSub;
+
+	@Column(name = "user_name")
 	private String name;
-	@Column(name="user_email",unique = true,nullable=false)
+
+	@Column(name = "user_email", unique = true, nullable = false)
 	private String email;
-	@Column(name="user_password",nullable=false)
-	private String password;
-	
+
 	@Enumerated(EnumType.STRING)
-	@Column(name="role",nullable=false)
+	@Column(name = "role", nullable = false)
 	private Role role;
+
 	@Enumerated(EnumType.STRING)
-	@Column(name="user_status",nullable=false)
+	@Column(name = "user_status", nullable = false)
 	private UserStatus status;
-	@Column(name = "domain_used",nullable=false)
-	private int domainUsed=0;
 
-	@Column(name = "dns_used",nullable=false)
-	private int dnsUsed=0;
+	@Column(name = "createdAt", nullable = false)
+	private LocalDate createdAt;
 
-	
-	@Column(name="createdAt",nullable=false)
-    private LocalDate createdAt;
-	
-	
-	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "user")
-	private List<Subscription> AllSubscription=new ArrayList<Subscription>();
-	
-	
-	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true, mappedBy = "user")
-    private List<Social> SocialAccount=new ArrayList<Social>();
-	
-	
-	@OneToMany(mappedBy = "user",orphanRemoval = true,cascade = CascadeType.ALL)
-	private List<Domain> domains=new ArrayList<>();
-    
+	@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+	private List<Domain> domains = new ArrayList<>();
+
 	@PrePersist
 	public void setCreatedAt() {
-	    this.createdAt = LocalDate.now();	
-	    
+		this.createdAt = LocalDate.now();
 	}
-	
-	
-	
-    
-	
-	
 }

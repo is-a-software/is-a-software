@@ -21,7 +21,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isPremium, setIsPremium] = useState(false);
   const [displayName, setDisplayName] = useState('');
   const [scrolled, setScrolled] = useState(false);
   const { refreshLimits } = useAccountLimits({
@@ -37,14 +36,10 @@ export default function Navbar() {
       setIsLoggedIn(!!token);
       setDisplayName(user?.name || 'Account');
 
-      if (!token) {
-        setIsPremium(false);
-        return;
-      }
+      if (!token) return;
 
       try {
-        const limits = await refreshLimits();
-        setIsPremium(!!limits?.premium);
+        await refreshLimits(); // also signs out on an expired session (401)
 
         if (!user?.name) {
           const me = await userApi.getMe();
@@ -52,7 +47,7 @@ export default function Navbar() {
           setDisplayName(me.name);
         }
       } catch {
-        setIsPremium(false);
+        // keep the stored display name
       }
     };
 
@@ -71,10 +66,9 @@ export default function Navbar() {
   const handleSignOut = () => {
     logout();
     setIsLoggedIn(false);
-    setIsPremium(false);
     setDisplayName('');
     setIsOpen(false);
-    router.push('/signin');
+    router.push('/');
   };
 
   const isActive = (href) =>
@@ -143,15 +137,11 @@ export default function Navbar() {
                 title={displayName}
                 className="h-8 w-8 rounded-full text-white text-sm font-semibold inline-flex items-center justify-center shrink-0 transition-all duration-150"
                 style={{
-                  border: isPremium ? '1px solid transparent' : '1px solid rgba(255,255,255,0.18)',
-                  backgroundImage: isPremium
-                    ? 'linear-gradient(180deg, rgba(18,18,18,0.9), rgba(10,10,10,0.78)), linear-gradient(135deg, #f59e0b, #f472b6 45%, #60a5fa)'
-                    : 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06))',
-                  backgroundOrigin: isPremium ? 'border-box' : undefined,
-                  backgroundClip: isPremium ? 'padding-box, border-box' : undefined,
+                  border: '1px solid rgba(255,255,255,0.18)',
+                  backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06))',
                   boxShadow: '0 0 0 0px rgba(255,255,255,0)',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.boxShadow = isPremium ? '0 0 0 2px rgba(251,191,36,0.35)' : '0 0 0 2px rgba(255,255,255,0.15)'; }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 0 2px rgba(255,255,255,0.15)'; }}
                 onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 0 0 0px rgba(255,255,255,0)'; }}
               >
                 {initial}
@@ -174,8 +164,9 @@ export default function Navbar() {
               </button>
             </>
           ) : (
-            <Link
-              href="/signin"
+            <button
+              type="button"
+              onClick={() => router.push('/signin')}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium rounded-lg transition-all duration-150"
               style={{
                 background: 'linear-gradient(180deg, #f0f0f0 0%, #d4d4d4 100%)',
@@ -185,7 +176,7 @@ export default function Navbar() {
               onMouseLeave={e => { e.currentTarget.style.background = 'linear-gradient(180deg, #f0f0f0 0%, #d4d4d4 100%)'; }}
             >
               Sign In
-            </Link>
+            </button>
           )}
         </div>
 
@@ -247,12 +238,8 @@ export default function Navbar() {
                   <span
                     className="h-7 w-7 rounded-full text-white text-xs font-semibold inline-flex items-center justify-center shrink-0"
                     style={{
-                      border: isPremium ? '1px solid transparent' : '1px solid rgba(255,255,255,0.18)',
-                      backgroundImage: isPremium
-                        ? 'linear-gradient(180deg, rgba(18,18,18,0.9), rgba(10,10,10,0.78)), linear-gradient(135deg, #f59e0b, #f472b6 45%, #60a5fa)'
-                        : 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06))',
-                      backgroundOrigin: isPremium ? 'border-box' : undefined,
-                      backgroundClip: isPremium ? 'padding-box, border-box' : undefined,
+                      border: '1px solid rgba(255,255,255,0.18)',
+                      backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06))',
                     }}
                   >
                     {initial}
@@ -275,13 +262,14 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              <Link
-                href="/signin"
+              <button
+                type="button"
+                onClick={() => router.push('/signin')}
                 className="flex items-center justify-center px-4 py-2.5 rounded-xl text-sm font-medium"
                 style={{ background: 'linear-gradient(180deg, #f0f0f0 0%, #d4d4d4 100%)', color: '#0a0a0a' }}
               >
                 Sign In
-              </Link>
+              </button>
             )}
           </div>
         </div>

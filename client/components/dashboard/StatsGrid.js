@@ -1,15 +1,25 @@
 'use client';
 
+import { getLimitTone } from '@/components/RecordLimitSummary';
+
+const TONE_STYLE = {
+  normal: { className: 'status-good' },
+  warning: { className: '', style: { color: '#fbbf24' } },
+  danger: { className: 'status-bad' }
+};
+
 export default function StatsGrid({ domainsCount, recordsUsed, recordLimit, lastUpdated }) {
+  const tone = TONE_STYLE[getLimitTone(recordsUsed, recordLimit)];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div className="glass p-6 space-y-2">
-        <p className="text-slate-400 text-sm">Domains</p>
+        <p className="text-slate-400 text-sm">Subdomains</p>
         <p className="text-3xl font-bold accent-ice">{domainsCount}</p>
       </div>
       <div className="glass p-6 space-y-2">
         <p className="text-slate-400 text-sm">DNS Records</p>
-        <p className="text-lg status-good">{recordsUsed} / {recordLimit}</p>
+        <p className={`text-lg ${tone.className}`} style={tone.style}>{recordsUsed} / {recordLimit}</p>
       </div>
       <div className="glass p-6 space-y-2">
         <p className="text-slate-400 text-sm">Last Updated</p>

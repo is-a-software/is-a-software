@@ -27,8 +27,8 @@ const perfectFor = [
 const features = [
   'Free subdomain allocation',
   'Easy DNS record management',
-  'Support for A, AAAA, CNAME, TXT records',
-  'Real-time activity tracking'
+  'Support for A, AAAA, CNAME, TXT, MX and NS records',
+  'Sign-in with Google'
 ];
 
 const howItWorks = [
@@ -128,7 +128,7 @@ export default function AboutPage() {
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5 space-y-2">
                 <h3 className="text-white text-lg font-semibold">Frontend</h3>
                 <ul className="space-y-1 text-slate-400 text-sm list-disc list-inside">
-                  <li>Next.js 15</li>
+                  <li>Next.js 16</li>
                   <li>Tailwind CSS for styling</li>
                   <li>Responsive design</li>
                 </ul>
@@ -137,8 +137,8 @@ export default function AboutPage() {
                 <h3 className="text-white text-lg font-semibold">Backend</h3>
                 <ul className="space-y-1 text-slate-400 text-sm list-disc list-inside">
                   <li>Spring Boot</li>
-                  <li>GitHub API integration</li>
-                  <li>Cloudflate DNS validation &amp; management</li>
+                  <li>PostgreSQL</li>
+                  <li>Cloudflare DNS</li>
                 </ul>
               </div>
             </div>

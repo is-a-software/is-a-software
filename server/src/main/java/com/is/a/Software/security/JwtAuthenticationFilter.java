@@ -14,62 +14,36 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/** Authenticates API requests that carry this app's bearer token. */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	private JwtService jwtservice;
-	private UserDetailsService userdetail;
+	private final JwtService jwtService;
+	private final UserDetailsService userDetailsService;
 
-	public JwtAuthenticationFilter(JwtService jwtservice, UserDetailsService userdetail) {
-		super();
-		this.jwtservice = jwtservice;
-		this.userdetail = userdetail;
+	public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
+		this.jwtService = jwtService;
+		this.userDetailsService = userDetailsService;
 	}
-	
+
 	@Override
-	protected void doFilterInternal(HttpServletRequest request,
-	        HttpServletResponse response,
-	        FilterChain filterChain)
-	        throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		String authorization = request.getHeader("Authorization");
 
-	    String authorization = request.getHeader("Authorization");
-	    String path = request.getServletPath();
-
-	 if (path.startsWith("/v1/api/auth/login")) {
-	     filterChain.doFilter(request, response);
-	     return;
-	 }
-	    
-	    if (authorization != null && authorization.startsWith("Bearer ")) {
-
-	        String token = authorization.substring(7);
-
-	        String username = null;
-
-	        try {
-	            username = jwtservice.getUsername(token);
-	           
-	        } catch (Exception e) {
-	            System.out.println("JWT ERROR: " + e.getMessage());
-	        }
-
-	        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-	            UserDetails userdetails = userdetail.loadUserByUsername(username);
-
-	            if (jwtservice.verifyToken(token)) {
-
-	                UsernamePasswordAuthenticationToken authToken =
-	                        new UsernamePasswordAuthenticationToken(
-	                                userdetails,
-	                                null,
-	                                userdetails.getAuthorities()
-	                        );
-
-	                SecurityContextHolder.getContext().setAuthentication(authToken);
-	            }
-	        }
-	    }
-	    filterChain.doFilter(request, response);
+		if (authorization != null && authorization.startsWith("Bearer ")
+				&& SecurityContextHolder.getContext().getAuthentication() == null) {
+			String token = authorization.substring(7);
+			if (jwtService.verifyToken(token)) {
+				try {
+					UserDetails user = userDetailsService.loadUserByUsername(jwtService.getUsername(token));
+					SecurityContextHolder.getContext().setAuthentication(
+							new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()));
+				} catch (RuntimeException userGone) {
+					// Valid token for an account that no longer exists: stay unauthenticated (401).
+				}
+			}
+		}
+		filterChain.doFilter(request, response);
 	}
 }

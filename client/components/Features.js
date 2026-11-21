@@ -2,27 +2,27 @@ export default function Features() {
   const features = [
     {
       title: 'Instant Setup',
-      description: 'Get your subdomain activated in seconds, not days'
+      description: 'Sign in with Google, claim a name, and your records go live right away'
     },
     {
-      title: 'Free & Open',
-      description: 'No hidden fees, no complicated pricing tiers'
+      title: 'Free & Open Source',
+      description: 'No fees, no plans, no credit card. The code is on GitHub'
     },
     {
       title: 'Developer Friendly',
       description: 'Built for developers, with developers in mind'
     },
     {
-      title: 'Easy Management',
-      description: 'Simple dashboard to manage all your subdomains'
+      title: 'As Many Subdomains As You Need',
+      description: 'Claim as many names as you like from one simple dashboard'
     },
     {
-      title: 'Fast & Reliable',
-      description: 'Global DNS infrastructure ensures 99.9% uptime'
+      title: 'Fast DNS',
+      description: "Served from Cloudflare's global network"
     },
     {
-      title: 'Custom Records',
-      description: 'Full control over DNS records when you need it'
+      title: 'Real DNS Records',
+      description: 'A, AAAA, CNAME, TXT, MX and NS: 3 records per account, used however you like'
     }
   ];
 
